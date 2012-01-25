@@ -2,18 +2,9 @@
 include ('libs/boilerplate.php');
 
 $searchOptions['status'] = true;
-
 try {
 	$a = array();
 
-	$defaultCountry = getCartCountry();
-	$defaultCurrency = getCartCurrency();
-	try {
-		$c->setCountry($defaultCountry);
-		$c->setCurrency($defaultCurrency);
-	} catch (SoapFault $e) {
-		$errors[] = $e->getMessage();
-	}
 	$a = $c->searchProducts($SearchOptions);
 } catch (SoapFault $e) {
 	if ($e->getMessage() == 'Invalid hash provided') {
@@ -33,5 +24,5 @@ ob_end_clean();
 
 $iExecTime = (microtime(true) - $iStart);
 $title = 'Product Listing';
-
 include ('templates/main.tpl.php');
+// d ($_SESSION);

@@ -211,10 +211,10 @@ function getErrorHeaderOutput ($e = null) {
 }
 
 function _e ($e) {
-	$sErrors = '';
+	$aErrors = array();
 	$iLevel = ob_get_level();
-	for ($i = 0; $i < $iLevel - 1; $i++) {
-		$sErrors .= ob_get_clean();
+	for ($i = 0; $i < $iLevel -1 ; $i++) {
+		$aErrors[] = ob_get_clean();
 	}
 	if (ob_get_level() == 1) {
 		ob_end_clean();
@@ -224,108 +224,9 @@ function _e ($e) {
 	if (isDebug()) {
 		echo $e ? $e->getTraceAsString() : '';
 	}
-	if ($sErrors)
-	echo '<p>' . $sErrors . '</p>';
+	if ($aErrors) echo '<p>' . implode ('<br/>',$aErrors) . '</p>';
 	echo '</pre>';
 	echo '</body>';
 	echo '</html>';
 	exit (0);
-}
-
-function createEmptyCart() {
-	session_name('CART');
-	session_start();
-	if (!isset ($_SESSION['CART_DEMO'])) {
-		$_SESSION['CART_DEMO'] = array (
-			'CART' => array (
-				'PRODUCTS' => array(),
-				'PRICE' => 0,
-				'CURRENCY' => null,
-				'PRICEOPTIONS' => null,
-			),
-			'COUNTRY' => 'gb',
-			'CURRENCY' => 'EUR',
-			'SESSSTART'=> null,
-			'SESSSID'=> null,
-		);
-		
-	} 
-}
-
-function addToCart ($prodId, $quantity = 1, $priceOptions = '', $newPrice =  0, $newCurrency = null) {
-	$mProd = new mProduct();
-	$mProd->ProductId  =  $prodId;
-	
-	$_SESSION['CART_DEMO']['CART']['PRODUCTS'][$prodId] = array (
-		'QUANTITY' => $quantity,
-		'PRICEOPTIONS' =>$priceOptions,
-		'PRICE' => $newPrice,
-		'CURRENCY' => $newCurrency
-	);
-	$_SESSION['CART_DEMO']['CART']['PRICE'] += $newPrice;
-}
-
-function getCartPrice () {
-	if (isset($_SESSION['CART_DEMO'])) {
-		return $_SESSION['CART_DEMO']['CART']['PRICE'];
-	}
-}
-
-function getCartQuantities () {
-	$q = 0 ;
-	foreach ($_SESSION['CART_DEMO']['CART']['PRODUCTS'] as $iProd => $aData) {
-		$q += $aData['QUANTITY'];
-	}
-	return $q;
-}
-function getCartItemsNumber () {
-	if (isset($_SESSION['CART_DEMO'])) {
-		return count ($_SESSION['CART_DEMO']['CART']['PRODUCTS']);
-	}
-}
-
-function emptyCart () {
-	session_unset();
-	session_destroy();
-}
-
-function getCartItems () {
-	if (isset($_SESSION['CART_DEMO'])) {
-		return $_SESSION['CART_DEMO']['CART']['PRODUCTS'];
-	}
-}
-function getCartProductQuantity($idProduct) {
-	if (isset($_SESSION['CART_DEMO'])) {
-		return $_SESSION['CART_DEMO']['CART']['PRODUCTS'][$idProduct]['QUANTITY'];
-	}
-}
-function getCartProductPrice($idProduct) {
-	if (isset($_SESSION['CART_DEMO'])) {
-		return $_SESSION['CART_DEMO']['CART']['PRODUCTS'][$idProduct]['PRICE'];
-	}
-}
-function getCartProductOptions($idProduct) {
-	if (isset($_SESSION['CART_DEMO'])) {
-		return $_SESSION['CART_DEMO']['CART']['PRODUCTS'][$idProduct]['PRICEOPTIONS'];
-	}
-}
-function setCartCountry ($c){
-	if (isset($_SESSION['CART_DEMO'])) {
-		$_SESSION['CART_DEMO']['COUNTRY'] = $c;
-	}
-}
-function setCartCurrency ($c){
-	if (isset($_SESSION['CART_DEMO'])) {
-		$_SESSION['CART_DEMO']['CURRENCY'] = $c;
-	}
-}
-function getCartCountry () {
-	if (isset($_SESSION['CART_DEMO'])) {
-		return $_SESSION['CART_DEMO']['COUNTRY'];
-	}
-}
-function getCartCurrency () {
-	if (isset($_SESSION['CART_DEMO'])) {
-		return $_SESSION['CART_DEMO']['CURRENCY'];
-	}
 }

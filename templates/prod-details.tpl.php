@@ -3,49 +3,47 @@
 // d ($prod);
 ?>	
 	<div class="prod_details">
-			<img src="<?php echo $prod->ProductImage ?>" style="float:left" />
-			<h3 class="prod_name"><?php echo $prod->ProductName ?> <?php echo $prod->ProductVersion; ?></h3>
-			<p class="prod_desc"><?php echo $prod->LongDescription ? $prod->LongDescription : $prod->ShortDescription ?></p>
-			<div class="price"> 
-			<form method="post" action="/cart.php?action=add" id="frm">
-				<input type="hidden" id="prod_id" name="id" value="<?php echo $prod->ProductId ?>" /> 
-				<input type="hidden" id="price" name="price" value="<?php echo number_format($prod->Price,2) ?>" /> 
-				<input type="hidden" id="currency" name="currency" value="<?php echo (getCartCurrency() ? getCartCurrency() : $prod->Currency) ?>" /> 
-				Quantity: <input type="text" name="quantity" id="quantity" value="1" /><br/>
-				Price: <span id="price_display"><?php echo number_format($prod->Price,2) ?></span> <span id="currency_display"><?php echo ($prod->Currency ? $prod->Currency : $prod->DefaultCurrency ) ?></span> <button type="submit">Add to cart</button><br/>
-		
-<?php /* @var $OptionGroup mPriceOptionGroup */ 
-foreach ($prod->PriceOptions as $iKey => $OptionGroup) { ?>
-				<div class="opt_group"><strong><?php echo $OptionGroup->Name ?><?php if ($OptionGroup->Required) { echo '<span class="error">*</span>'; } ?></strong><br/>
-<?php
-	if ($OptionGroup->Type == 'COMBO') { ?>
-					<select name="<?php echo $OptionGroup->Name ?>" <? echo ($OptionGroup->Required ? 'class="required"' : '') ?>> 
-<?php 
-	if (!$OptionGroup->Required) { ?> 
-						<option></option> 
-<?php 
-	}  ?>
-<?php		/* @var $Option mPriceOptionOption */
-		foreach ($OptionGroup->Options as $iOptionKey => $Option) { ?>
-						<option value="<?php echo $Option->Value ?>" <?php echo $Option->Default ? "selected='selected'" : '' ?>><?php echo $Option->Name ?> </option>
-<?php		}  ?>
-					</select>
-		
-<?php	} elseif ($OptionGroup->Type == 'INTERVAL') { ?>
-					<label><?php echo $OptionGroup->Name ?> <input <? echo ($OptionGroup->Required ? 'class="required"' : '') ?> type="text" name="<?php echo $OptionGroup->Name ?>" /></label>
-<?php 
-	} else {
-		foreach ($OptionGroup->Options as $iOptionKey => $Option) { ?>
-					<label><?php echo $Option->Name ?> <input <? echo ($OptionGroup->Required ? 'class="required"' : '') ?> type="<? echo strtolower($OptionGroup->Type) ?>" <?php echo $Option->Default ? "checked='checked'" : '' ?> name="<?php echo $OptionGroup->Name ?><?php echo ($OptionGroup->Type=='CHECKBOX' ? '[]' : '');?>" value="<?php echo $Option->Value?>" /></label>
-<?php		
-		}
-	}  ?>
-				</div>
-<?php 
-} ?>
-			</form>
+	<form method="post" action="/cart.php?action=add" class="frm" id="frm">
+		<div class="prod_description">
+			<img src="<?php echo !is_null($prod->ProductImage) ? $prod->ProductImage : '/htdocs/images/defaultprod.png';?>" style="float:left;width:120px" />
+			<h4><?php echo $prod->ProductName ?> <span><?php echo $prod->ProductVersion; ?></span></h4>
+			<button type="submit" style="font-size:110%;">Add to cart <span style="margin-left:4px">&raquo;</span> </button><br/><br/>
+			<div class="description">
+				<?php if (strlen($prod->LongDescription) && strlen($prod->ShortDescription)) { echo 'No description available'; } else { echo $prod->LongDescription ? $prod->LongDescription : $prod->ShortDescription; }?>
+			</div>
+			<br/>
+<?php if (!empty($prod->Platforms)) {
+	$OSNames = array(); 
+	foreach ($prod->Platforms as $OSName => $OSDetails) {
+		$OSNames[] = $OSName;
+	}
+?>
+			<div class="description">Operating System<?php echo count($OSNames) > 1 ? 's' : '';?>: <?php echo implode (', ', $OSNames)?></div> 
+<?php } ?>
+			<br/>
+			<input type="hidden" id="prod_id" name="id" value="<?php echo $prod->ProductId ?>" /> 
+			<input type="hidden" id="price" name="price" value="<?php echo number_format($prod->Price,2) ?>" /> 
+			<input type="hidden" id="currency" name="currency" value="<?php echo ($c->getCurrency() ? $c->getCurrency() : $prod->Currency) ?>" />
+			<div style="overflow:auto;clear:both">
+			<div style="float:left;margin-left:130px;width:260px">
+				Quantity: <input type="text" name="quantity" id="quantity" maxlength="4" value="<?php echo ($c->getItemQuantity($prod->ProductId) > 0 ? $c->getItemQuantity($prod->ProductId) : '1')?>"/>
+			</div>
+			<div style="float:right;width:240px">
+				Price: <span id="price_display"><?php echo number_format($prod->Price,2) ?></span> <span id="currency_display"><?php echo strtoupper(($prod->Currency ? $prod->Currency : $prod->DefaultCurrency )); ?></span>
+			</div>
 			</div>
 		</div>
-<pre>
-<?php var_dump ($prod);?>
-</pre>
+<?php
+
+if (!isset($bReadonly) || !$bReadonly) { 
+	include ('templates/product-options.tpl.php');
+} else {
+	include ('templates/product-options-readonly.tpl.php');
+} 
+?>
+	</form>
+	</div>
+	<address>VAT might apply for EU Orders. The total price inclusive all applicable taxes will be displayed before the order is transmitted.</address>
+<!-- <pre>
+<?php var_dump ($prod); ?>
+</pre> -->

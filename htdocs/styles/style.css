@@ -1,0 +1,316 @@
+/* 
+    Document   : style.css
+    Created on : Dec 6, 2011, 3:29:26 PM
+    Author     : habarnam
+    Description:
+        Purpose of the stylesheet follows.
+*/
+html, body {
+	padding:0;
+}
+body {
+	color:#292929;
+	margin:0;
+	position:relative;
+}
+a:hover, a:active {
+	outline: 0;
+	text-decoration: underline;
+}
+a {
+	/*/color:#5795B9;/**/	
+	/**/color:#05649A;/**/
+	text-decoration: none;
+}
+select {
+	min-width:90px;
+}
+#header {
+	background: url("/htdocs/images/bg1.png") repeat-x scroll left bottom #FFFFFF;
+	overflow:auto;
+}
+#header>div {
+	width:680px;
+	margin:auto;
+	position:relative;
+}
+#header h1 {
+	float:left;
+}
+#header #locale-change {
+	float:right;
+	/**/margin-top:8px;/**/
+}
+#header #cart_small a {
+	margin-right:10px;
+}
+#header #cart_small {
+	/*/margin-top:5px;/**/
+	float:right;
+	font-size:70%;
+	max-width:300px;
+	min-height:40px;
+}
+#main-content {
+	width:680px;
+	margin:auto;
+}
+.products {
+	padding:4px;
+	border:1px solid #E5E5E5;
+	border-radius:3px;
+}
+.products h3 {
+	border-bottom:1px solid #CCCCCC;
+	padding: 0 0 3px 5px;
+	color: #292929;
+	margin: 5px 0;
+}
+.total_price {
+	color:#519B0C;
+	font-size:120%;
+	font-weight: bold;
+	padding-top:5px;
+}
+.products address {
+	font-size:70%;
+	clear:both;
+	margin-top:4px;
+	color:#B8B8B8;
+}
+table.prod_details {
+	padding:0px;
+	border:0;
+	border-spacing: 0;
+}
+table.prod_details .c_description {
+	width:400px;
+}
+table.prod_details .c_details {
+	width:100px;
+	text-align: right;
+}
+table.prod_details .c_actions {
+	width:30px;
+	text-align: center;
+}
+table.prod_details th {
+	text-transform: uppercase;
+}
+table.prod_details tr td {
+	padding:10px 4px 4px 2px;
+}
+table.prod_details td {
+	border:1px solid #E5E5E5;
+	border-bottom:0px;
+	border-top:0px;
+}
+.prod_details {
+	margin-top:2px;
+	background-color:#E5E5E5;
+	padding:10px 6px;
+	font-size:90%;
+}
+.prod_description .modify_quantity {
+	width:10px;
+	float:right;
+	font-weight:bold;
+	font-size:140%;
+	line-height:6px;
+	margin-top:5px;
+}
+.prod_description .modify_quantity a {
+	padding:0;
+	margin:0;
+	text-decoration: none;
+}
+.prod_description img {
+	margin-right:10px;
+}
+.prod_description {
+	background-color:#FFFFFF;
+	/**/margin: 4px -6px;/**/
+	min-height:40px;
+	padding:5px;
+	overflow:visible;
+}
+.prod_description div p {
+	text-indent:10px;
+	padding-left:5px;
+}
+.prod_description div.description {
+	font-size:85%;
+	/*/color:#3FADEC;/**/
+	/**/color:#595959;/**/
+	overflow:auto;
+}
+.prod_description h4 {
+	margin: 4px 10px;
+	/*/font-size:100%; 
+	float:left;
+	clear:right;/**/
+}
+.prod_description h4 span {
+	font-size:80%;
+}
+.prod_desc {
+	font-size:0.9em;
+	margin-left:10px;
+}
+.opt_group {
+	padding: 4px;
+}
+.opt_group label {
+	margin-right:10px;
+}
+.order_details {
+	float:right; 
+	width:680px;
+	margin:12px 0px;
+}
+.details fieldset {
+	border:none;
+	margin:0px;
+}
+.disclaimer, .details {
+	border: 1px solid #CCCCCC !important;
+	border-radius:4px;
+	background-color:#EBEBEB;
+	font-size:80%;
+	overflow:auto;
+}
+.disclaimer {
+	padding:10px;
+}
+.details {
+	width: 332px;
+	float:left;
+	font-weight: bold;
+}
+.details legend, .disclaimer h3 {
+	border-bottom: 1px solid #CCCCCC;
+	margin-top: 10px;
+	padding: 4px 0;
+	font-size:120%;
+	width: 100%;
+}
+.details label.place_order button img {
+	display:block; 
+	float:right; 
+	margin-left:12px;
+	margin-top:-4px
+}
+.details label.place_order button, .frm button[type=submit] {
+	height:34px;
+	margin-top: 2px;
+	padding:0 14px;
+	padding-top:4px;
+	border:1px outset #9FD169;
+	border-radius:4px;
+	color: #FFFFFF;
+	font-size:110%;
+	font-weight:bold;
+	background: url("/htdocs/images/bg3.png") repeat-x scroll left bottom #FFFFFF;
+}
+.details label.place_order {
+	clear:both;
+	height:42px;
+	background: url("/htdocs/images/bg2.png") repeat-x scroll left top #FFFFFF;
+	border:1px solid #E4E4E4;
+	border-radius:4px;
+	text-align:center;
+	margin-top:20px;
+}
+#payment_details .card_pick {
+	background-color: #DBDBDB;
+	text-align: center;
+	margin:2px -8px;
+	overflow:auto;
+	padding-left:14px;
+}
+#payment_details .card_pick label input {
+	margin:auto;
+	float:none;
+}
+#payment_details .card_pick label {
+	padding-top:8px;
+	display:block;
+	width: 78px;
+	height: 52px;
+	float:left;
+	overflow:auto;
+}
+.details input { }
+.details label {
+	display:block;
+	height : 1em;
+	padding-top:4px;
+}
+.details input,.details select {
+	margin-top: -4px;
+	float:right;
+	clear: right;
+}
+#locale_select {
+	float:right;
+}
+.error, .mandatory {
+	color: #ee2222;
+	font-size:85%;
+}
+.frm button[type=submit] {
+	float:right;
+	padding:0 14px;
+}
+select>option[value=""] {
+	font-style:italic;
+}
+.disclaimer {
+	margin-bottom:10px;
+}
+.disclaimer .secure {
+	width:200px;
+	float:right;
+}
+.disclaimer .hotline {
+	width:360px;
+	float:left;
+}
+.disclaimer .hotline h5 {
+	font-weight:bold;
+	font-size:110%;
+	padding-left:4px 0;
+}
+.disclaimer hr {
+	display:block;
+	clear:both;
+}
+.disclaimer dl dd {
+	/*/display:block;
+	clear:right;/**/
+}
+.disclaimer dl dt {
+	float: left;
+	font-weight: bold;
+	padding-left: 20px;
+	width: 165px;
+}
+.disclaimer p {
+	text-indent: 30px;
+}
+#footer {
+	font-size:80%;
+	margin-top:-3em;
+	position:absolute;
+	bottom:0px;
+}
+#waiting {
+	background: url("/htdocs/images/waiting.gif") no-repeat left top #FFFFFF;
+	width:22px;
+	height:11px;
+}
+table.prod_details td.empty {
+	padding: 34px 4px;
+	text-align:center;
+	font-size:1.2em;
+}

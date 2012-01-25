@@ -1,17 +1,12 @@
 <?php
 include ('libs/boilerplate.php');
 
+$cartProducts = array();
 try {
-// 	$c->authenticate();
-	$defaultCountry = getCartCountry();
-	$defaultCurrency = getCartCurrency();
-	try {
-		$c->setCountry($defaultCountry);
-		$c->setCurrency($defaultCurrency);
-	} catch (SoapFault $e) {
-		$errors[] = $e->getMessage();
+	foreach ($c->getItems() as $idProduct => $data) {
+		$cartProducts[$idProduct] = $c->getProductById($idProduct);
+		$cartPrices[$idProduct] = $c->getProductById($idProduct);
 	}
-	$a = $c->searchProducts($SearchOptions);
 } catch (SoapFault $e) {
 	if ($e->getMessage() == 'Invalid hash provided') {
 		session_destroy();

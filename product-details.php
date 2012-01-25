@@ -4,16 +4,6 @@ include ('libs/boilerplate.php');
 $prodId = (int) $_GET['id'];
 
 try {
-// 	$c->authenticate();
-	
-	$defaultCountry = getCartCountry();
-	$defaultCurrency = getCartCurrency();
-	try {
-		$c->setCountry($defaultCountry);
-		$c->setCurrency($defaultCurrency);
-	} catch (SoapFault $e) {
-		$errors[] = $e->getMessage();
-	}
 	$prod = $c->getProductById ($prodId);
 } catch (SoapFault $e) {
 	if ($e->getMessage() == 'Invalid hash provided') {

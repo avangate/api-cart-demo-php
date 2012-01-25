@@ -1,5 +1,19 @@
 <?php
+/* @var $c mCart */
 include ('libs/boilerplate.php');
+
+function outputJson ($stuff) {
+	for ($i = 0 ; $i <= ob_get_level(); $i++) {
+		ob_end_clean();
+	}
+	header ('HTTP/1.1 200 OK');
+	header ('Content-Type: application/json');
+		
+	echo json_encode($stuff);
+	
+	exit();
+}
+
 
 $prodId = isset($_REQUEST['id']) ? (int)$_REQUEST['id'] : null;
 $action = isset($_GET['action']) ? $_GET['action'] : 'getprice';
@@ -22,12 +36,12 @@ if (in_array($action, array ('add', 'getprice')) ) {
 		if ($key == 'quantity') {
 			$quantity = $_POST['quantity'];
 		}
-//		if ($key == 'language') {
-//			$language = $_POST['language'];
-//		}
-//		if ($key == 'country') {
-//			$country = $_POST['country'];
-//		}
+		if ($key == 'language') {
+			$language = $_POST['language'];
+		}
+		if ($key == 'country') {
+			$country = $_POST['country'];
+		}
 	}
 }
 foreach ($priceOptions as $key => $option) {
@@ -36,59 +50,52 @@ foreach ($priceOptions as $key => $option) {
 	} 
 }
 
-$currency = !empty($currency) ? $currency : getCartCurrency();
+$currency = !empty($currency) ? $currency : $c->getCurrency();
 $quantity = !empty($quantity) ? $quantity : 1;
 $quantity = isset($_GET['quantity']) ? $_GET['quantity'] : $quantity;
 
 /* @var $c CSOAP_OrderAPI */
 try {
 	switch ($action) {
+		case 'modq':
+			$newPrice = $c->modifyQuantity ($prodId, $quantity);
+			
+			outputJson($newPrice); // break;
 		case 'add' : // add to cart
-			$c->addProduct($prodId, $quantity, implode(',', $priceOptions));
-			$newPrice = $c->getPrice($prodId, $quantity, implode(',',$priceOptions), $currency);
-			addToCart($prodId, $quantity, $priceOptions, $newPrice->FinalPrice, $newPrice->FinalCurrency);
+			$newPrice = $c->addToCart ($prodId, $quantity, $priceOptions);
 			
 			header ('HTTP/1.1 301 Moved Permanentely');
 			header ('Location: /list-products.php');
 			break;
 		case 'getprice': // get a new price based on the quantity/price options change
+			
 			$newPrice = $c->getPrice($prodId, $quantity, implode(',', $priceOptions), $currency);
-			$iLevel = ob_get_level();
-			for ($i = 0 ; $i < $iLevel; $i ++ ) { 
-				ob_end_clean();
-			}
-			header ('HTTP/1.1 200 OK');
-			header ('Content-Type: application/json');
-			echo json_encode($newPrice);
+			outputJson($newPrice); // break;
+			
 			exit(); // break;
 		case 'del': // remove from cart
-			$c->deleteProduct($prodId, $quantity);
+			$c->removeFromCart ($prodId);
+			
+			header ('HTTP/1.1 301 Moved Permanentely');
+			header ('Location: /list-products.php');
 			break;
-		case 'set': // remove from cart
+		case 'set': //set stuff
 			$country = $_POST['country'];
 			$currency = $_POST['currency'];
 			
 			try {
-				$c->setCountry($country);
-				$c->setCurrency($currency);
+				$c->setCountry(strtoupper($country));
+				$c->setCurrency(strtoupper($currency));
 			} catch (SoapFault $e) {
 				$errors[] = $e->getMessage();
-				header ('HTTP/1.1 200 OK');
-				header ('Content-Type: application/json');
-				echo json_encode(array('status'=>'nok', 'error' => implode("\n", $errors)));
+				outputJson(array('status'=>'nok', 'error' => implode("\n", $errors))); // break;
 				break;
 			}
 			
-			setCartCountry ($country);
-			setCartCurrency ($currency);
-			
-			header ('HTTP/1.1 200 OK');
-			header ('Content-Type: application/json');
-			echo json_encode(array('status'=>'ok'));
+			outputJson(array('status'=>'ok'));
 			break;
 		case 'emptycart': // remove from cart
-			emptyCart();
-			$c->clearProducts();
+			$c->emptyCart();
 			header ('HTTP/1.1 303 See Other');
 			header ('Location: /list-products.php');
 			break;

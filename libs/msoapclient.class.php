@@ -2,18 +2,21 @@
 import ('assets');
 /* @var parent CSOAP_OrderAPI */
 class mSOAPClient extends SoapClient {
+	static $calls;
+	
 	private $AccountCode;
 	private $FiscalCode;
 	private $SecretKey;
 
-	protected $sessionID;
+	private $sessionID;
 	protected $sessionStart;
 	
 	public function __construct ($wsdlUrl, $options = array()) {
+		self::$calls = 0;
 		$mOptions = array_merge(
 			array (
 				'location' => substr ($wsdlUrl, 0, -5),
-// 				'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP,
+				'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP,
 				'cache_wsdl' => WSDL_CACHE_NONE,
 				'classmap' => array (
 					'CSOAP_Order' => 'mOrder',
@@ -29,6 +32,14 @@ class mSOAPClient extends SoapClient {
 		return parent::__construct ($wsdlUrl, $mOptions);
 	}
 	
+	public function setSessionId ($SessionId) {
+		$this->sessionID = $SessionId;
+	}
+
+	public function setSessionStart ($SessionStart) {
+		$this->sessionStart = $SessionStart;
+	}
+	
 	public function setAccountCode ($s) {
 		$this->AccountCode = $s;
 	}
@@ -41,35 +52,26 @@ class mSOAPClient extends SoapClient {
 	
 	public function authenticate () {
 		try {
-			if (!isset($_SESSION['CART_DEMO']['SESSSID']) || is_null($_SESSION['CART_DEMO']['SESSSID'])) {
-				// there is no authenticated soap session saved - we need to login
-				$this->sessionStart	= date('Y-m-d H:i:s');
-				$string		= strlen($this->AccountCode) . $this->AccountCode . strlen($this->sessionStart) . $this->sessionStart;
-				$hash		= hmac($this->SecretKey, $string);
-				
-				$this->sessionID	= parent::login ($this->AccountCode, $this->sessionStart, $hash);
-				if ($_SERVER['REMOTE_ADDR']) {
-					parent::setClientIP ($this->sessionID, $_SERVER['REMOTE_ADDR']);
-				}
-			} else {
-				// we logged at a previous time - so we load the data in our soap wrapper
-				$this->sessionStart	= $_SESSION['CART_DEMO']['SESSSTART'];
-				$this->sessionID	= $_SESSION['CART_DEMO']['SESSSID'];
+			// there is no authenticated soap session saved - we need to login
+			$this->sessionStart	= date('Y-m-d H:i:s');
+			$string		= strlen($this->AccountCode) . $this->AccountCode . strlen($this->sessionStart) . $this->sessionStart;
+			$hash		= hmac($this->SecretKey, $string);
+			self::$calls += 1;
+			$this->sessionID	= parent::login ($this->AccountCode, $this->sessionStart, $hash);
+			if ($_SERVER['REMOTE_ADDR']) {
+				self::$calls += 1;
+				parent::setClientIP ($this->sessionID, $_SERVER['REMOTE_ADDR']);
 			}
-			if (!is_null($this->sessionID)) {
-				// succsessful login
-				$_SESSION['CART_DEMO']['SESSSTART']	= $this->sessionStart;
-				$_SESSION['CART_DEMO']['SESSSID']	= $this->sessionID;
-			} 
 		} catch ( SoapFault $e ) {
 			// some problem authenticating 
+			_e($e);
 		}
 		
 		if (!is_null($this->sessionID)) {
 // 			parent::setFiscalCode ($this->sessionID, VATID);
-			return true;
+			return $this->sessionID;
 		} else {
-			return false;
+			return null;
 		}
 	}
 
@@ -81,6 +83,7 @@ class mSOAPClient extends SoapClient {
 	 * @return void
 	 */
 	public function setLanguage ($IsoLang){
+		self::$calls += 1;
 		return parent::setLanguage($this->sessionID, $IsoLang);
 	}
 
@@ -92,6 +95,7 @@ class mSOAPClient extends SoapClient {
 	 * @return void
 	 */
 	public function setCountry($IsoCountry) {
+		self::$calls += 1;
 		return parent::setCountry ($this->sessionID, $IsoCountry);
 	}
 
@@ -103,7 +107,8 @@ class mSOAPClient extends SoapClient {
 	 * @return void
 	 */
 	public function setCurrency($IsoCurrency) {
-		return parent::setCurrency ($this->sessionID, $IsoCurrency);
+		self::$calls += 1;
+		return parent::setCurrency ($this->sessionID, strtoupper($IsoCurrency));
 	}
 
 	/**
@@ -114,6 +119,7 @@ class mSOAPClient extends SoapClient {
 	 * @return void
 	 */
 	public function setBillingDetails (mBillingDetails $BillingDetails) {
+		self::$calls += 1;
 		return parent::setBillingDetails ($this->sessionID, $BillingDetails);
 	}
 
@@ -125,6 +131,7 @@ class mSOAPClient extends SoapClient {
 	 * @return void
 	 */
 	public function setDeliveryDetails (mDeliveryDetails $DeliveryDetails) {
+		self::$calls += 1;
 		return parent::setDeliveryDetails ($this->sessionID, $DeliveryDetails);
 	}
 
@@ -138,6 +145,7 @@ class mSOAPClient extends SoapClient {
 	 * @return void
 	 */
 	public function setPaymentDetails (mPaymentDetails $PaymentDetails) {
+		self::$calls += 1;
 		return parent::setPaymentDetails ($this->sessionID, $PaymentDetails);
 	}
 
@@ -150,8 +158,9 @@ class mSOAPClient extends SoapClient {
 	 *
 	 * @return boolean
 	 */
-	public function addProduct ($IdProduct, $Quantity, $PriceOptions = null) {
-		return parent::addProduct ($this->sessionID, $IdProduct, $Quantity, $PriceOptions);
+	public function addProduct ($IdProduct, $iQuantity = 1, $aPriceOptions = null) {
+		self::$calls += 1;
+		return parent::addProduct ($this->sessionID, $IdProduct, $iQuantity, $aPriceOptions);
 	}
 
 	/**
@@ -164,7 +173,8 @@ class mSOAPClient extends SoapClient {
 	 *
 	 * @return boolean
 	 */
-	public function deleteProduct ($IdProduct, $iQuantity) {
+	public function deleteProduct ($IdProduct, $iQuantity = 1) {
+		self::$calls += 1;
 		return parent::deleteProduct ($this->sessionID, $IdProduct, $iQuantity);
 	}
 
@@ -176,6 +186,7 @@ class mSOAPClient extends SoapClient {
 	 * @return boolean
 	 */
 	public function clearProducts () {
+		self::$calls += 1;
 		return parent::clearProducts($this->sessionID);
 	}
 
@@ -185,6 +196,7 @@ class mSOAPClient extends SoapClient {
 	 * @return mOrder
 	 */
 	public function placeOrder () {
+		self::$calls += 1;
 		return parent::placeOrder($this->sessionID);
 	}
 
@@ -196,6 +208,7 @@ class mSOAPClient extends SoapClient {
 	 * @return string
 	 */
 	public function getOrderStatus ($RefNo) {
+		self::$calls += 1;
 		return parent::getOrderStatus ($this->sessionID, $RefNo);
 	}
 	
@@ -208,39 +221,9 @@ class mSOAPClient extends SoapClient {
 	 * @return mProduct
 	 */
 	public function getProductById($IdProduct){
-		$product = parent::getProductById ($this->sessionID, $IdProduct);
-		if (empty($product->Price)) {
-			// this is a probably a flat scheme price product - so we try to get the price based on the default pricing options
-			$product->Price = $this->getDefaultPrice ($product);
-		}
-		return $product;
+		self::$calls += 1;
+		return parent::getProductById ($this->sessionID, $IdProduct);
 	}
-	
-	/**
-	 * 
-	 * Returns the price for a product based on it's default pricing options
-	 * @param mProduct $product
-	 * @return decimal
-	 */
-	protected function getDefaultPrice (mProduct $product) {
-		$defaultPriceOptions = array();
-		try {
-			foreach ($product->PriceOptions as $iKey => $OptionGroup) {
-				foreach ($OptionGroup->Options as $iOptionKey => $Option) {
-					if ($Option->Default) {
-						$defaultPriceOptions[] = $Option->Value;
-					}
-				}
-			}
-			if ($product->ProductId == 4451538) d ($defaultPriceOptions);
-			$oPrice = $this->getPrice($product->ProductId, 1, implode (',', $defaultPriceOptions), getCartCurrency());
-			$product->Price = $oPrice->FinalPrice;
-		} catch (SoapFault $e) {
-			//
-				_e ($e);
-		}
-		return $product->Price;
-	} 
 	
 	/**
 	 * Get information about a product when its code is known
@@ -250,6 +233,7 @@ class mSOAPClient extends SoapClient {
 	 * @return mProduct
 	 */
 	public function getProductByCode($ProductCode) {
+		self::$calls += 1;
 		return parent::getProductByCode ($this->sessionID, $ProductCode);
 	}
 	
@@ -261,6 +245,7 @@ class mSOAPClient extends SoapClient {
 	 * @return mProduct[]
 	 */
 	public function getProductBySKU($ProductSKU) {
+		self::$calls += 1;
 		return parent::getProductBySKU ($this->sessionID, $ProductSKU);
 	}
 	
@@ -273,16 +258,8 @@ class mSOAPClient extends SoapClient {
 	 * @return mBasicProduct[]
 	 */
 	public function searchProducts($SearchOptions = array()) {
-		$products = parent::searchProducts($this->sessionID, $SearchOptions);
-		
-		/* @var $prodData mBasicProduct */
-		foreach ($products as $idProduct => $prodData) {
-			if (is_null($prodData->Price)) {
-				$fullProduct = $this->getProductById($prodData->ProductId);
-				$prodData->Price = $this->getDefaultPrice($fullProduct);
-			}
-		}
-		return $products;
+		self::$calls += 1;
+		return parent::searchProducts($this->sessionID, $SearchOptions);
 	}
 	
 	/**
@@ -293,6 +270,39 @@ class mSOAPClient extends SoapClient {
 	 * @return mPrice
 	 */
 	public function getPrice ($IdProduct, $Quantity = 1, $PriceOptions = '', $Currency = null) {
+		self::$calls += 1;
 		return parent::getPrice($this->sessionID, $IdProduct, $Quantity, $PriceOptions, $Currency);
+	}
+	
+	/**
+	 * Returns the list of available currencies for the current vendor
+	 * @param string $Hash
+	 * @throws CSOAPServerFault_Merchants
+	 * @return IsoCurrencyCodes array[string]
+	 */
+	public function getAvailableCurrencies () {
+		self::$calls += 1;
+		return parent::getAvailableCurrencies ($this->sessionID);
+	}
+	
+	/**
+	 * Returns the list of available languages for the current vendor
+	 * @param string $Hash
+	 * @throws CSOAPServerFault_Merchants
+	 * @return IsoLanguageCodes array[string]
+	 */
+	public function getAvailableLanguages () {
+		self::$calls += 1;
+		return parent::getAvailableLanguages ($this->sessionID);
+	}
+	/**
+	 * Returns the list of available countries for the current vendor
+	 * @param string $Hash
+	 * @throws CSOAPServerFault_Merchants
+	 * @return IsoCountryCodes array[string]
+	 */
+	public function getAvailableCountries () {
+		self::$calls += 1;
+		return parent::getAvailableCountries ($this->sessionID);
 	}
 }

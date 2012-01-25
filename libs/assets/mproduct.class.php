@@ -17,6 +17,13 @@ class mProduct extends mBasicProduct {
 	/**
 	 * 
 	 *
+	 * @var array
+	 */
+	var $Platforms = array();
+	
+	/**
+	 * 
+	 *
 	 * @var string
 	 */
 	var $URLImage = '';

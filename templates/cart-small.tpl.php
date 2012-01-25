@@ -1,10 +1,13 @@
 		<div id="cart_small">
-			Total price: <?php echo getCartPrice(); ?> <?php echo getCartCurrency();?><br/>
-			Items: <?php echo getCartQuantities (); ?> <br/>
-<?php if (getCartItemsNumber() > 0) { ?>
+			<a href="/view-cart.php"><img src="/htdocs/images/cart-small.png" alt="View Cart" title="View Cart"/></a>
 			<div style="float:right">
-				<a href="/order.php">Place Order</a> &mdash; 
-				<a href="/cart.php?action=emptycart">Clear Cart</a>
+			Total price: <strong><?php echo $c->getTotalPrice(); ?> <?php echo $c->getCurrency();?></strong><br/>
+			Quantity: <strong><?php echo $c->getItemsQuantity(); ?></strong> <br/>
+			Items: <strong><?php echo count($c->getItems()); ?></strong> <br/>
+			</div>
+<?php if (count($c->getItems()) > 0) { ?>
+			<div style="float:right">
+				<a href="/order.php">Place Order</a> &mdash; <a style="margin-left:10px" href="/cart.php?action=emptycart">Clear Cart</a>
 			</div>
 <?php } ?>
 		</div>
