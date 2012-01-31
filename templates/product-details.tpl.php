@@ -1,6 +1,6 @@
 
 <div class="products">
-  <h3>Products:</h3>
+	<h3>Products:</h3>
 <?php include ('templates/prod-details.tpl.php') ?>
 </div>
 		<!-- <pre> <?php /* var_dump ($prod); */ ?> </pre> -->
@@ -18,14 +18,14 @@ $(document).ready (function () {
 		var req = $('form#frm').serializeArray();
 		var origPrice = <?php echo $prod->Price; ?>;
 
-		var waiting = $('<img src="/htdocs/images/waiting.gif" />').css ({
+		var waiting = $('<img src="/images/waiting.gif" />').css ({
 			marginLeft : 4,
 			marginRight: 4,
 			marginBottom: -1
 		});
 		
 		$.ajax({
-			url : '/cart.php?id=' + $('input:hidden#prod_id').val() + '&action=getprice',
+			url : '/cart/?id=' + $('input:hidden#prod_id').val() + '&action=getprice',
 			type : 'post',
 			dataType : 'json',
 			data : req,

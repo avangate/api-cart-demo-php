@@ -7,7 +7,7 @@ $quantity = (int)$c->getItemQuantity($prod->ProductId);
 			<input type="hidden" id="id_<?php echo $prod->ProductId?>" name="id" value="<?php echo $prod->ProductId ?>" /> 
 			<input type="hidden" id="price_<?php echo $prod->ProductId?>" name="price" value="<?php echo number_format($prod->Price,2) ?>" /> 
 			<input type="hidden" id="currency_<?php echo $prod->ProductId?>" name="currency" value="<?php echo ($c->getCurrency() ? $c->getCurrency() : $prod->Currency) ?>" />
-			<img src="<?php echo !is_null($prod->ProductImage) ? $prod->ProductImage : '/htdocs/images/defaultprod.png';?>" style="float:left; width:100px" />
+			<img src="<?php echo !is_null($prod->ProductImage) ? $prod->ProductImage : '/images/defaultprod.png';?>" style="float:left; width:100px" />
 			<h4><?php echo $prod->ProductName ?> <span><?php echo $prod->ProductVersion; ?></span></h4>
 			<div class="description">
 				<?php echo $prod->ShortDescription ? $prod->ShortDescription : 'No description available' ?>
@@ -23,7 +23,7 @@ $quantity = (int)$c->getItemQuantity($prod->ProductId);
 		<td style="text-align:right">
 			<span id="price_display"><?php echo number_format($prod->Price * $quantity,2) ?></span> <span class="currency_display"><?php echo strtoupper($prod->Currency ? $prod->Currency : $prod->DefaultCurrency ) ?></span>
 		</td>
-		<td style="text-align:center;border-right:0px; padding:0"><a href="/cart.php?action=del&amp;id=<?php echo $prod->ProductId;?>"><img class="action" src="htdocs/images/delete.png" style="margin:0"/></a></td>
+		<td style="text-align:center;border-right:0px; padding:0"><a href="/cart/?action=del&amp;id=<?php echo $prod->ProductId;?>"><img class="action" src="htdocs/images/delete.png" style="margin:0"/></a></td>
 	</tr>
 	<!-- <tr class="prod_description ">
 		<td colspan="6">

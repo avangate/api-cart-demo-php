@@ -4,9 +4,9 @@
 <head>
 <title><?php echo $title; ?></title>
 <meta charset="utf-8" />
-<link rel="stylesheet" href="/htdocs/styles/style.css" media="screen" />
-<link rel="shortcut icon" href="/htdocs/images/favicon.ico" />
-<script type="text/javascript" src="/htdocs/scripts/jquery.min.js" ></script>
+<link rel="stylesheet" href="/styles/style.css" media="screen" />
+<link rel="shortcut icon" href="/images/favicon.ico" />
+<script type="text/javascript" src="/scripts/jquery.min.js" ></script>
 <script type="text/javascript">
 	$(document).ready(function () {
 		$('body').height (Math.max ($(document).height(), $(window).height()));
@@ -23,17 +23,16 @@ try {
 ?>
 <div id="header">
 	<div>
-		<?php if (count($errors) >= 1) {?><div class="error"><?php echo implode ('<br/>', $errors); ?></div><?php } ?>
+		<?php if (count($errors) >= 1) { ?><div class="error"><?php echo implode ('<br/>', $errors); ?></div><?php } ?>
 		<div id="small-cart"><?php include ('templates/cart-small.tpl.php') ?> </div>
-		<h1><a href="/"><img src="/htdocs/images/logo.png" alt="Logo" /></a></h1>
+		<h1><a href="/"><img src="/images/logo.png" alt="Logo" /></a></h1>
 		<div id="locale-change"> <?php include ('templates/locale.tpl.php') ?> </div>
 	</div>
 </div>
 <br/>
 <div id="main-content">
 <?php
-	$templateFile = basename ($_SERVER['PHP_SELF']);
-	include (realpath('templates/' . str_replace('.php', '.tpl.php', $templateFile)));
+	include (realpath('../templates/' . str_replace('.php', '.tpl.php', $includePath)));
 ?>
 </div>
 <?php 

@@ -1,7 +1,4 @@
 <?php
-import ('libs');
-import ('assets');
-
 class mCart extends stdClass {
 	/**
 	 * @var CSOAP_OrderAPI

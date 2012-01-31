@@ -1,6 +1,6 @@
 <?php
-include ('libs/functions.php');
-include ('libs/config.inc.php');
+include ('functions.php');
+include ('config.inc.php');
 
 set_error_handler('exceptions_error_handler');
 

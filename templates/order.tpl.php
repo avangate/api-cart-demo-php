@@ -41,7 +41,7 @@ $bReadonly = true;
 				<td colspan="5" id="totals" style="text-align:right; font-size:90%; padding:4px;">
 				<?php  if (count($c->getItems()) > 0) { ?>
 						<div style="float:left">
-						<a href="/cart.php?action=emptycart">Empty Cart</a>
+						<a href="/cart/?action=emptycart">Empty Cart</a>
 						</div>
 <?php } ?>
 					<!-- <div>Regular price: <?php echo 120 ?></div>
@@ -85,19 +85,19 @@ $bReadonly = true;
 		<div class="label" style="margin:4px 0">Choose your payment option:</div>
 		<div class="card_pick">
 			<label> 
-				<img src="/htdocs/images/visa.png" /><br/>
+				<img src="/images/visa.png" /><br/>
 				<input type="radio" name="card_type" value="VISA" selected="selected"/>
 			</label>
 			<label> 
-				<img src="/htdocs/images/mastercard.png" /><br/>
+				<img src="/images/mastercard.png" /><br/>
 				<input type="radio" name="card_type" value="MC"/>
 			</label>
 			<label>
-				<img src="/htdocs/images/discovery.png" /><br/>
+				<img src="/images/discovery.png" /><br/>
 				<input type="radio" name="card_type" value="DISCOVERY"/>
 			</label>
 			<label> 
-				<img src="/htdocs/images/jcb.png" /><br/>
+				<img src="/images/jcb.png" /><br/>
 				<input type="radio" name="card_type" value="JCB"/>
 			</label>
 		</div>
@@ -158,8 +158,8 @@ $bReadonly = true;
 			</dl>
 		</div>
 		<div class="secure">
-			<img src="/htdocs/images/verisign.png" /><br/>
-			<img src="/htdocs/images/mcaffee.png" />
+			<img src="/images/verisign.png" /><br/>
+			<img src="/images/mcaffee.png" />
 		</div>
 		<hr/>
 		<div style="text-align:center">
@@ -167,13 +167,13 @@ $bReadonly = true;
 			<p><a href="#">Privacy Policy</a> | <a href="#">Legal notice</a> | <a href="#">Terms and Conditions</a></p>
 		</div>
 	</div>
-<script type="text/javascript" src="/htdocs/scripts/jquery.clearinputs.js"></script>
+<script type="text/javascript" src="/scripts/jquery.clearinputs.js"></script>
 <script type="text/javascript">
 	$(document).ready(function () {
 		function modifyQuantity (productId, quantity) {
 			var action = null;
 			$.ajax({
-				url : '/cart.php?id=' + productId + '&action=modq&quantity=' + quantity,
+				url : '/cart/?id=' + productId + '&action=modq&quantity=' + quantity,
 				type : 'post',
 				dataType : 'json',
 //				data : req,

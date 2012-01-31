@@ -26,7 +26,7 @@ select {
 	min-width:90px;
 }
 #header {
-	background: url("/htdocs/images/bg1.png") repeat-x scroll left bottom #FFFFFF;
+	background: url("/images/bg1.png") repeat-x scroll left bottom #FFFFFF;
 	overflow:auto;
 }
 #header>div {
@@ -210,12 +210,12 @@ table.prod_details td {
 	color: #FFFFFF;
 	font-size:110%;
 	font-weight:bold;
-	background: url("/htdocs/images/bg3.png") repeat-x scroll left bottom #FFFFFF;
+	background: url("/images/bg3.png") repeat-x scroll left bottom #FFFFFF;
 }
 .details label.place_order {
 	clear:both;
 	height:42px;
-	background: url("/htdocs/images/bg2.png") repeat-x scroll left top #FFFFFF;
+	background: url("/images/bg2.png") repeat-x scroll left top #FFFFFF;
 	border:1px solid #E4E4E4;
 	border-radius:4px;
 	text-align:center;
@@ -305,7 +305,7 @@ select>option[value=""] {
 	bottom:0px;
 }
 #waiting {
-	background: url("/htdocs/images/waiting.gif") no-repeat left top #FFFFFF;
+	background: url("/images/waiting.gif") no-repeat left top #FFFFFF;
 	width:22px;
 	height:11px;
 }

@@ -26,9 +26,9 @@ $(document).ready (function () {
 			var value = $(this).val();
 			req[varname] = value;
 		});
-		var status =  $('<img src="/htdocs/images/waiting.gif" />');
+		var status =  $('<img src="/images/waiting.gif" />');
 		$.ajax({
-			url : '/cart.php?&action=set',
+			url : '/cart/?&action=set',
 			type : 'post',
 			dataType : 'json',
 			data : req,

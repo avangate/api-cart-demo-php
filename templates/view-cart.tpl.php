@@ -31,7 +31,7 @@ $bReadonly = true;
 				<td colspan="5" id="totals" style="text-align:right; font-size:90%; padding:4px;">
 				<?php /* if (getCartItemsNumber() > 0) { ?>
 						<div style="float:left">
-						<a href="/cart.php?action=emptycart">Empty Cart</a>
+						<a href="/cart/?action=emptycart">Empty Cart</a>
 						</div>
 <?php } */ ?>
 					<!-- <div>Regular price: <?php echo 120 ?></div>
