@@ -1,6 +1,4 @@
 <?php
-include ('libs/boilerplate.php');
-
 $cartProducts = array();
 try {
 	foreach ($c->getItems() as $idProduct => $data) {

@@ -1,6 +1,5 @@
 <?php
 /* @var $c mCart */
-include ('libs/boilerplate.php');
 
 function outputJson ($stuff) {
 	for ($i = 0 ; $i <= ob_get_level(); $i++) {
@@ -13,7 +12,6 @@ function outputJson ($stuff) {
 	
 	exit();
 }
-
 
 $prodId = isset($_REQUEST['id']) ? (int)$_REQUEST['id'] : null;
 $action = isset($_GET['action']) ? $_GET['action'] : 'getprice';
@@ -65,7 +63,7 @@ try {
 			$newPrice = $c->addToCart ($prodId, $quantity, $priceOptions);
 			
 			header ('HTTP/1.1 301 Moved Permanentely');
-			header ('Location: /list-products.php');
+			header ('Location: /list-products/');
 			break;
 		case 'getprice': // get a new price based on the quantity/price options change
 			
@@ -77,7 +75,7 @@ try {
 			$c->removeFromCart ($prodId);
 			
 			header ('HTTP/1.1 301 Moved Permanentely');
-			header ('Location: /list-products.php');
+			header ('Location: /list-products/');
 			break;
 		case 'set': //set stuff
 			$country = $_POST['country'];
@@ -97,7 +95,7 @@ try {
 		case 'emptycart': // remove from cart
 			$c->emptyCart();
 			header ('HTTP/1.1 303 See Other');
-			header ('Location: /list-products.php');
+			header ('Location: /list-products/');
 			break;
 	}
 	
@@ -111,10 +109,3 @@ try {
 	_e ($e);
 	exit();
 }
-$iLevel = ob_get_level();
-for ($i = 0 ; $i <  $iLevel - 1; $i ++ ){
-	$errors[] = ob_get_clean();
-}
-ob_end_clean();
-
-$iExecTime = (microtime(true) - $iStart);

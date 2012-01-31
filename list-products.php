@@ -1,5 +1,4 @@
 <?php
-include ('libs/boilerplate.php');
 
 $searchOptions['status'] = true;
 try {
@@ -16,13 +15,4 @@ try {
 	_e ($e);
 	exit();
 }
-$iLevel = ob_get_level();
-for ($i = 0 ; $i <  $iLevel - 1; $i ++ ){
-	$errors[] = ob_get_clean();
-}
-ob_end_clean();
-
-$iExecTime = (microtime(true) - $iStart);
 $title = 'Product Listing';
-include ('templates/main.tpl.php');
-// d ($_SESSION);

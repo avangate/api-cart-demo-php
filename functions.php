@@ -202,9 +202,9 @@ function getErrorHeaderOutput ($e = null) {
 	$sRet .= '<address>&copy; habarnam</address>';
 	$sRet .= '<ul><li><a href="#" onclick="p = document.getElementById(\'trace\'); if (p.style.display==\'block\') p.style.display=\'none\';else p.style.display=\'block\'; return false">toggle trace</a></li><li><a href="javascript: p = document.getElementById(\'trace\'); document.location.href =\'mailto:marius@habarnam.ro?subject=Problems&body=\' + p.innerHTML; return false">mail me</a></li></ul>';
 
-	if ($e instanceof Exception)
+	if ($e instanceof Exception) {
 		$sRet .= '<p style="font-size:.8em">Triggered in <strong>' . $e->getFile() . '</strong> at line ' . $e->getLine() .'</p>';
-
+	}
 	$sRet .= '<pre style="position:fixed;bottom:2em;display:block;font-size:.8em" id="trace">';
 
 	return $sRet;

@@ -1,6 +1,4 @@
 <?php
-include ('libs/boilerplate.php');
-
 $cartProducts = array();
 $cartPrices = array();
 try {
@@ -87,13 +85,4 @@ try {
 	exit();
 }
 
-$iLevel = ob_get_level();
-for ($i = 0 ; $i <  $iLevel -1; $i ++ ){
-	$errors[] = ob_get_clean();
-}
-ob_end_clean();
-
-$iExecTime = (microtime(true) - $iStart);
-
 $title = 'Place Order';
-include ('templates/main.tpl.php');

@@ -1,5 +1,4 @@
 <?php
-include ('libs/boilerplate.php');
 
 $prodId = (int) $_GET['id'];
 
@@ -15,15 +14,6 @@ try {
 	_e ($e);
 	exit();
 }
-$iLevel = ob_get_level();
-for ($i = 0 ; $i <  $iLevel -1; $i ++ ){
-	$errors[] = ob_get_clean();
-}
-ob_end_clean();
-
-
-$iExecTime = (microtime(true) - $iStart);
 
 $title = 'Product Details: ' . strip_tags($prod->ProductName);
 
-include ('templates/main.tpl.php');
