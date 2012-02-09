@@ -6,7 +6,7 @@
 		<div class="prod_description">
 			<div style="float:left; width:520px">
 				<a href="product-details/?id=<?php echo $prod->ProductId?>"><img src="<?php echo !is_null($prod->ProductImage) ? $prod->ProductImage : '/images/defaultprod.png';?>" style="width:80px; float:left" /></a>
-				<h4><a href="product-details/?id=<?php echo$prod->ProductId?>"><?php echo $prod->ProductName ?></a> <?php if ($prod->ProductVersion) {?><span>(v <?php echo $prod->ProductVersion; ?>)</span><?php }?></h4>
+				<h4><a href="/product-details/?id=<?php echo$prod->ProductId?>"><?php echo $prod->ProductName ?></a> <?php if ($prod->ProductVersion) {?><span>(v <?php echo $prod->ProductVersion; ?>)</span><?php }?></h4>
 				<div class="description"><?php echo strlen ($prod->ShortDescription) ? $prod->ShortDescription : 'No description available'?></div>
 			</div>
 			<div style="float:right; width:140px; clear:right; font-size:80%">

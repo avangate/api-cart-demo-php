@@ -188,6 +188,7 @@ function hmac ($key, $data){
 
 
 function getErrorHeaderOutput ($e = null) {
+	ob_start();
 	header ('HTTP/1.1 500 Internal Server Error');
 	$sRet = '<?xml version="1.0" encoding="utf-8"?>';
 	$sRet .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"';
@@ -206,14 +207,14 @@ function getErrorHeaderOutput ($e = null) {
 		$sRet .= '<p style="font-size:.8em">Triggered in <strong>' . $e->getFile() . '</strong> at line ' . $e->getLine() .'</p>';
 	}
 	$sRet .= '<pre style="position:fixed;bottom:2em;display:block;font-size:.8em" id="trace">';
-
+	ob_end_clean();
 	return $sRet;
 }
 
 function _e ($e) {
 	$aErrors = array();
 	$iLevel = ob_get_level();
-	for ($i = 0; $i < $iLevel -1 ; $i++) {
+	for ($i = 0; $i < $iLevel - 1 ; $i++) {
 		$aErrors[] = ob_get_clean();
 	}
 	if (ob_get_level() == 1) {

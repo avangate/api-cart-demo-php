@@ -1,17 +1,28 @@
 <?php
 $cartProducts = array();
 $cartPrices = array();
+
+$title = 'Place Order';
 try {
 // 	$c->authenticate();
 	$order = new mOrder();
 	$order->RefNo = 0;
 	$order->Status = 'FAILED';
+
+	$step = isset($_GET['step']) ? $_GET['step'] : '1';
 	
 	if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+		if (isset($_SESSION['BILLING_DETAILS'])) {
+			$mBilling = $_SESSION['BILLING_DETAILS'];
+		} else {
+			$mBilling = new mBillingDetails();
+		}
+		
 		if (isset($_GET['refno'])) {
 			$refNo = $_GET['refno'];
 			if ($refNo > 0) {
 				$status = $c->getOrderStatus($refNo);
+				$c->emptyCart();
 			} else {
 				$status = 'FAILED';
 			}
@@ -24,17 +35,17 @@ try {
 		}
 	} elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		try {
-			$mPayment = new mPaymentDetails();
-			$mPayment->Currency = 'EUR';
-			$mPayment->CustomerIP = $_SERVER['REMOTE_ADDR'];
-			$mPayment->Type = 'CCVISAMC';
-			$mPayment->PaymentMethod = new mCardPayment();
-			$mPayment->PaymentMethod->CCID = $_POST['ccid'];
-			$mPayment->PaymentMethod->CardNumber = $_POST['card_number'];
-			$mPayment->PaymentMethod->CardType = 'VISA';
-			$mPayment->PaymentMethod->ExpirationMonth = $_POST['date_month'];
-			$mPayment->PaymentMethod->ExpirationYear = $_POST['date_year'];
-			$mPayment->PaymentMethod->HolderName = $_POST['holder_name'];
+// 			$mPayment = new mPaymentDetails();
+// 			$mPayment->Currency = 'EUR';
+// 			$mPayment->CustomerIP = $_SERVER['REMOTE_ADDR'];
+// 			$mPayment->Type = 'CCVISAMC';
+// 			$mPayment->PaymentMethod = new mCardPayment();
+// 			$mPayment->PaymentMethod->CCID = $_POST['ccid'];
+// 			$mPayment->PaymentMethod->CardNumber = $_POST['card_number'];
+// 			$mPayment->PaymentMethod->CardType = 'VISA';
+// 			$mPayment->PaymentMethod->ExpirationMonth = $_POST['date_month'];
+// 			$mPayment->PaymentMethod->ExpirationYear = $_POST['date_year'];
+// 			$mPayment->PaymentMethod->HolderName = $_POST['holder_name'];
 
 			$mBilling = new mBillingDetails();
 			$mBilling->Address = $_POST['address'];
@@ -49,17 +60,18 @@ try {
 			$mBilling->State = $_POST['state'];
 			try {
 				
-				$c->setPaymentDetails($mPayment);
+// 				$c->setPaymentDetails($mPayment);
 				$c->setBillingDetails($mBilling);
+				$_SESSION['BILLING_DETAILS'] = $mBilling;
 			} catch (SoapFault $e) {
 				$errors[] = $e->getMessage();
 			}
 
 			if (count($errors) <= 0) {
-				$order = $c->placeOrder();
-				if ($order->RefNo > 0) {
-					$c->emptyCart();
-				}
+// 				$order = $c->placeOrder();
+// 				if ($order->RefNo > 0) {
+// 					$c->emptyCart();
+// 				}
 			} else {
 				d ($errors);
 			}
@@ -68,10 +80,11 @@ try {
 		}
 		
 		header ('HTTP/1.1 303 See Other');
-		if ($order instanceof mOrder) {
-			header ('Location: /order.php?refno=' . $order->RefNo . (isset($e) ? '&msg=' . urlencode($e->getMessage()) : ''));
+		if ($order instanceof mOrder && $order->RefNo > 0) {
+			header ('Location: /order/?refno=' . $order->RefNo . (isset($e) ? '&msg=' . urlencode($e->getMessage()) : ''));
 		} else {
-			header ('Location: /order.php?' . (isset($e) ? 'msg=' . urlencode($e->getMessage()) : 'msg=Unknown+Error'));
+// 			header ('Location: /order/?' . (isset($e) ? 'msg=' . urlencode($e->getMessage()) : 'msg=Unknown+Error'));
+			header ('Location: /order/?step=2');
 		}
 	}
 } catch (SoapFault $e) {
@@ -85,4 +98,3 @@ try {
 	exit();
 }
 
-$title = 'Place Order';

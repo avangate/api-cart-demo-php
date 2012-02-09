@@ -114,6 +114,7 @@ class mCart extends stdClass {
 		$this->Client->clearProducts();
 		$this->Items = array();
 		$this->TotalPrice = 0;
+		session_destroy();
 	}
 	
 	public function getTotalPrice () {

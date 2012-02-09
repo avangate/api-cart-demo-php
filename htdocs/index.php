@@ -16,7 +16,6 @@ $iStart = microtime(true);
 import ('lib');
 import ('assets');
 
-ob_start(); // 0 
 echo getErrorHeaderOutput (); // in the case of a fatal error we have this as fallback
 ob_start(); // 1
 
@@ -28,6 +27,7 @@ try {
 		session_destroy();
 		session_start();
 	}
+	_e ($e);
 }
 
 $SearchOptions = array();
@@ -76,7 +76,7 @@ try {
 	exit();
 }
 $iLevel = ob_get_level();
-for ($i = 0 ; $i < $iLevel - 2; $i ++ ){
+for ($i = 0 ; $i < $iLevel - 1; $i ++ ){
 	$errors[] = ob_get_clean();
 }
 $iLevel = ob_get_level();
