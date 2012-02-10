@@ -40,10 +40,12 @@ try {
 </div>
 <?php 
 } catch (Exception $e) {
+	header ('HTTP/1.1 404 Not Found');
 	// 404
 	_e ($e);
 ?>
-	<h2>Page not found</h2>
+	<h2 style="color:#900;margin:1.2em;">Page not found</h2>
+	<div style="margin:1.2em;text-align:left">Please see if you misspelled the URL.</div>
 <?php 
 }
 ?>
