@@ -24,7 +24,6 @@
 		var inputCss = {
 			fontWeight: 'bold',
 			outline: 0,
-			display: 'inline',
 			backgroundColor: '#FFFFFF',
 			color: '#383838',
 			width: '100%',
@@ -32,7 +31,8 @@
 			float:'right',
 			marginTop: -22,
 			paddingLeft: 4,
-			paddingTop: 3,
+			paddingTop: 5,
+			paddingBottom: 3,
 			opacity: inactive,
 			border: 'none',
 			position: 'relative',
@@ -43,10 +43,10 @@
 			for (var attrname in options['css']) { inputCss[attrname] = options['css'][attrname]; }
 		}
 		var labelCss = {
-			display: 'block',
 			clear: 'both',
 			paddingLeft: 4,
-			paddingTop: 6,
+			paddingTop: 8,
+			paddingBottom: 2,
 			backgroundColor: inputCss['backgroundColor'],
 			borderColor: '#CCCCCC',
 			borderWidth: 1,
@@ -54,7 +54,6 @@
 			position: 'relative',
 			width: '98%',
 			float:'left',
-			height: inputCss['height']-2,
 			marginTop:10,
 			color: inputCss['color'],
 			zIndex: 100
@@ -66,6 +65,8 @@
 			var that = $(this);
 			var label = that.parent();
 			
+			labelCss['height'] = inputCss['height']-2;
+			
 			if (label.is('label')) {
 				that.css (inputCss).keydown(function (e) {
 					if (that.css('opacity') != visible) { 
@@ -75,7 +76,7 @@
 					if (that.val() == '') {
 						that.css ('opacity', active);
 					}
-				}).change(function (e) {
+				}).dblclick (function (e) {
 					if (that.css('opacity') != visible) { 
 						that.css ('opacity', visible);
 					}

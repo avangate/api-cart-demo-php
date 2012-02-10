@@ -49,7 +49,11 @@ if (!function_exists('d') ) {
 			// maybe I should just output the whole array $aRgs
 			try {
 				var_dump($object);
-				if (isCli()) echo "\n\n";
+				if (isCli()) {
+					echo "\n________\n";
+				} else {
+					echo '<hr/>';
+				}
 			} catch (Exception $e) {
 				//
 			}
@@ -167,7 +171,7 @@ function import ($sIncPath) {
 	}
 }
 
-/** 
+/**
  * RFC 2104 HMAC implementation for php.
  * Creates an md5 HMAC.
  * Eliminates the need to install mhash to compute a HMAC
@@ -188,7 +192,6 @@ function hmac ($key, $data){
 
 
 function getErrorHeaderOutput ($e = null) {
-	ob_start();
 	header ('HTTP/1.1 500 Internal Server Error');
 	$sRet = '<?xml version="1.0" encoding="utf-8"?>';
 	$sRet .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"';
@@ -207,7 +210,6 @@ function getErrorHeaderOutput ($e = null) {
 		$sRet .= '<p style="font-size:.8em">Triggered in <strong>' . $e->getFile() . '</strong> at line ' . $e->getLine() .'</p>';
 	}
 	$sRet .= '<pre style="position:fixed;bottom:2em;display:block;font-size:.8em" id="trace">';
-	ob_end_clean();
 	return $sRet;
 }
 

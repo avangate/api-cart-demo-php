@@ -7,13 +7,14 @@
 */
 html, body {
 	padding:0;
+	font-size:11pt;
 }
 body {
 	color:#292929;
 	margin:0;
 	position:relative;
 }
-a:hover, a:active {
+a:hover, a:active, button:active, input[type=button]:active, input[type=input]:active {
 	outline: 0;
 	text-decoration: underline;
 }
@@ -43,13 +44,14 @@ select {
 }
 #header #cart_small a {
 	margin-right:10px;
+	margin-top:5px;
 }
 #header #cart_small {
 	/*/margin-top:5px;/**/
 	float:right;
 	font-size:70%;
-	max-width:300px;
-	min-height:40px;
+	width:300px;
+	height:40px;
 }
 #main-content {
 	width:680px;
@@ -204,13 +206,14 @@ table.prod_details td {
 	height:34px;
 	margin-top: 2px;
 	padding:0 14px;
-	padding-top:4px;
+	padding-top:7px;
 	border:1px outset #9FD169;
 	border-radius:4px;
 	color: #FFFFFF;
 	font-size:110%;
 	font-weight:bold;
 	background: url("/images/bg3.png") repeat-x scroll left bottom #FFFFFF;
+	min-width:160px
 }
 .details label.place_order {
 	clear:both;
@@ -240,16 +243,22 @@ table.prod_details td {
 	float:left;
 	overflow:auto;
 }
-.details input { }
+.details select {
+	height: 2.4em;
+	margin-top: -10px;
+	padding: 6px 2px;	
+}
 .details label {
 	display:block;
 	height : 1em;
 	padding-top:4px;
+	/*/height:23px;/**/
 }
-.details input,.details select {
-	margin-top: -4px;
+.details input {
+	margin-top: -5px;
 	float:right;
 	clear: right;
+	/**/height:18px;/**/
 }
 #locale_select {
 	float:right;

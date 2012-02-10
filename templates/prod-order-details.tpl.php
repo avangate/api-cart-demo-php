@@ -23,7 +23,7 @@ $quantity = (int)$c->getItemQuantity($prod->ProductId);
 		<td style="text-align:right">
 			<span id="price_display"><?php echo number_format($prod->Price * $quantity,2) ?></span> <span class="currency_display"><?php echo strtoupper($prod->Currency ? $prod->Currency : $prod->DefaultCurrency ) ?></span>
 		</td>
-		<td style="text-align:center;border-right:0px; padding:0"><a href="/cart/?action=del&amp;id=<?php echo $prod->ProductId;?>"><img class="action" src="htdocs/images/delete.png" style="margin:0"/></a></td>
+		<td style="text-align:center;border-right:0px; padding:0"><a href="/cart/?action=del&amp;id=<?php echo $prod->ProductId;?>"><img class="action" src="/images/delete.png" style="margin:0"/></a></td>
 	</tr>
 	<!-- <tr class="prod_description ">
 		<td colspan="6">

@@ -1,7 +1,7 @@
 <?php
 set_include_path(
-	get_include_path() . PATH_SEPARATOR . 
-	realpath ('../') 
+	get_include_path() . PATH_SEPARATOR .
+	realpath ('../')
 );
 
 include ('functions.php');
@@ -16,6 +16,7 @@ $iStart = microtime(true);
 import ('lib');
 import ('assets');
 
+ob_start();
 echo getErrorHeaderOutput (); // in the case of a fatal error we have this as fallback
 ob_start(); // 1
 
@@ -49,7 +50,7 @@ try {
 $includePath = $_SERVER['SCRIPT_URL'];
 if (substr($includePath, -1) == '/') {
 	$includePath = substr($includePath, 0, -1);
-} 
+}
 if (substr($includePath, 0, 1) == '/') {
 	$includePath = substr($includePath, 1);
 }
@@ -76,12 +77,12 @@ try {
 	exit();
 }
 $iLevel = ob_get_level();
-for ($i = 0 ; $i < $iLevel - 1; $i ++ ){
+for ($i = 0 ; $i < $iLevel - 2; $i ++ ){
 	$errors[] = ob_get_clean();
 }
 $iLevel = ob_get_level();
-if ($iLevel > 0) { 
-	ob_end_clean(); // 0 
+for ($i = 0 ; $i < $iLevel; $i ++ ){
+	ob_end_clean(); // 0
 }
 
 $iExecTime = (microtime(true) - $iStart);

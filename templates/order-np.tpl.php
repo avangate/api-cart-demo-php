@@ -1,4 +1,4 @@
-<?php 
+<?php
 $countryCode = $mBilling->Country ? $mBilling->Country : $c->getCountry();
 $allCountries = $c->getAvailableCountries();
 
@@ -9,17 +9,8 @@ if (isset($refNo) && !is_null($refNo)) {
 		<?php echo is_null($msg) ? '<div>' . $msg . '</div>' : '' ; ?>
 <?php
 } else {
-
-	$selfUrl = urlencode('http://' . $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, strpos ($_SERVER['REQUEST_URI'], '?')));
 ?>
-<?php if ($step == '2') {?> 
-	<form method="post" class="frm" action="http://git.avangate.marius/api/order/setpaymentdetails.php?finish=true&amp;redir=<?php echo $selfUrl?>">
-	<input type="hidden" value="<?php echo $c->getSessionId(); ?>" name="hash" />
-	<input type="hidden" value="<?php echo $c->getCurrency(); ?>" name="currency" />
-	<input type="hidden" value="<?php echo $c->getCountry(); ?>" name="country" />
-<?php } else {?>
 	<form method="post" class="frm">
-<?php }?>
 	<div class="products">
 	<h3>Products:</h3>
 		<table class="prod_details" cellpadding="0" cellspacing="0">
@@ -51,7 +42,7 @@ $bReadonly = true;
 			<tfoot>
 				<tr>
 				<td colspan="5" id="totals" style="text-align:right; font-size:90%; padding:4px;">
-				<?php if (count($c->getItems()) > 0) { ?>
+				<?php  if (count($c->getItems()) > 0) { ?>
 						<div style="float:left">
 						<a href="/cart/?action=emptycart">Empty Cart</a>
 						</div>
@@ -80,28 +71,25 @@ $bReadonly = true;
 	<fieldset id="billing_details">
 		<legend>Billing details:</legend>
 		
-		<label>First Name <input type="text" name="first_name" <?php echo ($step == '2') ? 'disabled="disabled" ' : '';?>value="<?php echo $mBilling->FirstName; ?>"/> </label><br/>
-		<label>Last Name <input type="text" name="last_name" <?php echo ($step == '2') ? 'disabled="disabled" ' : '';?>value="<?php echo $mBilling->LastName; ?>"/> </label><br/>
+		<label>First Name <input type="text" name="first_name" value="<?php echo $mBilling->FirstName; ?>"/> </label><br/>
+		<label>Last Name <input type="text" name="last_name" value="<?php echo $mBilling->LastName; ?>"/> </label><br/>
 		<!-- <label>Company <input type="text" name="company" value=""/> </label><br/> -->
-		<label>Email <input type="email" name="email" <?php echo ($step == '2') ? 'disabled="disabled" ' : '';?>value="<?php echo $mBilling->Email; ?>"/> </label><br/>
-		<label>Address <input type="text" name="address" <?php echo ($step == '2') ? 'disabled="disabled" ' : '';?>value="<?php echo $mBilling->Address; ?>"/> </label><br/>
-		<label>City <input type="text" name="city" <?php echo ($step == '2') ? 'disabled="disabled" ' : '';?>value="<?php echo $mBilling->City; ?>" /> </label><br/>
-		<label>Zip <input type="text" name="postal_code" <?php echo ($step == '2') ? 'disabled="disabled" ' : '';?>value="<?php echo $mBilling->PostalCode; ?>" /> </label><br/>
-		<label>State <input type="text" name="state" <?php echo ($step == '2') ? 'disabled="disabled" ' : '';?>value="<?php echo $mBilling->State; ?>" /> </label><br/>
+		<label>Email <input type="email" name="email" value="<?php echo $mBilling->Email; ?>"/> </label><br/>
+		<label>Address <input type="text" name="address" value="<?php echo $mBilling->Address; ?>"/> </label><br/>
+		<label>City <input type="text" name="city" value="<?php echo $mBilling->City; ?>" /> </label><br/>
+		<label>Zip <input type="text" name="postal_code" value="<?php echo $mBilling->PostalCode; ?>" /> </label><br/>
+		<label>State <input type="text" name="state" value="<?php echo $mBilling->State; ?>" /> </label><br/>
 		<label style="padding-top:18px; margin-bottom:19px; clear:both;color:#989898">Country 
 			<select name="country_code">
 <?php foreach ($allCountries as $countryCode => $CountryName) {?>
-				<option <?php echo strtolower($country) == strtolower($countryCode) ? 'selected="selected"' : ''; ?> <?php echo ($step == '2') ? 'disabled="disabled" ' : '';?>value="<?php echo strtolower($countryCode);?>"><?php echo $CountryName;?></option>
+				<option <?php echo strtolower($country) == strtolower($countryCode) ? 'selected="selected"' : ''; ?> value="<?php echo strtolower($countryCode);?>"><?php echo $CountryName;?></option>
 <?php } ?>
 			</select>
 		
 			<!-- <input type="text" name="country_code" maxlength="2" size="2" value="<?php echo ($countryCode); ?>" /> -->
 		</label><br/> 
-<?php if ($step == '1') {?>
-		<label class="place_order" style="display:block;"> <button>Next <img src="/images/order-btn.png"/></button> </label>
-<?php } ?>
 	</fieldset>
-	</div> 
+	</div>
 	<div class="details">
 	<fieldset id="payment_details">
 		<legend>Payment details: </legend>
@@ -109,29 +97,29 @@ $bReadonly = true;
 		<div class="card_pick">
 			<label> 
 				<img src="/images/visa.png" /><br/>
-				<input <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?>type="radio" name="card_type" value="VISA" selected="selected"/>
+				<input type="radio" name="card_type" value="VISA" selected="selected" />
 			</label>
 			<label> 
 				<img src="/images/mastercard.png" /><br/>
-				<input <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?>type="radio" name="card_type" value="MC"/>
+				<input type="radio" name="card_type" value="MC"/>
 			</label>
 			<label>
 				<img src="/images/discovery.png" /><br/>
-				<input <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?>type="radio" name="card_type" value="DISCOVERY"/>
+				<input type="radio" name="card_type" value="DISCOVERY"/>
 			</label>
 			<label> 
 				<img src="/images/jcb.png" /><br/>
-				<input <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?>type="radio" name="card_type" value="JCB"/>
+				<input type="radio" name="card_type" value="JCB"/>
 			</label>
 		</div>
 		
-		<label>Card Number <input type="text" name="card_number" value="<?php if ($step == '2') {?>4111111111111111<?php } ?>" <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?>/> </label><br/>
+		<label>Card Number <input type="text" name="card_number" value="4111111111111111" /> </label><br/>
 		
-		<label>CVV2 <input type="text" name="ccid" value="<?php if ($step == '2') {?>1234<?php } ?>" <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?>/> </label><br/>
+		<label>CVV2 <input type="text" name="ccid" value="1234" /> </label><br/>
 		
-		<label style="padding-top:20px; clear:both">Expiration Date 
-			<span style="float:right" >
-				<select style="display:inline; float:none;" name="date_year" <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?>>
+		<label style="padding-top:18px; clear:both; color:#989898">Expiration Date 
+			<span style="float:right;" >
+				<select style="display:inline; float:none;" name="date_year">
 					<option>2010</option>
 					<option>2011</option>
 					<option selected="selected">2012</option>
@@ -139,7 +127,7 @@ $bReadonly = true;
 					<option>2014</option>
 					<option>2015</option>
 				</select> &ndash;
-				<select style="display:inline; float:none;" name="date_month" <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?>>
+				<select style="display:inline; float:none;" name="date_month">
 					<option value="01">01 - Jan</option>
 					<option value="02">02 - Feb</option>
 					<option value="03">03 - Mar</option>
@@ -155,11 +143,9 @@ $bReadonly = true;
 				</select> 
 			</span>
 		</label><br/>
-		<label>Holder Name <input type="text" name="holder_name" <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?> value=""/> </label><br/>
+		<label>Holder Name <input type="text" name="holder_name" value=""/> </label><br/>
 		<div style="height:1px; line-height:1px; clear:both">&nbsp;</div>
-<?php if ($step == '2') {?>
 		<label class="place_order" style="display:block;"> <button>Place order <img src="/images/order-btn.png"/></button> </label>
-<?php } ?>
 	</fieldset>
 	</div>
 	</div>
