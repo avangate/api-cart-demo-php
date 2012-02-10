@@ -222,7 +222,7 @@ function _e ($e) {
 	if (ob_get_level() == 1) {
 		ob_end_clean();
 	}
-	header ('HTTP/1.1 500 Internal Server Error');
+// 	header ('HTTP/1.1 500 Internal Server Error');
 	echo getErrorHeaderOutput ($e);
 	if (isDebug()) {
 		echo $e ? $e->getTraceAsString() : '';

@@ -3,7 +3,7 @@ set_include_path(
 	get_include_path() . PATH_SEPARATOR .
 	realpath ('../')
 );
-
+ini_set ('display_errors', 1);
 include ('functions.php');
 include ('config.inc.php');
 
@@ -15,7 +15,6 @@ $iStart = microtime(true);
 
 import ('lib');
 import ('assets');
-
 ob_start();
 echo getErrorHeaderOutput (); // in the case of a fatal error we have this as fallback
 ob_start(); // 1
@@ -78,7 +77,8 @@ try {
 }
 $iLevel = ob_get_level();
 for ($i = 0 ; $i < $iLevel - 2; $i ++ ){
-	$errors[] = ob_get_clean();
+	$err = ob_get_clean();
+	if (!empty($err)) $errors[] = $err;
 }
 $iLevel = ob_get_level();
 for ($i = 0 ; $i < $iLevel; $i ++ ){

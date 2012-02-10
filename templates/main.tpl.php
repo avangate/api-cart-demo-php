@@ -1,4 +1,7 @@
-<?php ob_start(); ?>
+<?php 
+ob_start(); 
+header ('HTTP/1.1 200 OK');
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -52,3 +55,4 @@ try {
 </div>
 </body>
 </html>
+<?php ob_end_flush();
