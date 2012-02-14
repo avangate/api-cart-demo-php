@@ -15,7 +15,8 @@ $iStart = microtime(true);
 
 import ('lib');
 import ('assets');
-ob_start();
+
+//ob_start();
 echo getErrorHeaderOutput (); // in the case of a fatal error we have this as fallback
 ob_start(); // 1
 
@@ -53,6 +54,7 @@ if (substr($includePath, -1) == '/') {
 if (substr($includePath, 0, 1) == '/') {
 	$includePath = substr($includePath, 1);
 }
+$title = 'Not Found';
 
 if (empty($includePath)) $includePath = 'list-products';
 
@@ -87,5 +89,4 @@ for ($i = 0 ; $i < $iLevel; $i ++ ){
 
 $iExecTime = (microtime(true) - $iStart);
 include ('templates/main.tpl.php');
-// d ($_SESSION);
 

@@ -209,6 +209,9 @@ function getErrorHeaderOutput ($e = null) {
 	if ($e instanceof Exception) {
 		$sRet .= '<p style="font-size:.8em">Triggered in <strong>' . $e->getFile() . '</strong> at line ' . $e->getLine() .'</p>';
 	}
+	
+	//$myVars = array_diff(get_defined_vars(), array(array()));
+	//$sRet .= var_export ($myVars, true);
 	$sRet .= '<pre style="position:fixed;bottom:2em;display:block;font-size:.8em" id="trace">';
 	return $sRet;
 }
@@ -216,20 +219,25 @@ function getErrorHeaderOutput ($e = null) {
 function _e ($e) {
 	$aErrors = array();
 	$iLevel = ob_get_level();
-	for ($i = 0; $i < $iLevel - 1 ; $i++) {
-		$aErrors[] = ob_get_clean();
+	for ($i = 0 ; $i < $iLevel - 2; $i++ ){
+		$err = ob_get_clean();
+		if (!empty($err)) $aErrors[] = $err;
 	}
-	if (ob_get_level() == 1) {
-		ob_end_clean();
+	$iLevel = ob_get_level();
+	for ($i = 0 ; $i < $iLevel; $i++ ){
+		ob_end_clean(); // 0
 	}
-// 	header ('HTTP/1.1 500 Internal Server Error');
+	ob_start();
+	header ('HTTP/1.1 500 Internal Server Error');
+	
 	echo getErrorHeaderOutput ($e);
 	if (isDebug()) {
 		echo $e ? $e->getTraceAsString() : '';
 	}
-	if ($aErrors) echo '<p>' . implode ('<br/>',$aErrors) . '</p>';
+	if ($aErrors) echo '<p>' . implode ('<br/>', $aErrors) . '</p>';
 	echo '</pre>';
 	echo '</body>';
 	echo '</html>';
+	ob_end_flush();
 	exit (0);
 }

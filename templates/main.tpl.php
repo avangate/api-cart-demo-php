@@ -1,6 +1,8 @@
 <?php 
 ob_start(); 
 header ('HTTP/1.1 200 OK');
+
+try { 
 ?>
 <!DOCTYPE html>
 <html>
@@ -21,9 +23,6 @@ header ('HTTP/1.1 200 OK');
 </script>
 </head>
 <body>
-<?php
-try { 
-?>
 <div id="header">
 	<div>
 		<?php if (count($errors) >= 1) { ?><div class="error"><?php echo implode ('<br/>', $errors); ?></div><?php } ?>
@@ -35,16 +34,19 @@ try {
 <br/>
 <div id="main-content">
 <?php
-	include (realpath('../templates/' . str_replace('.php', '.tpl.php', $includePath)));
+	$templatePath = realpath('../templates/' . str_replace('.php', '.tpl.php', $includePath));
+	if (!$templatePath) {
+		throw new Exception ('oops');
+	}
+	include ($templatePath);
 ?>
 </div>
 <?php 
 } catch (Exception $e) {
 	header ('HTTP/1.1 404 Not Found');
 	// 404
-	_e ($e);
 ?>
-	<h2 style="color:#900;margin:1.2em;">Page not found</h2>
+	<h2 style="color:#900;margin:1.2em;text-align:right;">Page not found</h2>
 	<div style="margin:1.2em;text-align:left">Please see if you misspelled the URL.</div>
 <?php 
 }

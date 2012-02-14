@@ -97,7 +97,7 @@ $bReadonly = true;
 		<div class="card_pick">
 			<label> 
 				<img src="/images/visa.png" /><br/>
-				<input type="radio" name="card_type" value="VISA" selected="selected" />
+				<input type="radio" name="card_type" value="VISA" checked="checked" />
 			</label>
 			<label> 
 				<img src="/images/mastercard.png" /><br/>
@@ -145,7 +145,7 @@ $bReadonly = true;
 		</label><br/>
 		<label>Holder Name <input type="text" name="holder_name" value=""/> </label><br/>
 		<div style="height:1px; line-height:1px; clear:both">&nbsp;</div>
-		<label class="place_order" style="display:block;"> <button>Place order <img src="/images/order-btn.png"/></button> </label>
+		<label class="place_order" style="display:block;"> <button>Place order <img src="/images/order-btn.png"/></button> </label><br/>
 	</fieldset>
 	</div>
 	</div>

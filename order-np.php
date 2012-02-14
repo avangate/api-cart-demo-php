@@ -14,8 +14,8 @@ try {
 			$mBilling = new mBillingDetails();
 		}
 		
-		if (isset($_GET['refno'])) {
-			$refNo = $_GET['refno'];
+		if (isset($_GET['refNo'])) {
+			$refNo = $_GET['refNo'];
 			if ($refNo > 0) {
 				$status = $c->getOrderStatus($refNo);
 			} else {

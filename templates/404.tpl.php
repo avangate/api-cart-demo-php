@@ -14,9 +14,8 @@
 	</div>
 </div>
 <br/>
-<div id="main-content" style="text-align:right">
-	<h2 style="color:#900;margin:1.2em;">Page not found</h2>
-	<div style="margin:1.2em;text-align:left">Please see if you misspelled the URL.</div>
-</div>	
+<div id="main-content">
+	<h2 style="color:#900;margin:1.2em;text-align:right;">Page not found</h2>
+	<div style="margin:1.2em;text-align:left">Please see if you misspelled the URL.</div></div>	
 </body>
 </html>

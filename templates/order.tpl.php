@@ -2,23 +2,23 @@
 $countryCode = $mBilling->Country ? $mBilling->Country : $c->getCountry();
 $allCountries = $c->getAvailableCountries();
 
-if (isset($refNo) && !is_null($refNo)) {
+if (isset($status)) {
 ?>
-		<div> Order status : <?php echo $status ?> </div>
-		<div> Order Reference number : #<?php echo $refNo ?> </div>
-		<?php echo is_null($msg) ? '<div>' . $msg . '</div>' : '' ; ?>
+		<div> Order status : <strong><?php echo $status ?></strong> </div>
+		<?php if ($refNo > 0) { ?><div> Order Reference number : <strong>#<?php echo $refNo ?></strong> </div> <?php }?>
+		<?php echo !is_null($msg) ? '<div>Payment gateway message: <strong>' . $msg . '</strong></div>' : '' ; ?>
 <?php
 } else {
 
 	$selfUrl = urlencode('http://' . $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, strpos ($_SERVER['REQUEST_URI'], '?')));
-?>
-<?php if ($step == '2') {?> 
+
+	if ($step == '2') { ?> 
 	<form method="post" class="frm" action="http://git.avangate.marius/api/order/setpaymentdetails.php?finish=true&amp;redir=<?php echo $selfUrl?>">
 	<input type="hidden" value="<?php echo $c->getSessionId(); ?>" name="hash" />
 	<input type="hidden" value="<?php echo $c->getCurrency(); ?>" name="currency" />
 	<input type="hidden" value="<?php echo $c->getCountry(); ?>" name="country" />
 <?php } else {?>
-	<form method="post" class="frm">
+	<form method="post" class="frm" action="?step=2">
 <?php }?>
 	<div class="products">
 	<h3>Products:</h3>
@@ -109,7 +109,7 @@ $bReadonly = true;
 		<div class="card_pick">
 			<label> 
 				<img src="/images/visa.png" /><br/>
-				<input <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?>type="radio" name="card_type" value="VISA" selected="selected"/>
+				<input <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?>type="radio" name="card_type" value="VISA" checked="checked"/>
 			</label>
 			<label> 
 				<img src="/images/mastercard.png" /><br/>
@@ -159,7 +159,8 @@ $bReadonly = true;
 		<div style="height:1px; line-height:1px; clear:both">&nbsp;</div>
 <?php if ($step == '2') {?>
 		<label class="place_order" style="display:block;"> <button>Place order <img src="/images/order-btn.png"/></button> </label>
-<?php } ?>
+<?php } ?><br/>
+		<address style="font-size:0.8em;color:#999;font-weight:lighter;">Please note that the payment information is dispatched through <a href="http://avangate.com">Avangate BV.</a> &ndash; which is a PCI compliant payment processor.</address>
 	</fieldset>
 	</div>
 	</div>

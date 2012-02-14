@@ -4,7 +4,6 @@ $cartPrices = array();
 
 $title = 'Place Order';
 try {
-// 	$c->authenticate();
 	$order = new mOrder();
 	$order->RefNo = 0;
 	$order->Status = 'FAILED';
@@ -24,9 +23,13 @@ try {
 				$status = $c->getOrderStatus($refNo);
 				$c->emptyCart();
 			} else {
-				$status = 'FAILED';
+				$status = 'NOK';
 			}
-			$msg = isset($_GET['msg']) ? urldecode($_GET['msg']) : null;
+			$msg = isset($_GET['message']) ? urldecode($_GET['message']) : null;
+		}
+		if (isset ($_GET['status'])) {
+			$status = $_GET['status'];
+			$msg = isset($_GET['message']) ? urldecode($_GET['message']) : null;
 		}
 		
 		foreach ($c->getItems() as $idProduct => $data) {
