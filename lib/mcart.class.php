@@ -92,7 +92,13 @@ class mCart extends stdClass {
 		);
 	}
 	public function __wakeup() {
-		$this->connect();
+		try {
+			$this->connect();
+		} catch (SoapFault $e) {
+			if (stristr($e->getMessage(), 'Invalid hash provided')) {
+				$this->SessionID = null;
+			}
+		}
 	}
 	
 	public function modifyQuantity($prodId, $quantity) {
@@ -406,5 +412,9 @@ class mCart extends stdClass {
 	 */
 	public function getAvailableCountries () {
 		return $this->Client->getAvailableCountries ();
+	}
+	
+	public function getContents() {
+		return $this->Client->getContents ();
 	}
 }

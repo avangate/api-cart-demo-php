@@ -20,16 +20,8 @@ import ('assets');
 echo getErrorHeaderOutput (); // in the case of a fatal error we have this as fallback
 ob_start(); // 1
 
-try {
-	include ('mcart.class.php');
-	session_start();
-} catch (SoapFault $e) {
-	if ($e->getMessage() == 'Invalid hash provided') {
-		session_destroy();
-		session_start();
-	}
-	_e ($e);
-}
+include ('mcart.class.php');
+session_start();
 
 $SearchOptions = array();
 if (isset($_GET['page'])) {

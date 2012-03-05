@@ -15,9 +15,19 @@ class mSOAPClient extends SoapClient {
 		self::$calls = 0;
 		$mOptions = array_merge(
 			array (
-				'location' => substr ($wsdlUrl, 0, -5),
+				'location' => API_URL,
 				'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP,
 				'cache_wsdl' => WSDL_CACHE_NONE,
+				/*'proxy_host' => 'http://proxy.avangate.local',
+				'proxy_port' => 8080,
+				'proxy_login' => 'marius.orcsik',
+				'proxy_password' => 'Gecadedecacat4',
+				
+				'proxy_host' => 'localhost',
+				'proxy_port' => 3128,
+				'proxy_login' => NULL,
+				'proxy_password' => NULL,
+				/**/
 				'classmap' => array (
 					'CSOAP_Order' => 'mOrder',
 					'CSOAP_Price' => 'mPrice',
@@ -304,5 +314,10 @@ class mSOAPClient extends SoapClient {
 	public function getAvailableCountries () {
 		self::$calls += 1;
 		return parent::getAvailableCountries ($this->sessionID);
+	}
+	
+	public function getContents () {
+		self::$calls += 1;
+		return parent::getContents ($this->sessionID);
 	}
 }

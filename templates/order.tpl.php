@@ -1,7 +1,7 @@
 <?php 
+try {
 $countryCode = $mBilling->Country ? $mBilling->Country : $c->getCountry();
 $allCountries = $c->getAvailableCountries();
-
 if (isset($status)) {
 ?>
 		<div> Order status : <strong><?php echo $status ?></strong> </div>
@@ -13,7 +13,7 @@ if (isset($status)) {
 	$selfUrl = urlencode('http://' . $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, strpos ($_SERVER['REQUEST_URI'], '?')));
 
 	if ($step == '2') { ?> 
-	<form method="post" class="frm" action="http://git.avangate.marius/api/order/setpaymentdetails.php?finish=true&amp;redir=<?php echo $selfUrl?>">
+	<form method="post" class="frm" action="<?php echo API_PAYMENT_URL ?>?finish=true&amp;redir=<?php echo $selfUrl?>">
 	<input type="hidden" value="<?php echo $c->getSessionId(); ?>" name="hash" />
 	<input type="hidden" value="<?php echo $c->getCurrency(); ?>" name="currency" />
 	<input type="hidden" value="<?php echo $c->getCountry(); ?>" name="country" />
@@ -88,7 +88,7 @@ $bReadonly = true;
 		<label>City <input type="text" name="city" <?php echo ($step == '2') ? 'disabled="disabled" ' : '';?>value="<?php echo $mBilling->City; ?>" /> </label><br/>
 		<label>Zip <input type="text" name="postal_code" <?php echo ($step == '2') ? 'disabled="disabled" ' : '';?>value="<?php echo $mBilling->PostalCode; ?>" /> </label><br/>
 		<label>State <input type="text" name="state" <?php echo ($step == '2') ? 'disabled="disabled" ' : '';?>value="<?php echo $mBilling->State; ?>" /> </label><br/>
-		<label style="padding-top:18px; margin-bottom:19px; clear:both;color:#989898">Country 
+		<label style="padding-top:18px; margin-bottom:19px; clear:both;color:#888">Country 
 			<select name="country_code">
 <?php foreach ($allCountries as $countryCode => $CountryName) {?>
 				<option <?php echo strtolower($country) == strtolower($countryCode) ? 'selected="selected"' : ''; ?> <?php echo ($step == '2') ? 'disabled="disabled" ' : '';?>value="<?php echo strtolower($countryCode);?>"><?php echo $CountryName;?></option>
@@ -106,61 +106,33 @@ $bReadonly = true;
 	<fieldset id="payment_details">
 		<legend>Payment details: </legend>
 		<div class="label" style="margin:4px 0">Choose your payment option:</div>
-		<div class="card_pick">
-			<label> 
-				<img src="/images/visa.png" /><br/>
-				<input <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?>type="radio" name="card_type" value="VISA" checked="checked"/>
-			</label>
-			<label> 
-				<img src="/images/mastercard.png" /><br/>
-				<input <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?>type="radio" name="card_type" value="MC"/>
-			</label>
-			<label>
-				<img src="/images/discovery.png" /><br/>
-				<input <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?>type="radio" name="card_type" value="DISCOVERY"/>
-			</label>
-			<label> 
-				<img src="/images/jcb.png" /><br/>
-				<input <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?>type="radio" name="card_type" value="JCB"/>
-			</label>
+		<div id="tabs">
+		<ul>
+			<li> <a href="#ccform">Credit Card</a></li> 
+			<li> <a href="#ppform">PayPal</a> </li>
+		</ul>
+<?php
+if ($mPayment->Type == 'CCVISAMC') { ?>
+<?php
+//	d (is_file('templates/ccform.tpl.php'));
+	include ('templates/ccform.tpl.php'); 
+} elseif ($mPayment->Type == 'PAYPAL') { ?>
+<?php 
+//	d (is_file('templates/paypalform.tpl.php'));
+	include ('templates/paypalform.tpl.php'); 
+} else {
+	echo '<div id="ccform">';
+	include ('templates/ccform.tpl.php');
+	echo '</div>';
+	echo '<div id="ppform">';
+	include ('templates/paypalform.tpl.php');
+	echo '</div>';
+}
+?>
 		</div>
-		
-		<label>Card Number <input type="text" name="card_number" value="<?php if ($step == '2') {?>4111111111111111<?php } ?>" <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?>/> </label><br/>
-		
-		<label>CVV2 <input type="text" name="ccid" value="<?php if ($step == '2') {?>1234<?php } ?>" <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?>/> </label><br/>
-		
-		<label style="padding-top:20px; clear:both">Expiration Date 
-			<span style="float:right" >
-				<select style="display:inline; float:none;" name="date_year" <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?>>
-					<option>2010</option>
-					<option>2011</option>
-					<option selected="selected">2012</option>
-					<option>2013</option>
-					<option>2014</option>
-					<option>2015</option>
-				</select> &ndash;
-				<select style="display:inline; float:none;" name="date_month" <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?>>
-					<option value="01">01 - Jan</option>
-					<option value="02">02 - Feb</option>
-					<option value="03">03 - Mar</option>
-					<option value="04">04 - Apr</option>
-					<option value="05">05 - May</option>
-					<option value="06">06 - Jun</option>
-					<option value="07">07 - Jul</option>
-					<option value="08">08 - Aug</option>
-					<option value="09">09 - Sep</option>
-					<option value="10">10 - Oct</option>
-					<option selected="selected" value="11">11 - Nov</option>
-					<option value="12">12 - Dec</option>
-				</select> 
-			</span>
-		</label><br/>
-		<label>Holder Name <input type="text" name="holder_name" <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?> value=""/> </label><br/>
-		<div style="height:1px; line-height:1px; clear:both">&nbsp;</div>
 <?php if ($step == '2') {?>
 		<label class="place_order" style="display:block;"> <button>Place order <img src="/images/order-btn.png"/></button> </label>
 <?php } ?><br/>
-		<address style="font-size:0.8em;color:#999;font-weight:lighter;">Please note that the payment information is dispatched through <a href="http://avangate.com">Avangate BV.</a> &ndash; which is a PCI compliant payment processor.</address>
 	</fieldset>
 	</div>
 	</div>
@@ -239,6 +211,31 @@ $bReadonly = true;
 
 		$('#payment_details label input').not(':radio').not (':checkbox').add().clearInputs();
 		$('#billing_details label input').not(':radio').not (':checkbox').add().clearInputs();
+
+		
+		$( "#tabs" ).tabs({
+			select: function (e, ui) {
+				var form = $(ui.panel.parentElement).children('.ui-tabs-panel').not($(ui.panel));
+				var formElements = form.find('input').add(form.find('select'));
+				formElements.prop({disabled : 'disabled'});
+
+				$(ui.panel).find('input').add($(ui.panel).find('select')).prop({disabled:false});
+			}/*/,
+			show : function (e, ui) {
+				console.debug (ui);
+			}/**/
+		}); 
+		
 	});
 </script>
-<?php } ?>
+<?php } 
+} catch (Exception $e) {
+	_e ($e);
+}
+?>
+
+<div>
+<pre>
+<?php var_dump ($AvangateCartContents);?>
+</pre>
+</div>
