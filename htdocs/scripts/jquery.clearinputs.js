@@ -87,6 +87,7 @@
 				}).each (function (i, c) {
 					var that = $(this);
 					if (that.val() != '') {
+						console.debug (that.val());
 						that.css ('opacity', visible);
 					}
 				});

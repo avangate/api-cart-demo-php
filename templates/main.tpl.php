@@ -12,6 +12,14 @@ try {
 <link rel="stylesheet" href="/styles/style.css" media="screen" />
 <link rel="shortcut icon" href="/images/favicon.ico" />
 <script type="text/javascript" src="/scripts/jquery.min.js" ></script>
+<?php 
+if (stristr($includePath, 'order')) {
+?>	
+<link rel="stylesheet" href="/styles/smoothness/jquery-ui.css" media="screen" />
+<script type="text/javascript" src="/scripts/jquery-ui.min.js" ></script>
+<?php 
+}
+?>
 <script type="text/javascript">
 	$(document).ready(function () {
 		$('body').height (Math.max ($(document).height(), $(window).height()));

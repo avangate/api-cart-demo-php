@@ -14,9 +14,11 @@ body {
 	margin:0;
 	position:relative;
 }
-a:hover, a:active, button:active, input[type=button]:active, input[type=input]:active {
-	outline: 0;
+a:hover, a:active {
 	text-decoration: underline;
+}
+a:active, a:focus, button:active, button:focus, input:active, input:focus {
+	outline: none !important;
 }
 a {
 	/*/color:#5795B9;/**/	
@@ -223,6 +225,17 @@ table.prod_details td {
 	border-radius:4px;
 	text-align:center;
 	margin-top:20px;
+}
+#payment_details #tabs {
+	/*/margin-left:-2px;
+	margin-right:-2px;/**/
+}
+.ui-tabs .ui-tabs-panel {
+	/*/padding: 4px;/**/
+}
+#payment_details #tabs .card_pick {
+	margin-left: -26px;
+	margin-right: -26px;
 }
 #payment_details .card_pick {
 	background-color: #DBDBDB;
