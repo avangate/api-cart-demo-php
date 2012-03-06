@@ -214,7 +214,8 @@ if ($mPayment->Type == 'CCVISAMC') { ?>
 
 		
 		$( "#tabs" ).tabs({
-			select: function (e, ui) {
+			<?php if ($step == '1') { ?>disabled: true,<?php }?>
+			show: function (e, ui) {
 				var form = $(ui.panel.parentElement).children('.ui-tabs-panel').not($(ui.panel));
 				var formElements = form.find('input').add(form.find('select'));
 				formElements.prop({disabled : 'disabled'});
@@ -227,6 +228,7 @@ if ($mPayment->Type == 'CCVISAMC') { ?>
 		}); 
 		
 	});
+	console.debug($('input:hidden[name="method"]').prop('disabled'));
 </script>
 <?php } 
 } catch (Exception $e) {

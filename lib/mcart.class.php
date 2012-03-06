@@ -97,6 +97,7 @@ class mCart extends stdClass {
 		} catch (SoapFault $e) {
 			if (stristr($e->getMessage(), 'Invalid hash provided')) {
 				$this->SessionID = null;
+				header ('Location: /');
 			}
 		}
 	}

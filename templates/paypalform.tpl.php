@@ -1,4 +1,4 @@
-		<input type="hidden" name="method" value="PAYPAL" />
+		<input type="hidden" name="method" value="PAYPAL" <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?>/>
 		<label>Email <input type="email" name="email" value="<?php echo $mBilling->Email; ?>" <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?>/> </label><br/>
 		<input type="hidden" name="currency" value="<?php echo $c->getCurrency();?>"/>
 		

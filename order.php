@@ -8,9 +8,14 @@ try {
 	$order->RefNo = 0;
 	$order->Status = 'FAILED';
 
+	$mPayment = new mPaymentDetails();
 	$step = isset($_GET['step']) ? $_GET['step'] : '1';
-	
+
 	if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+		
+		$paymentType = isset($_GET['pmethod']) ? $_GET['pmethod'] : null;
+		$mPayment->Type = $paymentType;
+		
 		if (isset($_SESSION['BILLING_DETAILS'])) {
 			$mBilling = $_SESSION['BILLING_DETAILS'];
 		} else {
@@ -18,7 +23,7 @@ try {
 		}
 		
 		if (isset($_GET['refNo'])) {
-			$refNo = $_GET['refNo'];
+			$refNo = (int)$_GET['refNo'];
 			if ($refNo > 0) {
 				$status = $c->getOrderStatus($refNo);
 				$c->emptyCart();
@@ -26,7 +31,10 @@ try {
 				$status = 'NOK';
 			}
 			$msg = isset($_GET['message']) ? urldecode($_GET['message']) : null;
+		} else {
+			$refNo = null;
 		}
+		 
 		if (isset ($_GET['status'])) {
 			$status = $_GET['status'];
 			$msg = isset($_GET['message']) ? urldecode($_GET['message']) : null;
@@ -36,6 +44,9 @@ try {
 			$cartProducts[$idProduct] = $c->getProductById($idProduct);
 			$cartPrices[$idProduct] = $c->getProductById($idProduct);
 		}
+		
+		// get session contents
+		$AvangateCartContents = $c->getContents();
 	} elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		try {
 
@@ -65,7 +76,7 @@ try {
 // 					$c->emptyCart();
 // 				}
 			} else {
-				d ($errors);
+				// ($errors);
 			}
 		} catch (SoapFault $e) {
 			_e ($e);

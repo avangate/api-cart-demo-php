@@ -1,4 +1,4 @@
-		<input type="hidden" name="method" value="CCVISAMC" />
+		<input type="hidden" name="method" value="CCVISAMC" <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?>/>
 		<div class="card_pick">
 			<label> 
 				<img src="/images/visa.png" /><br/>

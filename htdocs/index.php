@@ -39,6 +39,11 @@ try {
 	_e ($e);
 }
 
+if (is_null($c->getClient())) {
+	session_destroy();
+	header ('Location: /');
+}
+
 $includePath = $_SERVER['SCRIPT_URL'];
 if (substr($includePath, -1) == '/') {
 	$includePath = substr($includePath, 0, -1);
