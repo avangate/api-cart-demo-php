@@ -72,10 +72,10 @@ class mCart extends stdClass {
 		$this->Items[$prodId] = array (
 					'QUANTITY' => $quantity,
 					'PRICEOPTIONS' =>$priceOptions,
-					'PRICE' => $newPrice->NetPrice,
-					'CURRENCY' => $newPrice->NetCurrency
+					'PRICE' => $newPrice->FinalPrice,
+					'CURRENCY' => $newPrice->FinalCurrency
 		);
-		$this->TotalPrice += $newPrice->NetPrice;
+		$this->TotalPrice += $newPrice->FinalPrice;
 		
 		return $newPrice;
 	}
@@ -95,10 +95,10 @@ class mCart extends stdClass {
 		try {
 			$this->connect();
 		} catch (SoapFault $e) {
-			if (stristr($e->getMessage(), 'Invalid hash provided')) {
+			/*/if (stristr($e->getMessage(), 'Invalid hash provided')) {
 				$this->SessionID = null;
 				header ('Location: /');
-			}
+			} /**/
 		}
 	}
 	

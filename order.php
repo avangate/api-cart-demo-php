@@ -22,19 +22,6 @@ try {
 			$mBilling = new mBillingDetails();
 		}
 		
-		if (isset($_GET['refNo'])) {
-			$refNo = (int)$_GET['refNo'];
-			if ($refNo > 0) {
-				$status = $c->getOrderStatus($refNo);
-				$c->emptyCart();
-			} else {
-				$status = 'NOK';
-			}
-			$msg = isset($_GET['message']) ? urldecode($_GET['message']) : null;
-		} else {
-			$refNo = null;
-		}
-		 
 		if (isset ($_GET['status'])) {
 			$status = $_GET['status'];
 			$msg = isset($_GET['message']) ? urldecode($_GET['message']) : null;
@@ -47,6 +34,19 @@ try {
 		
 		// get session contents
 		$AvangateCartContents = $c->getContents();
+		
+		if (isset($_GET['refNo'])) {
+			$refNo = (int)$_GET['refNo'];
+			if ($refNo > 0) {
+				$status = $c->getOrderStatus($refNo);
+				$c->emptyCart();
+			} else {
+				$status = 'NOK';
+			}
+			$msg = isset($_GET['message']) ? urldecode($_GET['message']) : null;
+		} else {
+			$refNo = null;
+		}
 	} elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		try {
 

@@ -30,16 +30,15 @@ $(document).ready (function () {
 			dataType : 'json',
 			data : req,
 			beforeSend: function (data) {
-				//$('#price_display').css({color:'#f00', fontWeight: 'bold'}).html('?');
 				$('#price_display').html(waiting);
 			},
 			success: function (data) {
 				$('#price').val(data.NetPrice);
-				$('#price_display').html(data.NetPrice).css({color: '#000', fontWeight: 'normal'});
+				$('#price_display').html(data.FinalPrice).css({color: '#000', fontWeight: 'normal'});
 			},
 			error : function (data) {
 				$('#price').val(origPrice);
-				$('#price_display').html(origPrice).css({fontWeight: 'normal'});
+				$('#price_display').html(origPrice).css({fontWeight: 'normal', color: '#f99'});
 			},
 			complete : function (data) {}
 		});

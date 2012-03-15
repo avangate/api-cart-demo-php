@@ -44,6 +44,6 @@ if (!isset($bReadonly) || !$bReadonly) {
 	</form>
 	</div>
 	<address>VAT might apply for EU Orders. The total price inclusive all applicable taxes will be displayed before the order is transmitted.</address>
-<!-- <pre>
+<pre>
 <?php var_dump ($prod); ?>
-</pre> -->
+</pre> 

@@ -230,7 +230,8 @@ if ($mPayment->Type == 'CCVISAMC') { ?>
 	});
 	console.debug($('input:hidden[name="method"]').prop('disabled'));
 </script>
-<?php } 
+<?php 
+} 
 } catch (Exception $e) {
 	_e ($e);
 }

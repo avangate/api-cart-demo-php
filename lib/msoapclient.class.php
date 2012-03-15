@@ -23,7 +23,7 @@ class mSOAPClient extends SoapClient {
 				'proxy_port' => 8080,
 				'proxy_login' => 'marius.orcsik',
 				'proxy_password' => 'Gecadedecacat4',
-				/**/
+				/** /
 				'proxy_host' => 'localhost',
 				'proxy_port' => 3128,
 				'proxy_login' => NULL,
