@@ -1,5 +1,4 @@
 <?php
-
 $prodId = (int) $_GET['id'];
 
 try {

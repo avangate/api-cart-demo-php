@@ -6,14 +6,16 @@ foreach ($prod->PriceOptions as $iKey => $OptionGroup) { ?>
 				</dt> 
 				<dd style="padding-left:10px">
 <?php
-	if ($OptionGroup->Type == 'COMBO') { ?>
+	if ($OptionGroup->Type == 'COMBO') { 
+?>
 					<select name="<?php echo $OptionGroup->Name ?>" <? echo ($OptionGroup->Required ? 'class="required"' : '') ?> > 
 <?php 
-	if (!$OptionGroup->Required) { ?> 
+	if (!$OptionGroup->Required) { 
+?> 
 						<option value="">none</option> 
 <?php 
-	}  ?>
-<?php		/* @var $Option mPriceOptionOption */
+	}
+		/* @var $Option mPriceOptionOption */
 		foreach ($OptionGroup->Options as $iOptionKey => $Option) { ?>
 						<option value="<?php echo $Option->Value ?>" <?php echo $Option->Default ? "selected='selected'" : '' ?>><?php echo $Option->Name ?> </option>
 <?php		}  ?>
@@ -23,9 +25,14 @@ foreach ($prod->PriceOptions as $iKey => $OptionGroup) { ?>
 					<label><?php echo $OptionGroup->Name ?> <input <? echo ($OptionGroup->Required ? 'class="required"' : '') ?> type="text" name="<?php echo $OptionGroup->Name ?>" /></label>
 <?php 
 	} else {
+		if (!$OptionGroup->Required && $OptionGroup->Type == 'RADIO') {
+?>
+					<label>none <input type="<? echo strtolower($OptionGroup->Type) ?>" checked='checked' name="<?php echo $OptionGroup->Name ?>" value="" /></label>
+<?php 
+		}
 		foreach ($OptionGroup->Options as $iOptionKey => $Option) { ?>
 					<label><?php echo $Option->Name ?> <input <? echo ($OptionGroup->Required ? 'class="required"' : '') ?> type="<? echo strtolower($OptionGroup->Type) ?>" <?php echo $Option->Default ? "checked='checked'" : '' ?> name="<?php echo $OptionGroup->Name ?><?php echo ($OptionGroup->Type=='CHECKBOX' ? '[]' : '');?>" value="<?php echo $Option->Value?>" /></label>
-<?php		
+<?php
 		}
 	}  ?>
 				</dd>

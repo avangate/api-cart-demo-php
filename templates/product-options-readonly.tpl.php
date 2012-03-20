@@ -1,7 +1,10 @@
 <div>Price options:
 <ul style="list-style:none">
-<?php /* @var $OptionGroup mPriceOptionGroup */ 
-$setOptionGroups = $c->getItemPriceOptions($prod->ProductId);
+<?php /* @var $OptionGroup mPriceOptionGroup */
+if (!isset($setOptionGroups)) { 
+	$setOptionGroups = $c->getItemPriceOptions($prod->ProductId);
+}
+
 foreach ($prod->PriceOptions as $iKey => $OptionGroup) { 
 	$GroupName = null;
 	$Options = array();

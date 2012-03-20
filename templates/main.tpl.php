@@ -1,8 +1,7 @@
 <?php 
-ob_start(); 
-header ('HTTP/1.1 200 OK');
-
-try { 
+try {
+	ob_start();
+	header ('HTTP/1.1 200 OK');
 ?>
 <!DOCTYPE html>
 <html>
@@ -44,19 +43,29 @@ if (stristr($includePath, 'order')) {
 <?php
 	$templatePath = realpath('../templates/' . str_replace('.php', '.tpl.php', $includePath));
 	if (!$templatePath) {
-		throw new Exception ('oops');
+		throw new Exception ('404');
 	}
 	include ($templatePath);
 ?>
 </div>
 <?php 
 } catch (Exception $e) {
-	header ('HTTP/1.1 404 Not Found');
+	ob_start();
+	if ($e->getMessage() == '404') {
+		header ('HTTP/1.1 404 Not Found');
 	// 404
 ?>
 	<h2 style="color:#900;margin:1.2em;text-align:right;">Page not found</h2>
 	<div style="margin:1.2em;text-align:left">Please see if you misspelled the URL.</div>
 <?php 
+	} else {
+		header ('HTTP/1.1 500 Server Error');
+?>
+	<h2 style="color:#900;margin:1.2em;text-align:right;"><?php  echo $e->getMessage() ?></h2>
+	<div style="margin:1.2em;text-align:left"><pre><?php echo $e->getTraceAsString()?></pre></div>
+<?php 
+	}
+	ob_flush();
 }
 ?>
 <?php if (count ($errors) > 0) { ?> <!-- ERRORS: <?php echo implode("\n", $errors); ?> --> <?php } ?>
@@ -67,4 +76,3 @@ if (stristr($includePath, 'order')) {
 </div>
 </body>
 </html>
-<?php ob_end_flush();
