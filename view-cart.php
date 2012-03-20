@@ -1,10 +1,7 @@
 <?php
 $cartProducts = array();
 try {
-	foreach ($c->getItems() as $idProduct => $data) {
-		$cartProducts[$idProduct] = $c->getProductById($idProduct);
-		$cartPrices[$idProduct] = $c->getProductById($idProduct);
-	}
+	$cartProducts = $c->getContents();
 } catch (SoapFault $e) {
 	if ($e->getMessage() == 'Invalid hash provided') {
 		session_destroy();

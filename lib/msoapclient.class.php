@@ -32,6 +32,7 @@ class mSOAPClient extends SoapClient {
 				'classmap' => array (
 					'CSOAP_Order' => 'mOrder',
 					'CSOAP_Price' => 'mPrice',
+					'CSOAP_CartItem' => 'mCartItem',
 					'CSOAP_ProductDataTypeProductsListItem' => 'mBasicProduct',
 					'CSOAP_ProductDataTypeProductCompleteInfo' => 'mProduct',
 					'CSOAP_ProductDataTypePriceOptionsGroupItem' => 'mPriceOptionGroup',
@@ -71,7 +72,7 @@ class mSOAPClient extends SoapClient {
 			$this->sessionID	= parent::login ($this->AccountCode, $this->sessionStart, $hash);
 			if ($_SERVER['REMOTE_ADDR']) {
 				self::$calls += 1;
-				parent::setClientIP ($this->sessionID, $_SERVER['REMOTE_ADDR']);
+				parent::setClientIP ($this->sessionID,  $_SERVER['REMOTE_ADDR']);
 			}
 		} catch ( SoapFault $e ) {
 			// some problem authenticating 
