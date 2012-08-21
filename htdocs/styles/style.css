@@ -2,12 +2,10 @@
     Document   : style.css
     Created on : Dec 6, 2011, 3:29:26 PM
     Author     : habarnam
-    Description:
-        Purpose of the stylesheet follows.
 */
 html, body {
 	padding:0;
-	font-size:11pt;
+	font-size:10pt;
 }
 body {
 	color:#292929;
@@ -252,7 +250,7 @@ table.prod_details td {
 	padding-top:8px;
 	display:block;
 	width: 78px;
-	height: 52px;
+	height: 54px;
 	float:left;
 	overflow:auto;
 }
@@ -322,9 +320,9 @@ select>option[value=""] {
 }
 #footer {
 	font-size:80%;
-	margin-top:-3em;
+	/*/margin-top:-3em;
 	position:absolute;
-	bottom:0px;
+	bottom:0px;/**/
 }
 #waiting {
 	background: url("/images/waiting.gif") no-repeat left top #FFFFFF;

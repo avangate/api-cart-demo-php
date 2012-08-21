@@ -1,7 +1,7 @@
 <?php
 $cartProducts = array();
 try {
-	$cartProducts = $c->getContents();
+	$contents = $c->getContents();
 } catch (SoapFault $e) {
 	if ($e->getMessage() == 'Invalid hash provided') {
 		session_destroy();

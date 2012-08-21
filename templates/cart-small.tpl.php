@@ -5,9 +5,8 @@
 			Quantity: <strong><?php echo $c->getItemsQuantity(); ?></strong> <br/>
 			Items: <strong><?php echo count($c->getItems()); ?></strong> <br/>
 			</div>
-<?php if (count($c->getItems()) > 0) { ?>
 			<div style="float:right;clear:both">
-				<a href="/order/">Place Order</a> &mdash; <a style="margin-left:10px" href="/cart/?action=emptycart">Clear Cart</a>
+				<a style="margin-left:10px" href="/cart/?action=emptycart">Clear Cart</a><?php if (count($c->getItems()) > 0) { ?>
+				 &mdash; <a href="/order/">Place Order</a><?php } ?>
 			</div>
-<?php } ?>
 		</div>

@@ -1,6 +1,6 @@
 <?php 
 try {
-$countryCode = $mBilling->Country ? $mBilling->Country : $c->getCountry();
+$countryCode = isset($mBilling) && $mBilling->Country ? $mBilling->Country : $c->getCountry();
 $allCountries = $c->getAvailableCountries();
 if (isset($status)) {
 ?>
@@ -9,16 +9,15 @@ if (isset($status)) {
 		<?php echo !is_null($msg) ? '<div>Payment gateway message: <strong>' . $msg . '</strong></div>' : '' ; ?>
 <?php
 } else {
-
 	$selfUrl = urlencode('http://' . $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, strpos ($_SERVER['REQUEST_URI'], '?')));
 
-	if ($step == '2') { ?> 
+	if ($step == 2 && (!isset($mPayment->Type) && $mPayment->Type != 'CC')) { ?> 
 	<form method="post" class="frm" action="<?php echo API_PAYMENT_URL ?>?finish=true&amp;redir=<?php echo $selfUrl?>">
 	<input type="hidden" value="<?php echo $c->getSessionId(); ?>" name="hash" />
 	<input type="hidden" value="<?php echo $c->getCurrency(); ?>" name="currency" />
 	<input type="hidden" value="<?php echo $c->getCountry(); ?>" name="country" />
 <?php } else {?>
-	<form method="post" class="frm" action="?step=2">
+	<form method="post" class="frm" action="?step=<?php echo $step ?><?php if (isset($mPayment->Type)) echo "&amp;pmethod=" . $mPayment->Type;?>">
 <?php }?>
 	<div class="products">
 	<h3>Products:</h3>
@@ -56,8 +55,6 @@ $bReadonly = true;
 						<a href="/cart/?action=emptycart">Empty Cart</a>
 						</div>
 <?php } ?>
-					<!-- <div>Regular price: <?php echo 120 ?></div>
-					<div>Total VAT: <?php echo 11.8 ?></div> -->
 					<div class="total_price"> Total: <?php echo $c->getTotalPrice();?> <?php echo $c->getCurrency(); ?></div>
 				</td>
 				</tr>
@@ -80,18 +77,18 @@ $bReadonly = true;
 	<fieldset id="billing_details">
 		<legend>Billing details:</legend>
 		
-		<label>First Name <input type="text" name="first_name" <?php echo ($step == '2') ? 'disabled="disabled" ' : '';?>value="<?php echo $mBilling->FirstName; ?>"/> </label><br/>
-		<label>Last Name <input type="text" name="last_name" <?php echo ($step == '2') ? 'disabled="disabled" ' : '';?>value="<?php echo $mBilling->LastName; ?>"/> </label><br/>
+		<label>First Name <input type="text" name="first_name" <?php echo ($step == 2) ? 'disabled="disabled" ' : '';?>value="<?php echo $mBilling->FirstName; ?>"/> </label><br/>
+		<label>Last Name <input type="text" name="last_name" <?php echo ($step == 2) ? 'disabled="disabled" ' : '';?>value="<?php echo $mBilling->LastName; ?>"/> </label><br/>
 		<!-- <label>Company <input type="text" name="company" value=""/> </label><br/> -->
-		<label>Email <input type="email" name="email" <?php echo ($step == '2') ? 'disabled="disabled" ' : '';?>value="<?php echo $mBilling->Email; ?>"/> </label><br/>
-		<label>Address <input type="text" name="address" <?php echo ($step == '2') ? 'disabled="disabled" ' : '';?>value="<?php echo $mBilling->Address; ?>"/> </label><br/>
-		<label>City <input type="text" name="city" <?php echo ($step == '2') ? 'disabled="disabled" ' : '';?>value="<?php echo $mBilling->City; ?>" /> </label><br/>
-		<label>Zip <input type="text" name="postal_code" <?php echo ($step == '2') ? 'disabled="disabled" ' : '';?>value="<?php echo $mBilling->PostalCode; ?>" /> </label><br/>
-		<label>State <input type="text" name="state" <?php echo ($step == '2') ? 'disabled="disabled" ' : '';?>value="<?php echo $mBilling->State; ?>" /> </label><br/>
+		<label>Email <input type="email" name="email" <?php echo ($step == 2) ? 'disabled="disabled" ' : '';?>value="<?php echo $mBilling->Email; ?>"/> </label><br/>
+		<label>Address <input type="text" name="address" <?php echo ($step == 2) ? 'disabled="disabled" ' : '';?>value="<?php echo $mBilling->Address; ?>"/> </label><br/>
+		<label>City <input type="text" name="city" <?php echo ($step == 2) ? 'disabled="disabled" ' : '';?>value="<?php echo $mBilling->City; ?>" /> </label><br/>
+		<label>Zip <input type="text" name="postal_code" <?php echo ($step == 2) ? 'disabled="disabled" ' : '';?>value="<?php echo $mBilling->PostalCode; ?>" /> </label><br/>
+		<label>State <input type="text" name="state" <?php echo ($step == 2) ? 'disabled="disabled" ' : '';?>value="<?php echo $mBilling->State; ?>" /> </label><br/>
 		<label style="padding-top:18px; margin-bottom:19px; clear:both;color:#888">Country 
 			<select name="country_code">
-<?php foreach ($allCountries as $countryCode => $CountryName) {?>
-				<option <?php echo strtolower($country) == strtolower($countryCode) ? 'selected="selected"' : ''; ?> <?php echo ($step == '2') ? 'disabled="disabled" ' : '';?>value="<?php echo strtolower($countryCode);?>"><?php echo $CountryName;?></option>
+<?php if (is_array($allCountries)) foreach ($allCountries as $countryCode) {?>
+				<option <?php echo strtolower($country) == strtolower($countryCode) ? 'selected="selected"' : ''; ?> <?php echo ($step == 2) ? 'disabled="disabled" ' : '';?>value="<?php echo strtolower($countryCode);?>"><?php echo $countryCode;?></option>
 <?php } ?>
 			</select>
 		
@@ -105,6 +102,8 @@ $bReadonly = true;
 	<div class="details">
 	<fieldset id="payment_details">
 		<legend>Payment details: </legend>
+<?php
+if (empty($mPayment->Type)) { ?>
 		<div class="label" style="margin:4px 0">Choose your payment option:</div>
 		<div id="tabs">
 		<ul>
@@ -112,25 +111,16 @@ $bReadonly = true;
 			<li> <a href="#ppform">PayPal</a> </li>
 		</ul>
 <?php
-if ($mPayment->Type == 'CCVISAMC') { ?>
-<?php
-//	d (is_file('templates/ccform.tpl.php'));
-	include ('templates/ccform.tpl.php'); 
-} elseif ($mPayment->Type == 'PAYPAL') { ?>
-<?php 
-//	d (is_file('templates/paypalform.tpl.php'));
-	include ('templates/paypalform.tpl.php'); 
-} else {
+}
+
 	echo '<div id="ccform">';
 	include ('templates/ccform.tpl.php');
 	echo '</div>';
 	echo '<div id="ppform">';
 	include ('templates/paypalform.tpl.php');
 	echo '</div>';
-}
-?>
-		</div>
-<?php if ($step == '2') {?>
+
+if ($step == 2) {?>
 		<label class="place_order" style="display:block;"> <button>Place order <img src="/images/order-btn.png"/></button> </label>
 <?php } ?><br/>
 	</fieldset>
@@ -168,6 +158,7 @@ if ($mPayment->Type == 'CCVISAMC') { ?>
 <script type="text/javascript" src="/scripts/jquery.clearinputs.js"></script>
 <script type="text/javascript">
 	$(document).ready(function () {
+		var defaultCards = <?php echo json_encode ($defaultCards); ?>; 
 		function modifyQuantity (productId, quantity) {
 			var action = null;
 			$.ajax({
@@ -214,7 +205,7 @@ if ($mPayment->Type == 'CCVISAMC') { ?>
 
 		
 		$( "#tabs" ).tabs({
-			<?php if ($step == '1') { ?>disabled: true,<?php }?>
+			<?php /* if ($step == 2) { ?>disabled: true,<?php } */?>
 			show: function (e, ui) {
 				var form = $(ui.panel.parentElement).children('.ui-tabs-panel').not($(ui.panel));
 				var formElements = form.find('input').add(form.find('select'));
@@ -226,7 +217,16 @@ if ($mPayment->Type == 'CCVISAMC') { ?>
 				console.debug (ui);
 			}/**/
 		}); 
-		
+
+		$( ".card_pick input:radio").click(function (e) {
+			var type = $(e.target).val();
+			$('#payment_details label input').not(':radio').not (':checkbox').css({opacity: 1});
+			$("#card_number").val (defaultCards[type].CardNumber);
+			$("#ccid").val (defaultCards[type].CCID);
+			$("#date_year").val (defaultCards[type].ExpirationYear);
+			$("#date_month").val (defaultCards[type].ExpirationMonth);
+			$("#holder_name").val (defaultCards[type].HolderName);
+		});
 	});
 	console.debug($('input:hidden[name="method"]').prop('disabled'));
 </script>
@@ -236,9 +236,3 @@ if ($mPayment->Type == 'CCVISAMC') { ?>
 	_e ($e);
 }
 ?>
-
-<div>
-<pre>
-<?php var_dump ($AvangateCartContents);?>
-</pre>
-</div>

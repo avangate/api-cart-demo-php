@@ -27,9 +27,9 @@
 			backgroundColor: '#FFFFFF',
 			color: '#383838',
 			width: '100%',
-			height: 22,
+			height: 21,
 			float:'right',
-			marginTop: -22,
+			marginTop: -21,
 			paddingLeft: 4,
 			paddingTop: 5,
 			paddingBottom: 3,
@@ -85,9 +85,11 @@
 						that.css ('opacity', inactive);
 					}
 				}).each (function (i, c) {
-					var that = $(this);
 					if (that.val() != '') {
-						console.debug (that.val());
+						that.css ('opacity', visible);
+					}
+				}).change(function (e) {
+					if (that.val() != '') {
 						that.css ('opacity', visible);
 					}
 				});

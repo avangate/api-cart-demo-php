@@ -1,9 +1,12 @@
 <?php
 
-$searchOptions['status'] = true;
+//$SearchOptions['status'] = true;
+$SearchOptions['NetworkCrosselling'] = true;
+$SearchOptions['type'] = 'REGULAR';
 try {
 	$a = array();
 
+//	var_dump ($c);die;
 	$a = $c->searchProducts($SearchOptions);
 } catch (SoapFault $e) {
 	if ($e->getMessage() == 'Invalid hash provided') {

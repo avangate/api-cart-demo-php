@@ -66,7 +66,11 @@ try {
 			header ('Location: /list-products/');
 			break;
 		case 'getprice': // get a new price based on the quantity/price options change
-			$newPrice = $c->getPrice($prodId, $quantity, implode(',', $priceOptions), $currency);
+			if (!is_null($prodId)) {
+				$newPrice = $c->getPrice($prodId, $quantity, implode(',', $priceOptions), $currency);
+			} else {
+				$newPrice = 0;
+			}
 			outputJson($newPrice); // break;
 			
 			exit(); // break;

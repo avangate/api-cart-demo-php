@@ -151,11 +151,14 @@ function import ($sIncPath) {
 	$aPaths 		= explode(PATH_SEPARATOR, $sIncludePath);
 	krsort ($aPaths);
 
+	$currentFolder = dirname(__FILE__);
 	// this definitely needs improvement
 	foreach ($aPaths as $sPath) {
-		$pkgPath 	= $sPath . DIRECTORY_SEPARATOR . $sPkgLower;
-		if (is_dir($pkgPath)) {
-			$bStatus |= addPath ($pkgPath);
+		if (stristr($sPath, $currentFolder)) {
+			$pkgPath 	= $sPath . DIRECTORY_SEPARATOR . $sPkgLower;
+			if (is_dir($pkgPath)) {
+				$bStatus |= addPath ($pkgPath);
+			}
 		}
 	}
 
@@ -171,26 +174,6 @@ function import ($sIncPath) {
 	}
 }
 
-/**
- * RFC 2104 HMAC implementation for php.
- * Creates an md5 HMAC.
- * Eliminates the need to install mhash to compute a HMAC
- * Hacked by Lance Rushing
- */
-function hmac ($key, $data){
-	$b = 64; // byte length for md5
-	if (strlen($key) > $b) {
-		$key = pack("H*",md5($key));
-	}
-	$key  = str_pad($key, $b, chr(0x00));
-	$ipad = str_pad('', $b, chr(0x36));
-	$opad = str_pad('', $b, chr(0x5c));
-	$k_ipad = $key ^ $ipad ;
-	$k_opad = $key ^ $opad;
-	return md5($k_opad  . pack("H*",md5($k_ipad . $data)));
-}
-
-
 function getErrorHeaderOutput ($e = null) {
 	header ('HTTP/1.1 500 Internal Server Error');
 	$sRet = '<?xml version="1.0" encoding="utf-8"?>';
@@ -199,17 +182,20 @@ function getErrorHeaderOutput ($e = null) {
 	$sRet .= '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">';
 	$sRet .= '<head>';
 	$sRet .= '<style>ul {padding:0; font-size:0.8em} li {padding:0.2em;display:inline} address {position:fixed;bottom:0;}</style>';
-	$sRet .= '<title>Internal Error' . (!$e ? '' : ': '. substr($e->getMessage(), 0, 20) . '...') . '</title>';
+	if (!is_null($e)) {
+		$sRet .= '<title>Internal Error' . (($e instanceof SoapFault) ? ': ' . $e->faultcode : ': '. substr($e->getMessage(), 0, 20) . '...') . '</title>';
+	}
 	$sRet .= '</head>';
 	$sRet .= '<body>';
-	$sRet .= '<strong>Internal Error' . (!$e ? '' : ': '. $e->getMessage()) . '</strong>';
-	$sRet .= '<address>&copy; habarnam</address>';
-	$sRet .= '<ul><li><a href="#" onclick="p = document.getElementById(\'trace\'); if (p.style.display==\'block\') p.style.display=\'none\';else p.style.display=\'block\'; return false">toggle trace</a></li><li><a href="javascript: p = document.getElementById(\'trace\'); document.location.href =\'mailto:marius@habarnam.ro?subject=Problems&body=\' + p.innerHTML; return false">mail me</a></li></ul>';
-
-	if ($e instanceof Exception) {
-		$sRet .= '<p style="font-size:.8em">Triggered in <strong>' . $e->getFile() . '</strong> at line ' . $e->getLine() .'</p>';
-	}
+	if (!is_null($e)) {
+		$sRet .= '<strong>Internal Error: '. $e->getMessage() . '</strong>';
+		$sRet .= '<address>&copy; habarnam</address>';
+		$sRet .= '<ul><li><a href="#" onclick="p = document.getElementById(\'trace\'); if (p.style.display==\'block\') p.style.display=\'none\';else p.style.display=\'block\'; return false">toggle trace</a></li><li><a href="javascript: p = document.getElementById(\'trace\'); document.location.href =\'mailto:marius@habarnam.ro?subject=Problems&body=\' + p.innerHTML; return false">mail me</a></li></ul>';
 	
+		if ($e instanceof Exception) {
+			$sRet .= '<p style="font-size:.8em">Triggered in <strong>' . $e->getFile() . '</strong> at line ' . $e->getLine() .'</p>';
+		}
+	}
 	//$myVars = array_diff(get_defined_vars(), array(array()));
 	//$sRet .= var_export ($myVars, true);
 	$sRet .= '<pre style="position:fixed;bottom:2em;display:block;font-size:.8em" id="trace">';
@@ -228,8 +214,14 @@ function _e ($e) {
 		ob_end_clean(); // 0
 	}
 	ob_start();
-	header ('HTTP/1.1 500 Internal Server Error');
 	
+	if (stristr ($e->getMessage(), 'Invalid hash provided')) {
+		@session_destroy();
+// 		header ('HTTP/1.1 303 See Other');
+// 		header ('Location : /list-products/');
+// 		exit();
+	}
+	header ('HTTP/1.1 500 Internal Server Error');
 	echo getErrorHeaderOutput ($e);
 	if (isDebug()) {
 		echo $e ? $e->getTraceAsString() : '';
@@ -240,4 +232,18 @@ function _e ($e) {
 	echo '</html>';
 	ob_end_flush();
 	exit (0);
+}
+
+function memcache_cache_handler ($action, &$smarty_obj, &$cache_content, $tpl_file=null, $cache_id=null, $compile_id=null, $exp_time=null)
+{
+	switch ($action) {
+		case 'read' :
+			break;
+		case 'write' :
+			break;
+		case 'clear' :
+			break;
+		default:
+	}
+	return 'asd';	
 }

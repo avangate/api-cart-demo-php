@@ -79,6 +79,7 @@ try {
 		} else {
 			header ('Location: /order/?' . (isset($e) ? 'msg=' . urlencode($e->getMessage()) : 'msg=Unknown+Error'));
 		}
+		exit();
 	}
 } catch (SoapFault $e) {
 	if ($e->getMessage() == 'Invalid hash provided') {

@@ -7,7 +7,8 @@
 				<col class="c_actions"/>
 			</colgroup>
 <?php 
-if (count ($cartProducts) > 0) {
+
+if (count ($contents->Products) > 0) {
 ?>
 			<thead style="font-size:80%;">
 				<th style=" padding:6px 0px;">&nbsp;</th>
@@ -23,7 +24,7 @@ if (count ($cartProducts) > 0) {
 	/* @var $cartItem mCartItem */
 	$totalPrice = 0;
 	$totalPriceVAT = 0;
-	foreach ($cartProducts as $iKey => $cartItem) {
+	foreach ($contents->Products as $iKey => $cartItem) {
 		$prod = $cartItem->Product;
 		$setOptionGroups = $cartItem->PriceOptions;
 		$i++;
@@ -86,9 +87,9 @@ foreach ( $cartItem->PriceOptions as $iKey => $OptionGroup) {
 						<a href="/cart/?action=emptycart">Empty Cart</a>
 						</div>
 <?php } */ ?>
-					<div>Regular price: <?php echo number_format($totalPrice, 2) ?></div>
-					<div>Total VAT: <?php echo number_format($totalPriceVAT - $totalPrice, 2) ?> [<?php echo number_format(($totalPriceVAT - $totalPrice) * 100/$totalPrice,2)?>%]</div>
-					<div class="total_price"> Total: <?php echo number_format($totalPriceVAT, 2);?> <?php echo $cartItem->Price->FinalCurrency;?></div>
+					<div>Regular price: <?php echo number_format($contents->NetPrice, 2) ?></div>
+					<div>Total VAT: <?php echo number_format($contents->FinalPrice, 2) ?> [<?php echo number_format(($contents->FinalPrice - $contents->NetPrice) * 100/$contents->NetPrice,2)?>%]</div>
+					<div class="total_price"> Total: <?php echo number_format($contents->FinalPrice, 2);?> <?php echo $contents->FinalCurrency;?></div>
 				</td>
 				</tr>
 			</tfoot>

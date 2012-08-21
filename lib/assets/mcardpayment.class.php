@@ -5,7 +5,7 @@
  * @author Marius Orcsik <marius.orcsik@avangate.com>
  *
  */
-class mCardPayment extends mPaymentMethod {
+class mCardPayment extends mAutoRenewalPayment {
 	/**
 	 * @var string
 	 */

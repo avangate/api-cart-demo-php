@@ -1,16 +1,20 @@
 <?php
-class mCart extends stdClass {
+class mCart {
 	/**
-	 * @var CSOAP_OrderAPI
+	 * @var mSoapClient
 	 */
 	private $Client;
 	private $Items = array();
 	
 	private $TotalPrice = 0;
 	
-	private $Country = 'DE';
+	private $Country = 'RO';
 	private $Currency = 'EUR';
 	private $Language = 'EN';
+	
+	private $AvailableCountries = array();
+	private $AvailableLanguages = array();
+	private $AvailableCurrencies = array();
 	
 	private $SessionID = null;
 	private $SessionStart = null;
@@ -19,19 +23,6 @@ class mCart extends stdClass {
 		$this->connect();
 		if (is_null($this->SessionID)) {
 			$this->SessionID = $this->Client->authenticate();
-		}
-		$this->SessionStart = time();
-		$this->Client->setSessionStart($this->SessionStart);
-	}
-	
-	private function connect () {
-		$this->Client = new mSOAPClient( WSDL_URL );
-		$this->Client->setAccountCode(MCODE);
-		$this->Client->setSecretKey(KEY);
-		
- 		if (!is_null($this->SessionStart)) {
-			$this->Client->setSessionId($this->SessionID);
-			$this->Client->setSessionStart($this->SessionStart);
 			
 			if (!is_null($this->Language)) {
 				$this->Client->setLanguage(strtolower($this->Language));
@@ -42,12 +33,44 @@ class mCart extends stdClass {
 			if (!is_null($this->Currency)) {
 				$this->Client->setCurrency(strtolower($this->Currency));
 			}
+			
+			$this->AvailableCountries = $this->Client->getAvailableCountries();
+			$this->AvailableLanguages = $this->Client->getAvailableLanguages();
+			$this->AvailableCurrencies = $this->Client->getAvailableCurrencies();
 		}
-//			} else {
-// 			d ($this, $_SESSION);
-// 			$this->SessionStart = time();
-// 			$this->SessionID = $this->Client->authenticate();
-// 		}
+		$this->SessionStart = time();
+		$this->Client->setSessionStart($this->SessionStart);
+	}
+
+	public function getAPIRequests () {
+		return $this->Client->getAPIRequests();
+	}
+
+	public function getAPIRequest ($id) {
+		return $this->Client->getAPIRequest ($id);
+	}
+
+	public function getAPIResponses () {
+		return $this->Client->getAPIResponses ();
+	}
+
+	public function getAPIResponse ($id) {
+		return $this->Client->getAPIResponse ($id);
+	}
+	
+	private function connect () {
+		if (array_key_exists('api', $_COOKIE) && $_COOKIE['api'] == 'jsonrpc') {
+			$this->Client = new mJsonRPCClient();
+		} else {
+			$this->Client = new mSOAPClient( ORDER_SOAP_URL . '?wsdl' );
+		}
+		$this->Client->setAccountCode(MCODE);
+		$this->Client->setSecretKey(KEY);
+		
+ 		if (!is_null($this->SessionStart)) {
+			$this->Client->setSessionId($this->SessionID);
+			$this->Client->setSessionStart($this->SessionStart);
+		} 
 	}
 	
 	public function getClient () {
@@ -58,23 +81,26 @@ class mCart extends stdClass {
 		return $this->SessionID;
 	}
 	
-	public function getSoapCalls () {
-		return mSOAPClient::$calls;
+	public function getAPICalls () {
+		return $this->Client->getCalls();
 	}
 	
-	public function addToCart ($prodId, $quantity = 1, $priceOptions = '', $newPrice =  0) {
+	public function addToCart ($prodId, $quantity = 1, $priceOptions = '', $newPrice = 0) {
 		$this->Client->addProduct($prodId, $quantity, implode(',', $priceOptions));
 		$newPrice = $this->Client->getPrice($prodId, $quantity, implode(',',$priceOptions), $this->getCurrency());
 		
-		$mProd = new mProduct();
-		$mProd->ProductId  =  $prodId;
-		
-		$this->Items[$prodId] = array (
-					'QUANTITY' => $quantity,
-					'PRICEOPTIONS' =>$priceOptions,
-					'PRICE' => $newPrice->FinalPrice,
-					'CURRENCY' => $newPrice->FinalCurrency
-		);
+		if (!array_key_exists($prodId,$this->Items)) {
+			$mProd = new mProduct();
+			$mProd->ProductId  =  $prodId;
+			$this->Items[$prodId] = array (
+				'QUANTITY' => $quantity,
+				'PRICEOPTIONS' =>$priceOptions,
+				'PRICE' => $newPrice->FinalPrice,
+				'CURRENCY' => $newPrice->FinalCurrency
+			);
+		} else {
+			$this->Items[$prodId]['QUANTITY'] += $quantity;
+		}
 		$this->TotalPrice += $newPrice->FinalPrice;
 		
 		return $newPrice;
@@ -83,6 +109,9 @@ class mCart extends stdClass {
 	public function __sleep() {
 		return array(
 			'Items',
+			'AvailableCountries',
+			'AvailableLanguages',
+			'AvailableCurrencies',
 			'TotalPrice',
 			'Country',
 			'Currency',
@@ -92,14 +121,7 @@ class mCart extends stdClass {
 		);
 	}
 	public function __wakeup() {
-		try {
-			$this->connect();
-		} catch (SoapFault $e) {
-			/*/if (stristr($e->getMessage(), 'Invalid hash provided')) {
-				$this->SessionID = null;
-				header ('Location: /');
-			} /**/
-		}
+		$this->connect();
 	}
 	
 	public function modifyQuantity($prodId, $quantity) {
@@ -334,8 +356,9 @@ class mCart extends stdClass {
 	 * @param mProduct $product
 	 * @return decimal
 	 */
-	protected function getDefaultPrice (mProduct $product, $IsoCurrency = null) {
+	protected function getDefaultPrice ($product, $IsoCurrency = null) {
 		$defaultPriceOptions = array();
+		$Price = $product->Price;
 		try {
 			foreach ($product->PriceOptions as $iKey => $OptionGroup) {
 				foreach ($OptionGroup->Options as $iOptionKey => $Option) {
@@ -345,12 +368,12 @@ class mCart extends stdClass {
 				}
 			}
 			$oPrice = $this->Client->getPrice($product->ProductId, 1, implode (',', $defaultPriceOptions), $IsoCurrency);
-			$product->Price = $oPrice->NetPrice;
+			$Price = $oPrice->NetPrice;
 		} catch (SoapFault $e) {
 			//
-			_e ($e);
+			//_e ($e);
 		}
-		return $product->Price;
+		return $Price;
 	}
 	
 	/**
@@ -366,9 +389,15 @@ class mCart extends stdClass {
 
 		/* @var $prodData mBasicProduct */
 		foreach ($products as $idProduct => $prodData) {
-			if (is_null($prodData->Price)) {
-				$fullProduct = $this->Client->getProductById($prodData->ProductId);
-				$prodData->Price = $this->getDefaultPrice($fullProduct, $this->getCurrency());
+			try {
+				if (is_null($prodData->Price)) {
+					$fullProduct = $this->getProductById($prodData->ProductId);
+					$FullPrice = $this->getDefaultPrice($fullProduct, $this->getCurrency());
+					//$prodData->Price = floatval($FullPrice->NetPrice);
+					//$prodData->Currency = $FullPrice->NetCurrency;
+				}
+			} catch (Exception $e) {
+				$prodData->Price = 0;
 			}
 		}
 		return $products;
@@ -392,7 +421,7 @@ class mCart extends stdClass {
 	 * @return IsoCurrencyCodes array[string]
 	 */
 	public function getAvailableCurrencies () {
-		return $this->Client->getAvailableCurrencies ();
+		return $this->AvailableCurrencies;
 	}
 	
 	/**
@@ -402,7 +431,7 @@ class mCart extends stdClass {
 	 * @return IsoLanguageCodes array[string]
 	 */
 	public function getAvailableLanguages () {
-		return $this->Client->getAvailableLanguages ();
+		return $this->AvailableLanguages;
 	}
 
 	/**
@@ -412,7 +441,7 @@ class mCart extends stdClass {
 	 * @return IsoCountryCodes array[string]
 	 */
 	public function getAvailableCountries () {
-		return $this->Client->getAvailableCountries ();
+		return $this->AvailableCountries;
 	}
 	
 	public function getContents() {

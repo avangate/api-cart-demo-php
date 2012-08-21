@@ -1,7 +1,7 @@
 <?php
 import ('assets');
 /* @var parent CSOAP_OrderAPI */
-class mSOAPClient extends SoapClient {
+class mSOAPClient extends SoapClient implements mAPIInterface {
 	static $calls;
 	
 	private $AccountCode;
@@ -11,13 +11,17 @@ class mSOAPClient extends SoapClient {
 	private $sessionID;
 	protected $sessionStart;
 	
+	private $aRequests = array();
+	private $aResponses = array();
+	
 	public function __construct ($wsdlUrl, $options = array()) {
 		self::$calls = 0;
 		$mOptions = array_merge(
 			array (
-				'location' => API_URL,
+				'location' => ORDER_SOAP_URL,
 				'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP,
 				'cache_wsdl' => WSDL_CACHE_NONE,
+				//'uri' => 'test',
 				/*/
 				'proxy_host' => 'http://proxy.avangate.local',
 				'proxy_port' => 8080,
@@ -44,6 +48,26 @@ class mSOAPClient extends SoapClient {
 		return parent::__construct ($wsdlUrl, $mOptions);
 	}
 	
+	public function getCalls () {
+		return self::$calls;
+	}
+	
+	public function getAPIRequests () {
+		return $this->aRequests;
+	}
+
+	public function getAPIRequest ($id) {
+		return (array_key_exists($id, $this->aRequests) ? $this->aRequests[$id] : null);
+	}
+
+	public function getAPIResponses () {
+		return $this->aResponses;
+	}
+
+	public function getAPIResponse ($id) {
+		return (array_key_exists($id, $this->aResponses) ? $this->aResponses[$id] : null);
+	}
+	
 	public function setSessionId ($SessionId) {
 		$this->sessionID = $SessionId;
 	}
@@ -67,7 +91,8 @@ class mSOAPClient extends SoapClient {
 			// there is no authenticated soap session saved - we need to login
 			$this->sessionStart	= date('Y-m-d H:i:s');
 			$string		= strlen($this->AccountCode) . $this->AccountCode . strlen($this->sessionStart) . $this->sessionStart;
-			$hash		= hmac($this->SecretKey, $string);
+			$hash		= hash_hmac('md5', $string, $this->SecretKey);
+
 			self::$calls += 1;
 			$this->sessionID	= parent::login ($this->AccountCode, $this->sessionStart, $hash);
 			if ($_SERVER['REMOTE_ADDR']) {
@@ -80,7 +105,6 @@ class mSOAPClient extends SoapClient {
 		}
 		
 		if (!is_null($this->sessionID)) {
-// 			parent::setFiscalCode ($this->sessionID, VATID);
 			return $this->sessionID;
 		} else {
 			return null;

@@ -50,6 +50,7 @@ if (stristr($includePath, 'order')) {
 </div>
 <?php 
 } catch (Exception $e) {
+	ob_end_clean();
 	ob_start();
 	if ($e->getMessage() == '404') {
 		header ('HTTP/1.1 404 Not Found');
@@ -70,9 +71,19 @@ if (stristr($includePath, 'order')) {
 ?>
 <?php if (count ($errors) > 0) { ?> <!-- ERRORS: <?php echo implode("\n", $errors); ?> --> <?php } ?>
 <div id="footer">
-	Session ID : <?php echo $c->getSessionId(); ?><br/>
-	SOAP Calls : <?php echo $c->getSoapCalls(); ?><br/>
-	<div>Execution time : <?php echo number_format($iExecTime, 5, ',', ' '); ?> seconds.</div>
+	Session ID : <strong style="font-family:monospace"><?php echo $c->getSessionId(); ?></strong><br/>
+	Session Type : <strong><?php echo ($c->getClient() instanceof mJsonRPCClient) ? 'Json-RPC' : 'SOAP'; ?></strong><br/>
+	API Calls : <strong><?php echo $c->getAPICalls(); ?></strong><br/>
+	<div>Execution time : <strong><?php echo number_format($iExecTime, 5, ',', ' '); ?></strong> seconds.</div>
+	<pre style="font-family: fixed">
+<?php foreach ($c->getAPIRequests() as $id => $oRequest) { ?>
+<div id="<?php echo $id ?>">
+<?php echo json_encode($oRequest); ?>
+<br/>
+<?php echo json_encode($c->getAPIResponse($id)); ?>
+</div>
+<?php } ?>
+	</pre>
 </div>
 </body>
 </html>

@@ -1,6 +1,8 @@
 <?php /* @var $prod mProduct */
-
-// d ($prod);
+if ($prod->Price instanceof stdClass) { 
+	$price = (array)$prod->Price;
+	$prod->Price = array_shift($price);
+}
 ?>	
 	<div class="prod_details" style="; overflow:visible;">
 		<div class="prod_description">
@@ -19,7 +21,7 @@
 					<option>4</option>
 					<option>5</option>
 				</select><br/>
-				Price: <span id="price_display"><?php echo number_format($prod->Price,2) ?></span> <span id="currency_display"><?php echo strtoupper($prod->DefaultCurrency ? $prod->Currency : $prod->DefaultCurrency ) ?></span><br/>
+				Price: <span id="price_display"><?php echo number_format((int)$prod->Price,2) ?></span> <span id="currency_display"><?php echo strtoupper($prod->DefaultCurrency ? $prod->Currency : $prod->DefaultCurrency ) ?></span><br/>
 				<button type="submit" style="font-size:90%; padding:1px 5px; height:1.8em">Add to cart &raquo;</button>
 			</form>
 			</div>

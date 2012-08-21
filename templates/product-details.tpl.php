@@ -16,7 +16,7 @@ $(document).ready (function () {
 	
 	inputs.change(function (e) {
 		var req = $('form#frm').serializeArray();
-		var origPrice = <?php echo $prod->Price; ?>;
+		var origPrice = <?php echo $prod->Price; ?>+0;
 
 		var waiting = $('<img src="/images/waiting.gif" />').css ({
 			marginLeft : 4,
