@@ -5,7 +5,7 @@
 	<div class="prod_details">
 	<form method="post" action="/cart/?action=add" class="frm" id="frm">
 		<div class="prod_description">
-			<img src="<?php echo !is_null($prod->ProductImage) ? $prod->ProductImage : '/images/defaultprod.png';?>" style="float:left;width:120px" />
+			<img src="<?php echo !is_null($prod->ProductImage) ? str_replace('http://MYWEB_FULL_HOST', 'https://secure.avangate.com', $prod->ProductImage) : '/images/defaultprod.png';?>" style="float:left;width:120px" />
 			<h4><?php echo $prod->ProductName ?> <span><?php echo $prod->ProductVersion; ?></span></h4>
 			<button type="submit" style="font-size:110%;">Add to cart <span style="margin-left:4px">&raquo;</span> </button><br/><br/>
 			<div class="description">

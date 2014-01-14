@@ -7,7 +7,7 @@ $quantity = (int)$c->getItemQuantity($prod->ProductId);
 			<input type="hidden" id="id_<?php echo $prod->ProductId?>" name="id" value="<?php echo $prod->ProductId ?>" /> 
 			<input type="hidden" id="price_<?php echo $prod->ProductId?>" name="price" value="<?php echo number_format($prod->Price,2) ?>" /> 
 			<input type="hidden" id="currency_<?php echo $prod->ProductId?>" name="currency" value="<?php echo ($c->getCurrency() ? $c->getCurrency() : $prod->Currency) ?>" />
-			<img src="<?php echo !is_null($prod->ProductImage) ? $prod->ProductImage : '/images/defaultprod.png';?>" style="float:left; width:100px" />
+			<img src="<?php echo !is_null($prod->ProductImage) ? str_replace('http://MYWEB_FULL_HOST', 'https://secure.avangate.com', $prod->ProductImage)   : '/images/defaultprod.png';?>" style="float:left; width:100px" />
 			<h4><?php echo $prod->ProductName ?> <span><?php echo $prod->ProductVersion; ?></span></h4>
 			<div class="description">
 				<?php echo $prod->ShortDescription ? $prod->ShortDescription : 'No description available' ?>
