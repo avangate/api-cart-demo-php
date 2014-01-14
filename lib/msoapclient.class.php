@@ -1,6 +1,6 @@
 <?php
 import ('assets');
-/* @var parent CSOAP_OrderAPI */
+/* @param parent CSOAP_OrderAPI */
 class mSOAPClient extends SoapClient implements mAPIInterface {
 	static $calls;
 	
@@ -113,9 +113,7 @@ class mSOAPClient extends SoapClient implements mAPIInterface {
 
 	/**
 	 * Sets the global language
-	 * 
 	 * @param string $IsoLang
-	 *
 	 * @return void
 	 */
 	public function setLanguage ($IsoLang){
@@ -125,9 +123,7 @@ class mSOAPClient extends SoapClient implements mAPIInterface {
 
 	/**
 	 * Sets global country
-	 * 
 	 * @param string $IsoCountry
-	 *
 	 * @return void
 	 */
 	public function setCountry($IsoCountry) {
@@ -137,9 +133,7 @@ class mSOAPClient extends SoapClient implements mAPIInterface {
 
 	/**
 	 * Sets the global currency
-	 * 
 	 * @param string $IsoCurrency
-	 *
 	 * @return void
 	 */
 	public function setCurrency($IsoCurrency) {
@@ -149,9 +143,7 @@ class mSOAPClient extends SoapClient implements mAPIInterface {
 
 	/**
 	 * Sets the billing details
-	 * 
 	 * @param mBillingDetails $BillingDetails
-	 *
 	 * @return void
 	 */
 	public function setBillingDetails (mBillingDetails $BillingDetails) {
@@ -161,9 +153,7 @@ class mSOAPClient extends SoapClient implements mAPIInterface {
 
 	/**
 	 * Sets the delivery details [optional]
-	 * 
 	 * @param mDeliveryDetails $DeliveryDetails
-	 *
 	 * @return void
 	 */
 	public function setDeliveryDetails (mDeliveryDetails $DeliveryDetails) {
@@ -173,11 +163,8 @@ class mSOAPClient extends SoapClient implements mAPIInterface {
 
 	/**
 	 * Sets the payment details for the current order
-	 * 
 	 * @param mPaymentDetails $PaymentDetails
-	 *
 	 * @throws CSOAPServerFault_Orders
-	 *
 	 * @return void
 	 */
 	public function setPaymentDetails (mPaymentDetails $PaymentDetails) {
@@ -187,11 +174,11 @@ class mSOAPClient extends SoapClient implements mAPIInterface {
 
 	/**
 	 * Adds a product to the current cart session
-	 * 
 	 * @param integer $IdProduct
-	 * @param integer $Quantity
-	 * @param string $PriceOptions
-	 *
+	 * @param int $iQuantity
+	 * @param array $aPriceOptions
+	 * @internal param int $Quantity
+	 * @internal param string $PriceOptions
 	 * @return boolean
 	 */
 	public function addProduct ($IdProduct, $iQuantity = 1, $aPriceOptions = null) {
@@ -204,9 +191,7 @@ class mSOAPClient extends SoapClient implements mAPIInterface {
 	 * 
 	 * @param integer $IdProduct
 	 * @param integer $iQuantity
-	 *
 	 * @throws CSOAPServerFault_Orders
-	 *
 	 * @return boolean
 	 */
 	public function deleteProduct ($IdProduct, $iQuantity = 1) {
@@ -216,9 +201,7 @@ class mSOAPClient extends SoapClient implements mAPIInterface {
 
 	/**
 	 * Empties the current cart session
-	 *
 	 * @throws CSOAPServerFault_Orders
-	 *
 	 * @return boolean
 	 */
 	public function clearProducts () {
@@ -228,7 +211,6 @@ class mSOAPClient extends SoapClient implements mAPIInterface {
 
 	/**
 	 * Places an order
-	 *
 	 * @return mOrder
 	 */
 	public function placeOrder () {
@@ -238,9 +220,7 @@ class mSOAPClient extends SoapClient implements mAPIInterface {
 
 	/**
 	 * Returns the order reference number
-	 * 
 	 * @param string $RefNo
-	 *
 	 * @return string
 	 */
 	public function getOrderStatus ($RefNo) {
@@ -250,10 +230,7 @@ class mSOAPClient extends SoapClient implements mAPIInterface {
 	
 	/**
 	 * Get information about a product when its id is known
-	 *
-	 * 
 	 * @param integer $IdProduct
-	 *
 	 * @return mProduct
 	 */
 	public function getProductById($IdProduct){
@@ -263,9 +240,7 @@ class mSOAPClient extends SoapClient implements mAPIInterface {
 	
 	/**
 	 * Get information about a product when its code is known
-	 * 
 	 * @param string $ProductCode
-	 *
 	 * @return mProduct
 	 */
 	public function getProductByCode($ProductCode) {
@@ -275,8 +250,6 @@ class mSOAPClient extends SoapClient implements mAPIInterface {
 	
 	
 	/**
-	 *
-	 * 
 	 * @param string $ProductSKU
 	 * @return mProduct[]
 	 */
@@ -287,32 +260,31 @@ class mSOAPClient extends SoapClient implements mAPIInterface {
 	
 	/**
 	 * Returns a list of products
-	 *
-	 * 
 	 * @param array $SearchOptions
-	 *
 	 * @return mBasicProduct[]
 	 */
 	public function searchProducts($SearchOptions = array()) {
 		self::$calls += 1;
+		if (!array_key_exists('PageSize', $SearchOptions)) {
+			$SearchOptions['PageSize'] = 5;
+		}
 		return parent::searchProducts($this->sessionID, $SearchOptions);
 	}
-	
+
 	/**
-	 * @var int $IdProduct
-	 * @var int $Quantity
-	 * @var array $PriceOptions
-	 * @var string $Currency
+	 * @param int $IdProduct
+	 * @param int $Quantity
+	 * @param array $PriceOptions
+	 * @param string $Currency
 	 * @return mPrice
 	 */
-	public function getPrice ($IdProduct, $Quantity = 1, $PriceOptions = '', $Currency = null) {
+	public function getPrice ($IdProduct, $Quantity = 1, $PriceOptions = array(), $Currency = null) {
 		self::$calls += 1;
 		return parent::getPrice($this->sessionID, $IdProduct, $Quantity, $PriceOptions, $Currency);
 	}
 	
 	/**
 	 * Returns the list of available currencies for the current vendor
-	 * @param string $Hash
 	 * @throws CSOAPServerFault_Merchants
 	 * @return IsoCurrencyCodes array[string]
 	 */
@@ -323,7 +295,6 @@ class mSOAPClient extends SoapClient implements mAPIInterface {
 	
 	/**
 	 * Returns the list of available languages for the current vendor
-	 * @param string $Hash
 	 * @throws CSOAPServerFault_Merchants
 	 * @return IsoLanguageCodes array[string]
 	 */
@@ -333,7 +304,6 @@ class mSOAPClient extends SoapClient implements mAPIInterface {
 	}
 	/**
 	 * Returns the list of available countries for the current vendor
-	 * @param string $Hash
 	 * @throws CSOAPServerFault_Merchants
 	 * @return IsoCountryCodes array[string]
 	 */
@@ -341,7 +311,10 @@ class mSOAPClient extends SoapClient implements mAPIInterface {
 		self::$calls += 1;
 		return parent::getAvailableCountries ($this->sessionID);
 	}
-	
+
+	/**
+	 * @return mContents
+	 */
 	public function getContents () {
 		self::$calls += 1;
 		return parent::getContents ($this->sessionID);

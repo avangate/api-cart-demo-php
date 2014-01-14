@@ -193,9 +193,7 @@ class mCart {
 
 	/**
 	 * Sets the global language
-	 * 
 	 * @param string $IsoLang
-	 *
 	 * @return void
 	 */
 	public function setLanguage ($IsoLang){
@@ -206,9 +204,7 @@ class mCart {
 
 	/**
 	 * Sets global country
-	 * 
 	 * @param string $IsoCountry
-	 *
 	 * @return void
 	 */
 	public function setCountry($IsoCountry) {
@@ -219,9 +215,7 @@ class mCart {
 
 	/**
 	 * Sets the global currency
-	 * 
 	 * @param string $IsoCurrency
-	 *
 	 * @return void
 	 */
 	public function setCurrency($IsoCurrency) {
@@ -232,9 +226,7 @@ class mCart {
 
 	/**
 	 * Sets the billing details
-	 * 
 	 * @param mBillingDetails $BillingDetails
-	 *
 	 * @return void
 	 */
 	public function setBillingDetails (mBillingDetails $BillingDetails) {
@@ -243,9 +235,7 @@ class mCart {
 
 	/**
 	 * Sets the delivery details [optional]
-	 * 
 	 * @param mDeliveryDetails $DeliveryDetails
-	 *
 	 * @return void
 	 */
 	public function setDeliveryDetails (mDeliveryDetails $DeliveryDetails) {
@@ -254,11 +244,8 @@ class mCart {
 
 	/**
 	 * Sets the payment details for the current order
-	 * 
 	 * @param mPaymentDetails $PaymentDetails
-	 *
 	 * @throws CSOAPServerFault_Orders
-	 *
 	 * @return void
 	 */
 	public function setPaymentDetails (mPaymentDetails $PaymentDetails) {
@@ -267,11 +254,11 @@ class mCart {
 
 	/**
 	 * Adds a product to the current cart session
-	 * 
 	 * @param integer $IdProduct
-	 * @param integer $Quantity
-	 * @param string $PriceOptions
-	 *
+	 * @param int $iQuantity
+	 * @param array $aPriceOptions
+	 * @internal param int $Quantity
+	 * @internal param string $PriceOptions
 	 * @return boolean
 	 */
 	public function addProduct ($IdProduct, $iQuantity = 1, $aPriceOptions = null) {
@@ -280,12 +267,9 @@ class mCart {
 
 	/**
 	 * Deletes a product or subtracts a quantity from the current cart session
-	 * 
 	 * @param integer $IdProduct
 	 * @param integer $iQuantity
-	 *
 	 * @throws CSOAPServerFault_Orders
-	 *
 	 * @return boolean
 	 */
 	public function deleteProduct ($IdProduct, $iQuantity = 1) {
@@ -294,9 +278,7 @@ class mCart {
 
 	/**
 	 * Empties the current cart session
-	 *
 	 * @throws CSOAPServerFault_Orders
-	 *
 	 * @return boolean
 	 */
 	public function clearProducts () {
@@ -305,7 +287,6 @@ class mCart {
 
 	/**
 	 * Places an order
-	 *
 	 * @return mOrder
 	 */
 	public function placeOrder () {
@@ -314,9 +295,7 @@ class mCart {
 
 	/**
 	 * Returns the order reference number
-	 * 
 	 * @param string $RefNo
-	 *
 	 * @return string
 	 */
 	public function getOrderStatus ($RefNo) {
@@ -324,10 +303,7 @@ class mCart {
 	}
 	/**
 	 * Get information about a product when its id is known
-	 *
-	 *
 	 * @param integer $IdProduct
-	 *
 	 * @return mProduct
 	 */
 	public function getProductById($IdProduct){
@@ -341,19 +317,17 @@ class mCart {
 	
 	/**
 	 * Get information about a product when its code is known
-	 * 
 	 * @param string $ProductCode
-	 *
 	 * @return mProduct
 	 */
 	public function getProductByCode($ProductCode) {
 		return $this->Client->getProductByCode ($ProductCode);
 	}
-	
+
 	/**
-	 *
 	 * Returns the price for a product based on it's default pricing options
 	 * @param mProduct $product
+	 * @param string $IsoCurrency
 	 * @return decimal
 	 */
 	protected function getDefaultPrice ($product, $IsoCurrency = null) {
@@ -378,56 +352,49 @@ class mCart {
 	
 	/**
 	 * Returns a list of products
-	 *
-	 * 
 	 * @param array $SearchOptions
-	 *
 	 * @return mBasicProduct[]
 	 */
 	public function searchProducts($SearchOptions = array()) {
 		$products = $this->Client->searchProducts ($SearchOptions);
 
-		/* @var $prodData mBasicProduct */
-		foreach ($products as $idProduct => $prodData) {
-			try {
-				if (is_null($prodData->Price)) {
-					$fullProduct = $this->getProductById($prodData->ProductId);
-					$FullPrice = $this->getDefaultPrice($fullProduct, $this->getCurrency());
-					//$prodData->Price = floatval($FullPrice->NetPrice);
-					//$prodData->Currency = $FullPrice->NetCurrency;
-				}
-			} catch (Exception $e) {
-				$prodData->Price = 0;
-			}
-		}
+		/* @param $prodData mBasicProduct */
+//		foreach ($products as $idProduct => $prodData) {
+//			try {
+//				if (is_null($prodData->Price)) {
+//					$fullProduct = $this->getProductById($prodData->ProductId);
+//					$FullPrice = $this->getDefaultPrice($fullProduct, $this->getCurrency());
+//					//$prodData->Price = floatval($FullPrice->NetPrice);
+//					//$prodData->Currency = $FullPrice->NetCurrency;
+//				}
+//			} catch (Exception $e) {
+//				$prodData->Price = 0;
+//			}
+//		}
 		return $products;
 	}
-	
+
 	/**
-	 * @var int $IdProduct
-	 * @var int $Quantity
-	 * @var array $PriceOptions
-	 * @var string $Currency
+	 * @param int $IdProduct
+	 * @param int $Quantity
+	 * @param array $PriceOptions
+	 * @param string $Currency
 	 * @return mPrice
 	 */
-	public function getPrice ($IdProduct, $Quantity = 1, $PriceOptions = '', $Currency = null) {
+	public function getPrice ($IdProduct, $Quantity = 1, $PriceOptions = array(), $Currency = null) {
 		return $this->Client->getPrice($IdProduct, $Quantity, $PriceOptions, $Currency);
 	}
-	
+
 	/**
 	 * Returns the list of available currencies for the current vendor
-	 * @param string $Hash
-	 * @throws CSOAPServerFault_Merchants
 	 * @return IsoCurrencyCodes array[string]
 	 */
 	public function getAvailableCurrencies () {
 		return $this->AvailableCurrencies;
 	}
-	
+
 	/**
 	 * Returns the list of available languages for the current vendor
-	 * @param string $Hash
-	 * @throws CSOAPServerFault_Merchants
 	 * @return IsoLanguageCodes array[string]
 	 */
 	public function getAvailableLanguages () {
@@ -436,14 +403,15 @@ class mCart {
 
 	/**
 	 * Returns the list of available countries for the current vendor
-	 * @param string $Hash
-	 * @throws CSOAPServerFault_Merchants
 	 * @return IsoCountryCodes array[string]
 	 */
 	public function getAvailableCountries () {
 		return $this->AvailableCountries;
 	}
-	
+
+	/**
+	 * @return mContents
+	 */
 	public function getContents() {
 		return $this->Client->getContents ();
 	}

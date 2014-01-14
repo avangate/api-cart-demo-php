@@ -147,10 +147,8 @@ class mJsonRPCClient implements mAPIInterface {
 	}
 
 	/**
-	 * Sets the global language
-	 * 
-	 * @param string $IsoLang
-	 *
+	 * Sets the client IP
+	 * @param string $IP
 	 * @return void
 	 */
 	public function setClientIP ($IP) {
@@ -160,9 +158,7 @@ class mJsonRPCClient implements mAPIInterface {
 	
 	/**
 	 * Sets the global language
-	 * 
 	 * @param string $IsoLang
-	 *
 	 * @return void
 	 */
 	public function setLanguage ($IsoLang) {
@@ -172,9 +168,7 @@ class mJsonRPCClient implements mAPIInterface {
 
 	/**
 	 * Sets global country
-	 * 
 	 * @param string $IsoCountry
-	 *
 	 * @return void
 	 */
 	public function setCountry($IsoCountry) {
@@ -184,9 +178,7 @@ class mJsonRPCClient implements mAPIInterface {
 
 	/**
 	 * Sets the global currency
-	 * 
 	 * @param string $IsoCurrency
-	 *
 	 * @return void
 	 */
 	public function setCurrency($IsoCurrency) {
@@ -195,9 +187,7 @@ class mJsonRPCClient implements mAPIInterface {
 	}
 	/**
 	 * Sets the billing details
-	 * 
 	 * @param mBillingDetails $BillingDetails
-	 *
 	 * @return void
 	 */
 	public function setBillingDetails (mBillingDetails $BillingDetails) {
@@ -207,9 +197,7 @@ class mJsonRPCClient implements mAPIInterface {
 
 	/**
 	 * Sets the delivery details [optional]
-	 * 
 	 * @param mDeliveryDetails $DeliveryDetails
-	 *
 	 * @return void
 	 */
 	public function setDeliveryDetails (mDeliveryDetails $DeliveryDetails) {
@@ -219,11 +207,8 @@ class mJsonRPCClient implements mAPIInterface {
 
 	/**
 	 * Sets the payment details for the current order
-	 * 
 	 * @param mPaymentDetails $PaymentDetails
-	 *
 	 * @throws CSOAPServerFault_Orders
-	 *
 	 * @return void
 	 */
 	public function setPaymentDetails (mPaymentDetails $PaymentDetails) {
@@ -233,11 +218,9 @@ class mJsonRPCClient implements mAPIInterface {
 
 	/**
 	 * Adds a product to the current cart session
-	 * 
 	 * @param integer $IdProduct
-	 * @param integer $Quantity
-	 * @param string $PriceOptions
-	 *
+	 * @param int $iQuantity
+	 * @param string $aPriceOptions
 	 * @return boolean
 	 */
 	public function addProduct ($IdProduct, $iQuantity = 1, $aPriceOptions = null) {
@@ -247,12 +230,9 @@ class mJsonRPCClient implements mAPIInterface {
 
 	/**
 	 * Deletes a product or subtracts a quantity from the current cart session
-	 * 
 	 * @param integer $IdProduct
 	 * @param integer $iQuantity
-	 *
 	 * @throws CSOAPServerFault_Orders
-	 *
 	 * @return boolean
 	 */
 	public function deleteProduct ($IdProduct, $iQuantity = 1) {
@@ -262,9 +242,7 @@ class mJsonRPCClient implements mAPIInterface {
 
 	/**
 	 * Empties the current cart session
-	 *
 	 * @throws CSOAPServerFault_Orders
-	 *
 	 * @return boolean
 	 */
 	public function clearProducts () {
@@ -274,7 +252,6 @@ class mJsonRPCClient implements mAPIInterface {
 
 	/**
 	 * Places an order
-	 *
 	 * @return mOrder
 	 */
 	public function placeOrder () {
@@ -284,9 +261,7 @@ class mJsonRPCClient implements mAPIInterface {
 
 	/**
 	 * Returns the order reference number
-	 * 
 	 * @param string $RefNo
-	 *
 	 * @return mOrder
 	 */
 	public function getOrder ($RefNo) {
@@ -296,9 +271,7 @@ class mJsonRPCClient implements mAPIInterface {
 	
 	/**
 	 * Returns the order reference number
-	 * 
 	 * @param string $RefNo
-	 *
 	 * @return string
 	 */
 	public function getOrderStatus ($RefNo) {
@@ -308,10 +281,7 @@ class mJsonRPCClient implements mAPIInterface {
 	
 	/**
 	 * Get information about a product when its id is known
-	 *
-	 * 
 	 * @param integer $IdProduct
-	 *
 	 * @return mProduct
 	 */
 	public function getProductById($IdProduct) {
@@ -321,9 +291,7 @@ class mJsonRPCClient implements mAPIInterface {
 	
 	/**
 	 * Get information about a product when its code is known
-	 * 
 	 * @param string $ProductCode
-	 *
 	 * @return mProduct
 	 */
 	public function getProductByCode($ProductCode) {
@@ -343,10 +311,7 @@ class mJsonRPCClient implements mAPIInterface {
 	
 	/**
 	 * Returns a list of products
-	 *
-	 * 
 	 * @param array $SearchOptions
-	 *
 	 * @return mBasicProduct[]
 	 */
 	public function searchProducts($SearchOptions = array()) {
@@ -361,14 +326,13 @@ class mJsonRPCClient implements mAPIInterface {
 	 * @var string $Currency
 	 * @return mPrice
 	 */
-	public function getPrice ($IdProduct, $Quantity = 1, $PriceOptions = '', $Currency = null) {
+	public function getPrice ($IdProduct, $Quantity = 1, $PriceOptions = array(), $Currency = null) {
 		$params = array($this->sessionID, $IdProduct, $Quantity, $PriceOptions, $Currency);
 		return $this->callRPC(self::getRequestObject(__FUNCTION__, $params));
 	}
 	
 	/**
 	 * Returns the list of available currencies for the current vendor
-	 * @param string $Hash
 	 * @throws CSOAPServerFault_Merchants
 	 * @return IsoCurrencyCodes array[string]
 	 */
@@ -379,7 +343,6 @@ class mJsonRPCClient implements mAPIInterface {
 	
 	/**
 	 * Returns the list of available languages for the current vendor
-	 * @param string $Hash
 	 * @throws CSOAPServerFault_Merchants
 	 * @return IsoLanguageCodes array[string]
 	 */
@@ -389,7 +352,6 @@ class mJsonRPCClient implements mAPIInterface {
 	}
 	/**
 	 * Returns the list of available countries for the current vendor
-	 * @param string $Hash
 	 * @throws CSOAPServerFault_Merchants
 	 * @return IsoCountryCodes array[string]
 	 */
