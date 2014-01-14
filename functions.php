@@ -214,12 +214,12 @@ function _e ($e) {
 		ob_end_clean(); // 0
 	}
 	ob_start();
-	
-	if (stristr ($e->getMessage(), 'Invalid hash provided')) {
+
+	if (stristr ($e->faultcode, 'FORBIDDEN')) {
 		@session_destroy();
-// 		header ('HTTP/1.1 303 See Other');
-// 		header ('Location : /list-products/');
-// 		exit();
+ 		header ('HTTP/1.1 303 See Other');
+ 		header ('Location : /list-products/');
+ 		exit();
 	}
 	header ('HTTP/1.1 500 Internal Server Error');
 	echo getErrorHeaderOutput ($e);
