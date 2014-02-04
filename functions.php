@@ -202,6 +202,9 @@ function getErrorHeaderOutput ($e = null) {
 	return $sRet;
 }
 
+/**
+ * @param Exception $e
+ */
 function _e ($e) {
 	$aErrors = array();
 	$iLevel = ob_get_level();
@@ -215,7 +218,12 @@ function _e ($e) {
 	}
 	ob_start();
 
-	if (stristr ($e->faultcode, 'FORBIDDEN')) {
+	if ($e instanceof SoapFault) {
+		$sessionError = stristr ($e->faultcode, 'FORBIDDEN');
+	} else {
+		$sessionError = stristr ($e->getMessage(), 'FORBIDDEN');
+	}
+	if ($sessionError) {
 		@session_destroy();
  		header ('HTTP/1.1 303 See Other');
  		header ('Location : /list-products/');
