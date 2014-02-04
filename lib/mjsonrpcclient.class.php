@@ -66,7 +66,7 @@ class mJsonRPCClient implements mAPIInterface {
 		$this->curl = curl_init(self::$url);
 		curl_setopt( $this->curl, CURLOPT_POST, 1);
 		curl_setopt( $this->curl, CURLOPT_RETURNTRANSFER, 1);
-// 		curl_setopt( $this->curl, CURLOPT_HEADER, 1);
+ 		curl_setopt( $this->curl, CURLOPT_HEADER, 1);
 	}
 
 	public function setSessionId ($SessionId) {
@@ -120,18 +120,27 @@ class mJsonRPCClient implements mAPIInterface {
 	private function callRPC (mJsonRPCRequest $oRequest, $bDebug = false) {
 		curl_setopt( $this->curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Accept: application/json'));
 
+		if (USE_PROXY) {
+			curl_setopt($this->curl, CURLOPT_PROXY, 'proxy.avangate.local');
+			curl_setopt($this->curl, CURLOPT_PROXYPORT, '8080');
+			curl_setopt($this->curl, CURLOPT_PROXYUSERPWD, 'marius.orcsik:');
+			curl_setopt($this->curl, CURLOPT_PROXYTYPE, CURLPROXY_HTTP);
+		}
+		
 		$sRequest = mJsonRPCRequest::encode($oRequest);
 		curl_setopt( $this->curl, CURLOPT_POSTFIELDS, $sRequest);
 		
 		$this->aRequests[$oRequest->id] = $oRequest; 
 		
 		$sResponse = curl_exec ($this->curl);
+		$info = curl_getinfo($this->curl);
+		$sResponse = substr($sResponse, $info['header_size']);
 		if (!empty($sResponse)) {
 			$oResponse = mJsonRPCResponse::decode ($sResponse);
 			self::$calls++;
 
 			if (!is_null($oResponse->error)) {
-				throw new ErrorException($oResponse->error);
+				throw new ErrorException($oResponse->error->message, $oResponse->error->code);
 			}
 			
 			if ($bDebug) {

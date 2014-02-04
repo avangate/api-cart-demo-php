@@ -8,7 +8,7 @@ class mJsonRPCResponse {
 	public $result = null;
 	public $error = null;
 	public $id;
-	public $jsonrpc;
+	public $jsonrpc = 2.0;
 
 	public function setResult ($sResult) {
 		$this->result = $sResult;
@@ -16,10 +16,10 @@ class mJsonRPCResponse {
 	
 	public function setError ($oError) {
 		$err = new RPCError();
-		if (property_exists($oError, 'code')) {
+		if (isset($oError->code)) {
 			$err->code = $oError->code;
 		}
-		if (property_exists($oError, 'message')) {
+		if (isset($oError->message)) {
 			$err->message = $oError->message;
 		}
 		$this->error = $err;

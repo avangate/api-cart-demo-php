@@ -16,6 +16,16 @@ class mSOAPClient extends SoapClient implements mAPIInterface {
 	
 	public function __construct ($wsdlUrl, $options = array()) {
 		self::$calls = 0;
+		if (USE_PROXY) {
+			$options = array_merge (
+				array (
+					'proxy_host' => 'proxy.avangate.local',
+					'proxy_port' => 8080,
+					'proxy_login' => 'marius.orcsik',
+				),
+				$options
+			);
+		}
 		$mOptions = array_merge(
 			array (
 				'location' => ORDER_SOAP_URL,
@@ -23,9 +33,6 @@ class mSOAPClient extends SoapClient implements mAPIInterface {
 				'cache_wsdl' => WSDL_CACHE_NONE,
 				//'uri' => 'test',
 				/**/
-				'proxy_host' => 'proxy.avangate.local',
-				'proxy_port' => 8080,
-				'proxy_login' => 'marius.orcsik',
 //				'proxy_password' => '',
 				/** /
 				'proxy_host' => 'localhost',
@@ -45,6 +52,7 @@ class mSOAPClient extends SoapClient implements mAPIInterface {
 			), 
 			$options
 		);
+
 		return parent::__construct ($wsdlUrl, $mOptions);
 	}
 	
