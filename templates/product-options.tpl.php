@@ -27,11 +27,11 @@ foreach ($prod->PriceOptions as $iKey => $OptionGroup) { ?>
 	} else {
 		if (!$OptionGroup->Required && $OptionGroup->Type == 'RADIO') {
 ?>
-					<label>none <input type="<? echo htmlentities( strtolower($OptionGroup->Type)); ?>" checked='checked' name="<?php echo htmlentities( $OptionGroup->Name); ?>" value="" /></label>
+					<label>none <input type="<?php echo htmlentities( strtolower($OptionGroup->Type)); ?>" checked='checked' name="<?php echo htmlentities( $OptionGroup->Name); ?>" value="" /></label>
 <?php 
 		}
 		foreach ($OptionGroup->Options as $iOptionKey => $Option) { ?>
-					<label><?php echo htmlentities( $Option->Name); ?> <input <? if ($OptionGroup->Required) { echo 'class="required"'; } ?> type="<? echo htmlentities( strtolower($OptionGroup->Type)); ?>" <?php if ( $Option->Default ) { echo 'checked="checked"'; } ?> name="<?php echo htmlentities( $OptionGroup->Name); ?><?php if($OptionGroup->Type=='CHECKBOX') { echo '[]'; }?>" value="<?php echo htmlentities( $Option->Value);?>" /></label>
+					<label><?php echo htmlentities( $Option->Name); ?> <input <? if ($OptionGroup->Required) { echo 'class="required"'; } ?> type="<?php echo htmlentities( strtolower($OptionGroup->Type)); ?>" <?php if ( $Option->Default ) { echo 'checked="checked"'; } ?> name="<?php echo htmlentities( $OptionGroup->Name); ?><?php if($OptionGroup->Type=='CHECKBOX') { echo '[]'; }?>" value="<?php echo htmlentities( $Option->Value);?>" /></label>
 <?php
 		}
 	}  ?>
