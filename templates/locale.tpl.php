@@ -16,7 +16,7 @@
 		</select> -->
 		<select name="currency">
 <?php foreach ($allCurrencies as $currencyCode) {?>
-			<option <?php echo strtolower($currency) == strtolower($currencyCode) ? 'selected="selected"' : ''; ?> value="<?php echo strtolower($currencyCode);?>"><?php echo $currencyCode;?></option>
+			<option <?php echo strtolower($currency) == strtolower($currencyCode) ? 'selected="selected"' : ''; ?> value="<?php echo strtolower($currencyCode);?>"><?php echo strtoupper($currencyCode);?></option>
 <?php } ?>
 		</select>
 	</form>

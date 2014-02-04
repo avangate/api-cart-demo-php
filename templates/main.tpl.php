@@ -38,8 +38,10 @@ if (stristr($includePath, 'order')) {
 	</div>
 </div>
 <div id="main-content">
-	<div id="locale-change"> <?php include ('templates/locale.tpl.php') ?> </div>
 <?php
+/*/
+?> <div id="locale-change"> <?php include ('templates/locale.tpl.php') ?> </div><?php
+/**/
 	$templatePath = realpath('../templates/' . str_replace('.php', '.tpl.php', $includePath));
 	if (!$templatePath) {
 		throw new Exception ('404');

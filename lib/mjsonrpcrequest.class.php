@@ -3,7 +3,8 @@ class mJsonRPCRequest {
 	public $method;
 	public $params;
 	public $id;
-	
+	public $jsonrpc = 2.0;
+
 // 	public function setMethod ($sMethod) {
 // 		$this->method = $sMethod;
 // 	}

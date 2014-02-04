@@ -1,6 +1,9 @@
 		<div id="cart_small">
-			<a href="/view-cart/"><img src="/images/cart-small.png" alt="View Cart" title="View Cart"/></a>
-			<div style="float:right">
+
+<?php include ('locale.tpl.php');?>
+
+			<a href="/view-cart/" style="float:left" ><img src="/images/cart-small.png" alt="View Cart" title="View Cart"/></a>
+			<div style="float:left; margin-left:10px">
 			Total price: <strong><?php echo $c->getTotalPrice(); ?> <?php echo $c->getCurrency();?></strong><br/>
 			Quantity: <strong><?php echo $c->getItemsQuantity(); ?></strong> <br/>
 			Items: <strong><?php echo count($c->getItems()); ?></strong> <br/>

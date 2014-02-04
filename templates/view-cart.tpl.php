@@ -39,27 +39,7 @@ if (count ($contents->Products) > 0) {
 			<div class="description">
 				<?php echo $prod->ShortDescription ? $prod->ShortDescription : 'No description available' ?>
 			</div>
-			<div>Price options:
-				<ul style="list-style:none">
-<?php 
-foreach ( $cartItem->PriceOptions as $iKey => $OptionGroup) { 
-	$GroupName = null;
-	$Options = array();
-	
-	$groupKey = str_replace(' ', '_', $OptionGroup->Name);
-	foreach ($OptionGroup->Options as $iOptionKey => $Option) { 
-		$optionKey = $Option->Value;
-		$GroupName = $OptionGroup->Name;
-		$Options[] = $Option->Name;
-	}
-	if  (!is_null($GroupName)) {
-?>
-				<li class="opt_group"><strong><?php echo $GroupName ?>: </strong> <span><?php echo implode (', ', $Options) ?> </span></li>
-<?php } 
-}
-?>
-				</ul>
-			</div>
+			<?php include ('product-options-readonly.tpl.php'); ?>
 		</td>
 		<td style="text-align:right;"> 
 			<div class="modify_quantity"><a class="up" data-id="<?php echo $prod->ProductId?>" id="qinc_<?php echo $prod->ProductId?>" href="#">&#8963;</a> <a class="down" data-id="<?php echo $prod->ProductId?>" id="qdec_<?php echo $prod->ProductId?>" href="#">&#8964;</a></div>
@@ -81,10 +61,12 @@ foreach ( $cartItem->PriceOptions as $iKey => $OptionGroup) {
 			</tbody>
 			<tfoot>
 				<tr>
-				<td class="details" style="padding:0; margin:0;border:none">
-					<label class="place_order" style="display:block;margin:0"> <button>Place order <img src="/images/order-btn.png"/></button> </label>
-				</td>
-				<td colspan="4" id="totals" style="text-align:right; font-size:90%; padding:4px;">
+					<td style="padding:0; margin:0;border:none" colspan="2">
+						<form class="details" style="width:100%" action="/order/">
+							<label class="place_order" style="display:block;margin:0;width:100%;text-align: left"> <button id="checkout">Go to checkout... <img src="/images/order-btn.png"/></button> </label>
+						</form>
+					</td>
+				<td id="totals" style="text-align:right; font-size:90%; padding:4px;" colspan="3">
 				<?php /* if (getCartItemsNumber() > 0) { ?>
 						<div style="float:left">
 						<a href="/cart/?action=emptycart">Empty Cart</a>
@@ -111,7 +93,8 @@ foreach ( $cartItem->PriceOptions as $iKey => $OptionGroup) {
 </div>
 <script type="text/javascript">
 	$(document).ready(function () {
-		$('');
+		$('#checkout').click(
+		);
 	});
 	console.debug($('input:hidden[name="method"]').prop('disabled'));
 </script>

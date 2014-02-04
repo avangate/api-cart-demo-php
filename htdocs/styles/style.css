@@ -48,7 +48,7 @@ select {
 	/*/margin-top:5px;/**/
 	float:right;
 	font-size:70%;
-	width:300px;
+	/*/width:300px;/**/
 	height:40px;
 }
 #main-content {
@@ -63,6 +63,13 @@ select {
 	width:200px;
 	margin-top:8px;
 	/**/
+}
+#locale_form {
+	float:left;
+	margin-right: 5px;
+}
+#locale_form select {
+	min-width:18px !important;
 }
 .products {
 	padding:4px;
@@ -167,7 +174,8 @@ table.prod_details td {
 	margin-left:10px;
 }
 .opt_group {
-	padding: 4px;
+	padding-left: 4px;
+	display:inline;
 }
 .opt_group label {
 	margin-right:10px;
@@ -208,7 +216,7 @@ table.prod_details td {
 	display:block; 
 	float:right; 
 	margin-left:12px;
-	margin-top:-4px
+	margin-top:-7px
 }
 .details label.place_order button, .frm button[type=submit] {
 	height:34px;

@@ -61,10 +61,10 @@ class mCart {
 	}
 	
 	private function connect () {
-		if (array_key_exists('api', $_COOKIE) && $_COOKIE['api'] == 'jsonrpc') {
-			$this->Client = new mJsonRPCClient();
-		} else {
+		if (array_key_exists('api', $_COOKIE) && $_COOKIE['api'] == 'soap') {
 			$this->Client = new mSOAPClient( ORDER_SOAP_URL . '?wsdl' );
+		} else {
+			$this->Client = new mJsonRPCClient();
 		}
 		$this->Client->setAccountCode(MCODE);
 		$this->Client->setSecretKey(KEY);
