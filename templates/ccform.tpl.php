@@ -12,15 +12,15 @@
 				<img src="/images/discovery.png" /><br/>
 				<input <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?>type="radio" name="card_type" value="DISCOVERY"/>
 			</label>
-			<label> 
+			<label>
 				<img src="/images/amex.png" /><br/>
 				<input <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?>type="radio" name="card_type" value="AMEX"/>
 			</label>
 		</div>
 		
-		<label>Card Number <input type="text" id="card_number" name="card_number" value="<?php if ($step == '2') {?>4111111111111111<?php } ?>" <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?>/> </label><br/>
+		<label style="height:20px !important;">Card Number <input type="text" id="card_number" name="card_number" value="<?php if ($step == '2') {?>4111111111111111<?php } ?>" <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?>/> </label><br/>
 		
-		<label>CVV2 <input type="text" id="ccid" name="ccid" value="<?php if ($step == '2') {?>1234<?php } ?>" <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?>/> </label><br/>
+		<label style="height:20px !important;">CVV2 <input type="text" id="ccid" name="ccid" value="<?php if ($step == '2') {?>1234<?php } ?>" <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?>/> </label><br/>
 		
 		<label style="padding-top:20px; clear:both; color:#888">Expiration
 			<span style="float:right" >
@@ -48,7 +48,7 @@
 				</select> 
 			</span>
 		</label><br/>
-		<label>Holder Name <input type="text" id="holder_name" name="holder_name" <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?> value=""/> </label><br/>
+		<label style="height:20px !important;">Holder Name <input type="text" id="holder_name" name="holder_name" <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?> value=""/> </label><br/>
 		
 		<div style="height:1px; line-height:1px; clear:both;margin-top:5em;">&nbsp;</div>
 		<address style="font-size:0.8em;color:#999;font-weight:lighter;">Please note that the payment information is dispatched through <a href="http://avangate.com">Avangate BV.</a> &ndash; which is a PCI compliant payment processor.</address>

@@ -50,6 +50,7 @@ select {
 	font-size:70%;
 	/*/width:300px;/**/
 	height:40px;
+	overflow: visible;
 }
 #main-content {
 	width:680px;
@@ -256,7 +257,7 @@ table.prod_details td {
 	margin-bottom:1px !important;
 }
 #payment_details {
-	height:451px;
+	height:440px;
 	margin:0;
 	/*/padding:0;/**/
 }

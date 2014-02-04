@@ -29,7 +29,7 @@ if (count ($contents->Products) > 0) {
 		$setOptionGroups = $cartItem->PriceOptions;
 		$i++;
 ?>
-			<tr class="prod_description ">
+	<tr class="prod_description ">
 		<td style="border-left:0px;">
 			<input type="hidden" id="id_<?php echo $prod->ProductId?>" name="id" value="<?php echo $prod->ProductId ?>" /> 
 			<input type="hidden" id="price_<?php echo $prod->ProductId?>" name="price" value="<?php echo number_format($prod->Price,2) ?>" /> 
@@ -93,8 +93,8 @@ if (count ($contents->Products) > 0) {
 </div>
 <script type="text/javascript">
 	$(document).ready(function () {
-		$('#checkout').click(
-		);
+//		$('#checkout').click(
+//		);
 	});
 	console.debug($('input:hidden[name="method"]').prop('disabled'));
 </script>

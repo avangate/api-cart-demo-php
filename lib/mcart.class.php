@@ -24,12 +24,12 @@ class mCart {
 		if (is_null($this->SessionID)) {
 			$this->SessionID = $this->Client->authenticate();
 			try {
-				if (!is_null($this->Language)) {
-					$this->Client->setLanguage(strtolower($this->Language));
-				}
-				if (!is_null($this->Country)) {
-					$this->Client->setCountry(strtolower($this->Country));
-				}
+//				if (!is_null($this->Language)) {
+//					$this->Client->setLanguage(strtolower($this->Language));
+//				}
+//				if (!is_null($this->Country)) {
+//					$this->Client->setCountry(strtolower($this->Country));
+//				}
 				if (!is_null($this->Currency)) {
 					$this->Client->setCurrency(strtolower($this->Currency));
 				}
