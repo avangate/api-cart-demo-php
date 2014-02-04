@@ -3,9 +3,9 @@
 <?php
 if (isset($a) && count($a) >= 1) {  
 ?>
-<ul style="list-style: none;" class="products">
+<ul style="list-style: none;margin-top:0px" class="products">
 	<li><h3>Products:</h3></li>
-<?php 
+<?php
 /* @var $prod mBasicProduct */
 foreach ($a as $iKey => $prod) { 
 	$cls = $iKey % 2 ? 'even' : 'odd';

@@ -6,12 +6,12 @@ if ($prod->Price instanceof stdClass) {
 ?>	
 	<div class="prod_details" style="; overflow:visible;">
 		<div class="prod_description">
-			<div style="float:left; width:520px">
+			<div style="float:left; width:500px">
 				<a href="product-details/?id=<?php echo $prod->ProductId?>"><img src="<?php echo !is_null($prod->ProductImage) ? str_replace('http://MYWEB_FULL_HOST', 'https://secure.avangate.com', $prod->ProductImage) : '/images/defaultprod.png';?>" style="width:80px; float:left" /></a>
 				<h4><a href="/product-details/?id=<?php echo$prod->ProductId?>"><?php echo $prod->ProductName ?></a> <?php if ($prod->ProductVersion) {?><span>(v <?php echo $prod->ProductVersion; ?>)</span><?php }?></h4>
 				<div class="description"><?php echo strlen ($prod->ShortDescription) ? $prod->ShortDescription : 'No description available'?></div>
 			</div>
-			<div style="float:right; width:140px; clear:right; font-size:80%">
+			<div style="float:right; width:160px; clear:right; font-size:80%">
 			<form action="/cart/?action=add" method="post" class="frm">
 				<input type="hidden" name="id" value="<?php echo $prod->ProductId; ?>" />
 				Quantity: <select name="quantity" style="min-width:7ex;">

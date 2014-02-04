@@ -22,11 +22,11 @@ class mSOAPClient extends SoapClient implements mAPIInterface {
 				'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP,
 				'cache_wsdl' => WSDL_CACHE_NONE,
 				//'uri' => 'test',
-				/*/
-				'proxy_host' => 'http://proxy.avangate.local',
+				/**/
+				'proxy_host' => 'proxy.avangate.local',
 				'proxy_port' => 8080,
 				'proxy_login' => 'marius.orcsik',
-				'proxy_password' => 'Gecadedecacat4',
+//				'proxy_password' => '',
 				/** /
 				'proxy_host' => 'localhost',
 				'proxy_port' => 3128,

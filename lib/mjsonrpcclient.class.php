@@ -139,7 +139,7 @@ class mJsonRPCClient implements mAPIInterface {
 			$this->aResponses[$oRequest->id] = $oResponse; 
 			return $oResponse->result;
 		}
-		throw new ErrorException ('Empty response for ['.$oRequest->method.'] method');
+		//throw new ErrorException ('Empty response for ['.$oRequest->method.'] method');
 	}
 	
 	public function login ($sAccountCode, $sDateStart, $sSecretHash) {

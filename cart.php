@@ -81,12 +81,12 @@ try {
 			header ('Location: /list-products/');
 			break;
 		case 'set': //set stuff
-			$country = $_POST['country'];
-			$currency = $_POST['currency'];
-			
+			$country = isset($_POST['country']) ? $_POST['country'] : null;
+			$currency = isset($_POST['currency']) ? $_POST['currency'] : null;
+
 			try {
-				$c->setCountry(strtoupper($country));
-				$c->setCurrency(strtoupper($currency));
+				if (!is_null($country)) $c->setCountry(strtoupper($country));
+				if (!is_null($currency)) $c->setCurrency(strtoupper($currency));
 			} catch (SoapFault $e) {
 				$errors[] = $e->getMessage();
 				outputJson(array('status'=>'nok', 'error' => implode("\n", $errors))); // break;

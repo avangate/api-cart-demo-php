@@ -132,7 +132,7 @@ try {
 		} catch (SoapFault $e) {
 			_e ($e);
 		}
-		
+		d ($order);
 		header ('HTTP/1.1 303 See Other');
 		if ($order instanceof mOrder && $order->RefNo > 0) {
 			$c->emptyCart();

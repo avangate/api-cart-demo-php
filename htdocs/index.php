@@ -17,13 +17,6 @@ $iStart = microtime(true);
 import ('lib');
 import ('assets');
 
-if (array_key_exists('api', $_GET) && in_array($_GET['api'], array('soap', 'jsonrpc'))) {
-	setcookie('api', $_GET['api']);
-	header ('HTTP/1.1 303 See Other');
-	header ('Location: /list-products/');
-	exit();
-}
-
 try {
 	$includePath = $_SERVER['SCRIPT_URL'];
 	if (substr($includePath, -1) == '/') {
@@ -55,10 +48,19 @@ try {
 	_e ($e);
 }
 
+if (array_key_exists('api', $_GET) && in_array($_GET['api'], array('soap', 'jsonrpc'))) {
+	setcookie('api', $_GET['api']);
+	header ('HTTP/1.1 303 See Other');
+	header ('Location: /');
+	exit();
+}
+
+
 $title = 'Not Found';
 if (empty($includePath)) $includePath = 'list-products';
 
 $includePath .= '.php';
+$country = 'us';
 
 try {
 	$path = '../' . $includePath;
@@ -81,11 +83,6 @@ try {
 } catch (Exception $e) {
 	_e ($e);
 	exit();
-}
-$iLevel = ob_get_level();
-for ($i = 0 ; $i < $iLevel - 2; $i ++ ){
-	$err = ob_get_clean();
-	if (!empty($err)) $errors[] = $err;
 }
 $iLevel = ob_get_level();
 for ($i = 0 ; $i < $iLevel; $i ++ ){

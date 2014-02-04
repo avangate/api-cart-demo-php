@@ -81,7 +81,10 @@ foreach ( $cartItem->PriceOptions as $iKey => $OptionGroup) {
 			</tbody>
 			<tfoot>
 				<tr>
-				<td colspan="5" id="totals" style="text-align:right; font-size:90%; padding:4px;">
+				<td class="details" style="padding:0; margin:0;border:none">
+					<label class="place_order" style="display:block;margin:0"> <button>Place order <img src="/images/order-btn.png"/></button> </label>
+				</td>
+				<td colspan="4" id="totals" style="text-align:right; font-size:90%; padding:4px;">
 				<?php /* if (getCartItemsNumber() > 0) { ?>
 						<div style="float:left">
 						<a href="/cart/?action=emptycart">Empty Cart</a>
@@ -106,3 +109,9 @@ foreach ( $cartItem->PriceOptions as $iKey => $OptionGroup) {
 		<br/>
 		<address>VAT might apply for EU Orders. The total price inclusive all applicable taxes will be displayed before the order is transmitted.</address>
 </div>
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('');
+	});
+	console.debug($('input:hidden[name="method"]').prop('disabled'));
+</script>

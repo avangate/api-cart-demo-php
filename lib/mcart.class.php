@@ -23,17 +23,19 @@ class mCart {
 		$this->connect();
 		if (is_null($this->SessionID)) {
 			$this->SessionID = $this->Client->authenticate();
-			
-			if (!is_null($this->Language)) {
-				$this->Client->setLanguage(strtolower($this->Language));
+			try {
+				if (!is_null($this->Language)) {
+					$this->Client->setLanguage(strtolower($this->Language));
+				}
+				if (!is_null($this->Country)) {
+					$this->Client->setCountry(strtolower($this->Country));
+				}
+				if (!is_null($this->Currency)) {
+					$this->Client->setCurrency(strtolower($this->Currency));
+				}
+			}catch (SoapFault $f) {
+				//
 			}
-			if (!is_null($this->Country)) {
-				$this->Client->setCountry(strtolower($this->Country));
-			}
-			if (!is_null($this->Currency)) {
-				$this->Client->setCurrency(strtolower($this->Currency));
-			}
-			
 			$this->AvailableCountries = $this->Client->getAvailableCountries();
 			$this->AvailableLanguages = $this->Client->getAvailableLanguages();
 			$this->AvailableCurrencies = $this->Client->getAvailableCurrencies();

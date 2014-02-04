@@ -5,7 +5,7 @@ if (!isset($setOptionGroups)) {
 	$setOptionGroups = $c->getItemPriceOptions($prod->ProductId);
 }
 
-foreach ($prod->PriceOptions as $iKey => $OptionGroup) { 
+foreach (@$prod->PriceOptions as $iKey => $OptionGroup) {
 	$GroupName = null;
 	$Options = array();
 	

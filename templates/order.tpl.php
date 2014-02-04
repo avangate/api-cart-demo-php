@@ -12,7 +12,7 @@ if (isset($status)) {
 	$selfUrl = urlencode('http://' . $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, strpos ($_SERVER['REQUEST_URI'], '?')));
 
 	if ($step == 2 && (!isset($mPayment->Type) && $mPayment->Type != 'CC')) { ?> 
-	<form method="post" class="frm" action="<?php echo API_PAYMENT_URL ?>?finish=true&amp;redir=<?php echo $selfUrl?>">
+	<form method="post" class="frm" action="<?php echo PAYMENT_URL ?>?finish=true&amp;redir=<?php echo $selfUrl?>">
 	<input type="hidden" value="<?php echo $c->getSessionId(); ?>" name="hash" />
 	<input type="hidden" value="<?php echo $c->getCurrency(); ?>" name="currency" />
 	<input type="hidden" value="<?php echo $c->getCountry(); ?>" name="country" />
@@ -158,7 +158,8 @@ if ($step == 2) {?>
 <script type="text/javascript" src="/scripts/jquery.clearinputs.js"></script>
 <script type="text/javascript">
 	$(document).ready(function () {
-		var defaultCards = <?php echo json_encode ($defaultCards); ?>; 
+		var defaultCards = <?php echo json_encode ($defaultCards); ?>;
+		/**/
 		function modifyQuantity (productId, quantity) {
 			var action = null;
 			$.ajax({
@@ -170,8 +171,8 @@ if ($step == 2) {?>
 //					$('#price_display').css({color:'#f00', fontWeight: 'bold'}).html('?');
 				},
 				success: function (data) {
-					$('#price_' + productId) = data.responseText['NetPrice'];
-					$('#quantity_' + productId) = quantity;
+					$("#price_" + productId).val( data.responseText['NetPrice'] );
+					$("#quantity_" + productId).val ( quantity);
 //					$('#price').val(data.NetPrice);
 //					$('#price_display').html(data.NetPrice).css({color: '#000', fontWeight: 'normal'});
 				},
@@ -184,12 +185,12 @@ if ($step == 2) {?>
 				}
 			});
 		}
-		
+		/**/
 		$('.modify_quantity a').click (function (e) {
 			var that = $(this);
 			var productId = $(this).data('id');
 			var quantity = parseInt($('#quantity_'+productId).val());
-			
+
 			if (that.prop('class') == 'down') {
 				quantity -= 1;
 			} else {
@@ -203,7 +204,7 @@ if ($step == 2) {?>
 		$('#payment_details label input').not(':radio').not (':checkbox').add().clearInputs();
 		$('#billing_details label input').not(':radio').not (':checkbox').add().clearInputs();
 
-		
+
 		$( "#tabs" ).tabs({
 			<?php /* if ($step == 2) { ?>disabled: true,<?php } */?>
 			show: function (e, ui) {
@@ -216,7 +217,7 @@ if ($step == 2) {?>
 			show : function (e, ui) {
 				console.debug (ui);
 			}/**/
-		}); 
+		});
 
 		$( ".card_pick input:radio").click(function (e) {
 			var type = $(e.target).val();

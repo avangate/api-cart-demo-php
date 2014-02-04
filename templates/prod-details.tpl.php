@@ -6,7 +6,8 @@
 	<form method="post" action="/cart/?action=add" class="frm" id="frm">
 		<div class="prod_description">
 			<img src="<?php echo !is_null($prod->ProductImage) ? str_replace('http://MYWEB_FULL_HOST', 'https://secure.avangate.com', $prod->ProductImage) : '/images/defaultprod.png';?>" style="float:left;width:120px" />
-			<h4><?php echo $prod->ProductName ?> <span><?php echo $prod->ProductVersion; ?></span></h4>
+			<!-- <h4><?php echo $prod->ProductName ?> <span><?php echo $prod->ProductVersion; ?></span></h4>-->
+			<h4><a href="/product-details/?id=<?php echo$prod->ProductId?>"><?php echo $prod->ProductName ?></a> <?php if ($prod->ProductVersion) {?><span>(v <?php echo $prod->ProductVersion; ?>)</span><?php }?></h4>
 			<button type="submit" style="font-size:110%;">Add to cart <span style="margin-left:4px">&raquo;</span> </button><br/><br/>
 			<div class="description">
 				<?php if (strlen($prod->LongDescription) && strlen($prod->ShortDescription)) { echo 'No description available'; } else { echo $prod->LongDescription ? $prod->LongDescription : $prod->ShortDescription; }?>

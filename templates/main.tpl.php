@@ -33,13 +33,12 @@ if (stristr($includePath, 'order')) {
 <div id="header">
 	<div>
 		<?php if (count($errors) >= 1) { ?><div class="error"><?php echo implode ('<br/>', $errors); ?></div><?php } ?>
-		<div id="small-cart"><?php include ('templates/cart-small.tpl.php') ?> </div>
+		<div id="small-cart" style="margin-top:4px"><?php include ('templates/cart-small.tpl.php') ?> </div>
 		<h1><a href="/"><img src="/images/logo.png" alt="Logo" /></a></h1>
-		<div id="locale-change"> <?php include ('templates/locale.tpl.php') ?> </div>
 	</div>
 </div>
-<br/>
 <div id="main-content">
+	<div id="locale-change"> <?php include ('templates/locale.tpl.php') ?> </div>
 <?php
 	$templatePath = realpath('../templates/' . str_replace('.php', '.tpl.php', $includePath));
 	if (!$templatePath) {
@@ -85,5 +84,37 @@ if (stristr($includePath, 'order')) {
 <?php } ?>
 	</pre>
 </div>
+<script type="text/javascript">
+	$(document).ready (function () {
+		$('#locale_form').children('select').change(function (e) {
+			var req = {};
+			$('#locale_form').children('select').each (function () {
+				var varname = $(this).attr('name');
+				var value = $(this).val();
+				req[varname] = value;
+			});
+			var status =  $('<img src="/images/waiting.gif" />');
+			$.ajax({
+				url : '/cart/?&action=set',
+				type : 'post',
+				dataType : 'json',
+				data : req,
+				beforeSend: function (data) {
+					status.appendTo('locale-select');
+				},
+				success: function (data) {
+					console.debug (status, data);
+					//document.location.reload(true);
+				},
+				complete : function (data) {
+					console.debug (status, data);
+					//document.location.reload(true);
+//				    $('#locale_select').remove(status);
+				}
+			});
+			document.location.reload(true);
+		});
+	});
+</script>
 </body>
 </html>

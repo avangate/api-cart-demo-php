@@ -37,10 +37,8 @@ select {
 }
 #header h1 {
 	float:left;
-}
-#header #locale-change {
-	float:right;
-	/**/margin-top:8px;/**/
+	margin-bottom:6px;
+	margin-top:2px;
 }
 #header #cart_small a {
 	margin-right:10px;
@@ -56,6 +54,15 @@ select {
 #main-content {
 	width:680px;
 	margin:auto;
+	overflow: auto;
+}
+#main-content #locale-change {
+	float:right;
+	clear:both;
+	/*/
+	width:200px;
+	margin-top:8px;
+	/**/
 }
 .products {
 	padding:4px;
@@ -188,6 +195,7 @@ table.prod_details td {
 	width: 332px;
 	float:left;
 	font-weight: bold;
+	overflow: hidden;
 }
 .details legend, .disclaimer h3 {
 	border-bottom: 1px solid #CCCCCC;
@@ -224,7 +232,29 @@ table.prod_details td {
 	text-align:center;
 	margin-top:20px;
 }
+.ui-corner-all {
+	border-radius: 0 !important;
+}
+.ui-widget-header {
+	background-image: none !important;
+	background-color: #EBEBEB !important;
+	border:none !important;
+}
+.ui-tabs-nav {
+	/*/padding-left:10px !important;/**/
+}
+.ui-tabs-nav li {
+	margin-left:5px !important;
+	margin-bottom:1px !important;
+}
+#payment_details {
+	height:451px;
+	margin:0;
+	/*/padding:0;/**/
+}
 #payment_details #tabs {
+	width:335px;
+	margin-left:-9px;
 	/*/margin-left:-2px;
 	margin-right:-2px;/**/
 }
