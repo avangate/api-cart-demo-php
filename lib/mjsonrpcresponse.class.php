@@ -1,15 +1,28 @@
 <?php
+class RPCError {
+	public $code;
+	public $message;
+}
+
 class mJsonRPCResponse {
 	public $result = null;
 	public $error = null;
 	public $id;
-	
+	public $jsonrpc;
+
 	public function setResult ($sResult) {
 		$this->result = $sResult;
 	}
 	
-	public function setError ($aError) {
-		$this->error = $aError;
+	public function setError ($oError) {
+		$err = new RPCError();
+		if (property_exists($oError, 'code')) {
+			$err->code = $oError->code;
+		}
+		if (property_exists($oError, 'message')) {
+			$err->message = $oError->message;
+		}
+		$this->error = $err;
 	}
 	
 	public function setId ($sId) {

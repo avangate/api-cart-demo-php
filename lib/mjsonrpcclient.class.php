@@ -119,6 +119,7 @@ class mJsonRPCClient implements mAPIInterface {
 	
 	private function callRPC (mJsonRPCRequest $oRequest, $bDebug = false) {
 		curl_setopt( $this->curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Accept: application/json'));
+
 		$sRequest = mJsonRPCRequest::encode($oRequest);
 		curl_setopt( $this->curl, CURLOPT_POSTFIELDS, $sRequest);
 		
@@ -138,6 +139,10 @@ class mJsonRPCClient implements mAPIInterface {
 			}
 			$this->aResponses[$oRequest->id] = $oResponse; 
 			return $oResponse->result;
+		} else {
+			if (curl_errno($this->curl)) {
+				throw new ErrorException(curl_error($this->curl));
+			}
 		}
 		//throw new ErrorException ('Empty response for ['.$oRequest->method.'] method');
 	}
