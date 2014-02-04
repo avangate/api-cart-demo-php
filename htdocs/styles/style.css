@@ -256,8 +256,11 @@ table.prod_details td {
 	margin-left:5px !important;
 	margin-bottom:1px !important;
 }
+#billing_details {
+	height:425px;
+}
 #payment_details {
-	height:440px;
+	height:425px;
 	margin:0;
 	/*/padding:0;/**/
 }
@@ -325,7 +328,7 @@ select>option[value=""] {
 	font-style:italic;
 }
 .disclaimer {
-	margin-bottom:10px;
+	margin:10px 0;
 }
 .disclaimer .secure {
 	width:200px;
@@ -338,7 +341,7 @@ select>option[value=""] {
 .disclaimer .hotline h5 {
 	font-weight:bold;
 	font-size:110%;
-	padding-left:4px 0;
+	padding-left:4px;
 }
 .disclaimer hr {
 	display:block;

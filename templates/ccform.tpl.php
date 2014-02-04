@@ -25,12 +25,12 @@
 		<label style="padding-top:20px; clear:both; color:#888">Expiration
 			<span style="float:right" >
 				<select style="display:inline; float:none;" id="date_year" name="date_year" <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?>>
-					<option>2010</option>
-					<option>2011</option>
-					<option selected="selected">2012</option>
-					<option>2013</option>
 					<option>2014</option>
-					<option>2015</option>
+					<option selected="selected">2015</option>
+					<option>2016</option>
+					<option>2017</option>
+					<option>2018</option>
+					<option>2019</option>
 				</select> &ndash;
 				<select style="display:inline; float:none;" id="date_month" name="date_month" <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?>>
 					<option value="01">01 - Jan</option>
@@ -50,5 +50,4 @@
 		</label><br/>
 		<label style="height:20px !important;">Holder Name <input type="text" id="holder_name" name="holder_name" <?php echo ($step == '1') ? 'disabled="disabled" ' : '';?> value=""/> </label><br/>
 		
-		<div style="height:1px; line-height:1px; clear:both;margin-top:5em;">&nbsp;</div>
-		<address style="font-size:0.8em;color:#999;font-weight:lighter;">Please note that the payment information is dispatched through <a href="http://avangate.com">Avangate BV.</a> &ndash; which is a PCI compliant payment processor.</address>
+		<address style="font-size:0.8em;color:#999;font-weight:lighter;bottom: 9px;position: absolute">Please note that the payment information is dispatched through <a href="http://avangate.com">Avangate BV.</a> &ndash; which is a PCI compliant payment processor.</address>

@@ -11,14 +11,7 @@ if (isset($status)) {
 } else {
 	$selfUrl = urlencode('http://' . $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, strpos ($_SERVER['REQUEST_URI'], '?')));
 
-	if ($step == 2 && (!isset($mPayment->Type) && $mPayment->Type != 'CC')) { ?> 
-	<form method="post" class="frm" action="<?php echo PAYMENT_URL ?>?finish=true&amp;redir=<?php echo $selfUrl?>">
-	<input type="hidden" value="<?php echo $c->getSessionId(); ?>" name="hash" />
-	<input type="hidden" value="<?php echo $c->getCurrency(); ?>" name="currency" />
-	<input type="hidden" value="<?php echo $c->getCountry(); ?>" name="country" />
-<?php } else {?>
-	<form method="post" class="frm" action="?step=<?php echo $step ?><?php if (isset($mPayment->Type)) echo "&amp;pmethod=" . $mPayment->Type;?>">
-<?php }?>
+?>
 	<div class="products">
 	<h3>Products:</h3>
 		<table class="prod_details" cellpadding="0" cellspacing="0">
@@ -73,8 +66,17 @@ $bReadonly = true;
 		<address>VAT might apply for EU Orders. The total price inclusive all applicable taxes will be displayed before the order is transmitted.</address>
 	</div>
 	<div class="order_details">
+<?php
+	if ($step == 2 && (!isset($mPayment->Type) && $mPayment->Type != 'CC')) { ?>
+		<form method="post" class="frm" action="<?php echo PAYMENT_URL ?>?finish=true&amp;redir=<?php echo $selfUrl?>">
+			<input type="hidden" value="<?php echo $c->getSessionId(); ?>" name="hash" />
+			<input type="hidden" value="<?php echo $c->getCurrency(); ?>" name="currency" />
+			<input type="hidden" value="<?php echo $c->getCountry(); ?>" name="country" />
+<?php } else { ?>
+			<form method="post" class="frm" action="?step=<?php echo $step ?><?php if (isset($mPayment->Type)) echo "&amp;pmethod=" . $mPayment->Type;?>">
+<?php }?>
 	<div class="details" style="margin-right:10px;">
-	<fieldset id="billing_details">
+	<fieldset id="billing_details" style="position: relative;overflow: visible">
 		<legend>Billing details:</legend>
 		
 		<label>First Name <input type="text" name="first_name" <?php echo ($step == 2) ? 'disabled="disabled" ' : '';?>value="<?php echo $mBilling->FirstName; ?>"/> </label><br/>
@@ -95,38 +97,44 @@ $bReadonly = true;
 			<!-- <input type="text" name="country_code" maxlength="2" size="2" value="<?php echo ($countryCode); ?>" /> -->
 		</label><br/> 
 <?php if ($step == '1') {?>
-		<label class="place_order" style="display:block;"> <button>Next <img src="/images/order-btn.png"/></button> </label>
-<?php } ?>
+		<label class="place_order" style="display:block;bottom: 9px;position: absolute;width: 95%"> <button>Next <img src="/images/order-btn.png"/></button> </label>
+<?php } else {
+?>
+	<label class="place_order" style="display:block; bottom: 9px;position: absolute;width: 95%"> <button id="edit" style="padding:0">Edit ...</button> </label>
+<?php
+} ?>
 	</fieldset>
 	</div> 
 	<div class="details">
-	<fieldset id="payment_details">
+	<fieldset id="payment_details" style="position: relative;overflow: visible">
 		<legend>Payment details: </legend>
 <?php
 if (empty($mPayment->Type)) { ?>
-		<div class="label" style="margin:4px 0">Choose your payment option:</div>
-		<div id="tabs">
+	<!--<div id="tabs">
+
 		<ul>
-			<li> <a href="#ccform">Credit Card</a></li> 
+			<li> <a href="#ccform">Credit Card</a></li>
 			<li> <a href="#ppform">PayPal</a> </li>
 		</ul>
+		-->
 <?php
 }
 
-	echo '<div id="ccform">';
+//	echo '<div id="ccform">';
 	include ('templates/ccform.tpl.php');
-	echo '</div>';
-	echo '<div id="ppform">';
-	include ('templates/paypalform.tpl.php');
-	echo '</div>';
+//	echo '</div>';
+//	echo '<div id="ppform">';
+//	include ('templates/paypalform.tpl.php');
+//	echo '</div>';
 
 if ($step == 2) {?>
-		<label class="place_order" style="display:block;"> <button>Place order <img src="/images/order-btn.png"/></button> </label>
+		<label class="place_order" style="display:block;bottom: 35px;position: absolute;width: 95%"> <button>Place order <img src="/images/order-btn.png"/></button> </label>
 <?php } ?><br/>
+<!--	</div>-->
 	</fieldset>
 	</div>
-	</div>
 	</form>
+	</div>
 	<div class="disclaimer">
 		<h3>Disclaimer</h3>
 		<p>Check out our <a href="#">Customer Support</a> for more information on online payment related issues, order status and transactions.</p>
@@ -205,19 +213,19 @@ if ($step == 2) {?>
 		$('#billing_details label input').not(':radio').not (':checkbox').add().clearInputs();
 
 
-		$( "#tabs" ).tabs({
-			<?php /* if ($step == 2) { ?>disabled: true,<?php } */?>
+		/*/$( "#tabs" ).tabs({
+			<?php /**/ if ($step == 1) { ?>disabled: true,<?php } /**/?>
 			show: function (e, ui) {
 				var form = $(ui.panel.parentElement).children('.ui-tabs-panel').not($(ui.panel));
 				var formElements = form.find('input').add(form.find('select'));
 				formElements.prop({disabled : 'disabled'});
 
 				$(ui.panel).find('input').add($(ui.panel).find('select')).prop({disabled:false});
-			}/*/,
+			},
 			show : function (e, ui) {
 				console.debug (ui);
-			}/**/
-		});
+			}
+		});/**/
 
 		$( ".card_pick input:radio").click(function (e) {
 			var type = $(e.target).val();
