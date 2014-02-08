@@ -52,7 +52,7 @@ foreach ($prod->PriceOptions as $iKey => $OptionGroup) { ?>
 	$(document).ready(function () {
 		$( ".slider" ).each(function() {
 			var sli = $(this);
-			
+
 			var oid = this.id.substr(4);
 			var val = $("#inp_" + oid).val();
 			var maximum = $(this).data("max");
@@ -66,6 +66,10 @@ foreach ($prod->PriceOptions as $iKey => $OptionGroup) { ?>
 				slide: function (e, ui) {
 					var oid = this.id.substr(4);
 					$("#inp_" + oid).val(ui.value);
+				},
+				stop: function (e, ui) {
+					var oid = this.id.substr(4);
+					$("#inp_" + oid).change();
 				}
 			});
 		});
