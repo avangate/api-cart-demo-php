@@ -1,4 +1,4 @@
-<?php 
+<?php
 try {
 	ob_start();
 	header ('HTTP/1.1 200 OK');
@@ -11,12 +11,12 @@ try {
 <link rel="stylesheet" href="/styles/style.css" media="screen" />
 <link rel="shortcut icon" href="/images/favicon.ico" />
 <script type="text/javascript" src="/scripts/jquery.min.js" ></script>
-<?php 
-if (stristr($includePath, 'order')) {
-?>	
-<link rel="stylesheet" href="/styles/smoothness/jquery-ui.css" media="screen" />
+<?php
+if (true || stristr($includePath, 'order')) {
+?>
+<link rel="stylesheet" href="/styles/vader/jquery-ui.css" media="screen" />
 <script type="text/javascript" src="/scripts/jquery-ui.min.js" ></script>
-<?php 
+<?php
 }
 ?>
 <script type="text/javascript">
@@ -49,7 +49,7 @@ if (stristr($includePath, 'order')) {
 	include ($templatePath);
 ?>
 </div>
-<?php 
+<?php
 } catch (Exception $e) {
 	ob_end_clean();
 	ob_start();
@@ -59,13 +59,13 @@ if (stristr($includePath, 'order')) {
 ?>
 	<h2 style="color:#900;margin:1.2em;text-align:right;">Page not found</h2>
 	<div style="margin:1.2em;text-align:left">Please see if you misspelled the URL.</div>
-<?php 
+<?php
 	} else {
 		header ('HTTP/1.1 500 Server Error');
 ?>
 	<h2 style="color:#900;margin:1.2em;text-align:right;"><?php  echo $e->getMessage() ?></h2>
 	<div style="margin:1.2em;text-align:left"><pre><?php echo $e->getTraceAsString()?></pre></div>
-<?php 
+<?php
 	}
 	ob_flush();
 }

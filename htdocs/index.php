@@ -18,7 +18,7 @@ import ('lib');
 import ('assets');
 
 try {
-	$includePath = $_SERVER['SCRIPT_URL'];
+	$includePath = $_SERVER['PATH_INFO'];
 	if (substr($includePath, -1) == '/') {
 		$includePath = substr($includePath, 0, -1);
 	}
@@ -32,7 +32,7 @@ try {
 
 		include ('mcart.class.php');
 		session_start();
-		
+
 		$SearchOptions = array();
 		if (isset($_GET['page'])) {
 			$SearchOptions['page']['size'] = 15;
