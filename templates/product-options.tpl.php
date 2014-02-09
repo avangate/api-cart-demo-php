@@ -25,7 +25,7 @@ foreach ($prod->PriceOptions as $iKey => $OptionGroup) { ?>
 		$maxOption = array_pop($OptionGroup->Options);
 		$minOption = array_shift($OptionGroup->Options);
 		if (is_null($minOption)) $minOption = $maxOption;
-		?>
+?>
 					<label>
 						<?php echo htmlentities( $OptionGroup->Name); ?> (Min: <?php echo $minOption->MinValue;?>, Max: <?php echo $maxOption->MaxValue;?>):
 						<input id="inp_<?php echo $OptionGroup->Id;?>" class="slider_inp<?php if ($OptionGroup->Required) { echo ' required'; } ?>" type="text" name="<?php echo htmlentities( $OptionGroup->Name); ?>" value="<?php echo $minOption->MinValue?>"/>
@@ -69,6 +69,7 @@ foreach ($prod->PriceOptions as $iKey => $OptionGroup) { ?>
 				},
 				stop: function (e, ui) {
 					var oid = this.id.substr(4);
+
 					$("#inp_" + oid).change();
 				}
 			});
