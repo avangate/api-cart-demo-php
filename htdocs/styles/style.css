@@ -165,6 +165,9 @@ table.prod_details td {
 .prod_description h4 span {
 	font-size:80%;
 }
+.prod_description .description p {
+	line-height: 1.6em;
+}
 .prod_desc {
 	font-size:0.9em;
 	margin-left:10px;

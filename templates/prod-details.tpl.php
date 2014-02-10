@@ -10,7 +10,7 @@
 			<h4><a href="/product-details/?id=<?php echo$prod->ProductId?>"><?php echo $prod->ProductName ?></a> <?php if ($prod->ProductVersion) {?><span>(v <?php echo $prod->ProductVersion; ?>)</span><?php }?></h4>
 			<button type="submit" style="font-size:110%;">Add to cart <span style="margin-left:4px">&raquo;</span> </button><br/><br/>
 			<div class="description">
-				<?php if (strlen($prod->LongDescription) && strlen($prod->ShortDescription)) { echo 'No description available'; } else { echo $prod->LongDescription ? $prod->LongDescription : $prod->ShortDescription; }?>
+				<?php if (strlen($prod->LongDescription) == 0 && strlen($prod->ShortDescription) == 0) { echo 'No description available'; } else { echo strlen($prod->LongDescription) > 0 ? $prod->LongDescription : $prod->ShortDescription; }?>
 			</div>
 			<br/>
 <?php if (!empty($prod->Platforms)) {
