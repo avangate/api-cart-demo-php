@@ -1,8 +1,3 @@
-/* 
-    Document   : style.css
-    Created on : Dec 6, 2011, 3:29:26 PM
-    Author     : habarnam
-*/
 html, body {
 	padding:0;
 	font-size:10pt;
@@ -19,7 +14,7 @@ a:active, a:focus, button:active, button:focus, input:active, input:focus {
 	outline: none !important;
 }
 a {
-	/*/color:#5795B9;/**/	
+	/*/color:#5795B9;/**/
 	/**/color:#05649A;/**/
 	text-decoration: none;
 }
@@ -163,7 +158,7 @@ table.prod_details td {
 }
 .prod_description h4 {
 	margin: 4px 10px;
-	/*/font-size:100%; 
+	/*/font-size:100%;
 	float:left;
 	clear:right;/**/
 }
@@ -182,7 +177,7 @@ table.prod_details td {
 	margin-right:10px;
 }
 .order_details {
-	float:right; 
+	float:right;
 	width:680px;
 	margin:12px 0px;
 }
@@ -214,8 +209,8 @@ table.prod_details td {
 	width: 100%;
 }
 .details label.place_order button img {
-	display:block; 
-	float:right; 
+	display:block;
+	float:right;
 	margin-left:12px;
 	margin-top:-7px
 }
@@ -299,7 +294,7 @@ table.prod_details td {
 .details select {
 	height: 2.4em;
 	margin-top: -10px;
-	padding: 6px 2px;	
+	padding: 6px 2px;
 }
 .details label {
 	display:block;
@@ -375,4 +370,14 @@ table.prod_details td.empty {
 	padding: 34px 4px;
 	text-align:center;
 	font-size:1.2em;
+}
+.slider_inp {
+    border:none;
+    background-color: #E5E5E5;
+    font-size:1.1em;
+    font-weight: bold;
+    margin-left:1em;
+}
+.slider {
+    width: 400px;
 }
