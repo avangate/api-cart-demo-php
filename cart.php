@@ -97,7 +97,7 @@ try {
 			break;
 		case 'emptycart': // remove from cart
 			$c->emptyCart();
-//			header ('HTTP/1.1 303 See Other');
+			header ('HTTP/1.1 301 Moved Permanently');
 			header ('Location: /list-products/');
 			break;
 	}
