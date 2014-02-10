@@ -81,7 +81,7 @@ if (true || stristr($includePath, 'order')) {
 <div id="<?php echo $id ?>">
 <?php echo json_encode($oRequest); ?>
 <br/>
-<?php echo json_encode($c->getAPIResponse($id)); ?>
+<?php echo strip_tags(nl2br(json_encode($c->getAPIResponse($id)))); ?>
 </div>
 <?php } ?>
 	</pre>
