@@ -46,15 +46,10 @@ try {
 		} else {
 			$mBilling = new mBillingDetails();
 		}
-		
+
 		if (isset ($_GET['status'])) {
 			$status = $_GET['status'];
 			$msg = isset($_GET['message']) ? urldecode($_GET['message']) : null;
-		}
-
-		foreach ($c->getItems() as $idProduct => $data) {
-			$cartProducts[$idProduct] = $c->getProductById($idProduct);
-			$cartPrices[$idProduct] = $c->getProductById($idProduct);
 		}
 
 		if (isset($_GET['refNo'])) {
@@ -70,7 +65,7 @@ try {
 			$refNo = null;
 		}
 	} elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
-		
+
 		try {
 			if ($step == 1) {
 				$mBilling->Address = $_POST['address'];
@@ -86,7 +81,7 @@ try {
 // 				try {
 					$_SESSION['BILLING_DETAILS'] = $mBilling;
 					$c->setBillingDetails($mBilling);
-					
+
 					header ('HTTP/1.1 303 See Other');
 					header ('Location: /order/?step=2');
 					exit();
@@ -97,7 +92,7 @@ try {
 			if ($step == 2) {
 				$mPayment->Currency = $c->getCurrency();
 				$mPayment->CustomerIP = $_SERVER['REMOTE_ADDR'];
-				
+
 				if ($mPayment->Type == 'CC') {
 					$mCardPayment = new mCardPayment();
 					$mCardPayment->CardNumber = @$_POST['card_number'];
@@ -110,7 +105,7 @@ try {
 				} elseif ($mPayment->Type == 'PAYPAL') {
 					$mPayPalPayment = new mPaymentDetails();
 				}
-				
+
 				try {
 					d($c->setPaymentDetails($mPayment));
 					$_SESSION['PAYMENT_DETAILS'] = $mPayment;
@@ -119,7 +114,7 @@ try {
 				}
 			}
 
-			if (count($errors) <= 0) { 
+			if (count($errors) <= 0) {
 				if ($step == 2) {
 	 				$order = $c->placeOrder();
 	 				if ($order->RefNo > 0) {
