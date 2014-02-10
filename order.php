@@ -63,6 +63,10 @@ try {
 			$msg = isset($_GET['message']) ? urldecode($_GET['message']) : null;
 		} else {
 			$refNo = null;
+			foreach ($c->getItems() as $idProduct => $data) {
+				$cartProducts[$idProduct] = $c->getProductById($idProduct);
+				$cartPrices[$idProduct] = $c->getProductById($idProduct);
+			}
 		}
 	} elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
