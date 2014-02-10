@@ -1,6 +1,6 @@
 <?php
 
-class mPriceOptionGroup {	
+class mPriceOptionGroup {
 	/**
 	 * @var string
 	 */
@@ -24,5 +24,5 @@ class mPriceOptionGroup {
 	/**
 	 * @var mPriceOptionGroupItem[]
 	 */
-	var $Options = array();	
+	var $Options = array();
 }

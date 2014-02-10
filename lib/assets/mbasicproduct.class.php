@@ -1,10 +1,11 @@
 <?php
-class mBasicProduct  {		
+class mBasicProduct  {
 	/**
 	 * @var integer
 	 */
 	var $ProductId = 0;
-	
+	var $Id = 0;
+
 	/**
 	 * @var string
 	 */

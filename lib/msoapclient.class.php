@@ -31,23 +31,14 @@ class mSOAPClient extends SoapClient implements mAPIInterface {
 				'location' => ORDER_SOAP_URL,
 				'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP,
 				'cache_wsdl' => WSDL_CACHE_NONE,
-				//'uri' => 'test',
-				/**/
-//				'proxy_password' => '',
-				/** /
-				'proxy_host' => 'localhost',
-				'proxy_port' => 3128,
-				'proxy_login' => NULL,
-				'proxy_password' => NULL,
-				/**/
 				'classmap' => array (
-					'CSOAP_Order' => 'mOrder',
-					'CSOAP_Price' => 'mPrice',
-					'CSOAP_CartItem' => 'mCartItem',
-					'CSOAP_ProductDataTypeProductsListItem' => 'mBasicProduct',
-					'CSOAP_ProductDataTypeProductCompleteInfo' => 'mProduct',
-					'CSOAP_ProductDataTypePriceOptionsGroupItem' => 'mPriceOptionGroup',
-					'CSOAP_ProductDataTypePriceOptionsGroupItemOptions' => 'mPriceOptionOption',
+					'Order' => 'mOrder',
+					'Price' => 'mPrice',
+					'CartItem' => 'mCartItem',
+					'SimpleProduct' => 'mBasicProduct',
+					'ProductInfo' => 'mProduct',
+					'PriceOptionsGroupItem' => 'mPriceOptionGroup',
+					'PriceOptionsGroupItemOptions' => 'mPriceOptionOption',
 				)
 			), 
 			$options
@@ -243,7 +234,10 @@ class mSOAPClient extends SoapClient implements mAPIInterface {
 	 */
 	public function getProductById($IdProduct){
 		self::$calls += 1;
-		return parent::getProductById ($this->sessionID, $IdProduct);
+		$product = parent::getProductById ($this->sessionID, $IdProduct);
+		$product->Id = $product->ProductId;
+
+		return $product;
 	}
 	
 	/**
@@ -253,7 +247,9 @@ class mSOAPClient extends SoapClient implements mAPIInterface {
 	 */
 	public function getProductByCode($ProductCode) {
 		self::$calls += 1;
-		return parent::getProductByCode ($this->sessionID, $ProductCode);
+		$product = parent::getProductByCode ($this->sessionID, $ProductCode);
+		$product->Id = $product->ProductId;
+		return $product;
 	}
 	
 	
@@ -263,7 +259,9 @@ class mSOAPClient extends SoapClient implements mAPIInterface {
 	 */
 	public function getProductBySKU($ProductSKU) {
 		self::$calls += 1;
-		return parent::getProductBySKU ($this->sessionID, $ProductSKU);
+		$product = parent::getProductBySKU ($this->sessionID, $ProductSKU);
+		$product->Id = $product->ProductId;
+		return $product;
 	}
 	
 	/**
@@ -276,7 +274,12 @@ class mSOAPClient extends SoapClient implements mAPIInterface {
 		if (!array_key_exists('PageSize', $SearchOptions)) {
 			$SearchOptions['PageSize'] = 5;
 		}
-		return parent::searchProducts($this->sessionID, $SearchOptions);
+		$retProducts = array();
+		foreach(parent::searchProducts($this->sessionID, $SearchOptions) as $product) {
+			$product->Id = $product->ProductId;
+			$retProducts[] = $product;
+		}
+		return $retProducts;
 	}
 
 	/**

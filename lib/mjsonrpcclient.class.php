@@ -20,13 +20,13 @@ class mJsonRPCClient implements mAPIInterface {
 	public function __construct () {
 		$this->connect ();
 		$this->typeConversion = array (
-			'CSOAP_Order' => 'mOrder',
-			'CSOAP_Price' => 'mPrice',
-			'CSOAP_CartItem' => 'mCartItem',
-			'CSOAP_ProductDataTypeProductsListItem' => 'mBasicProduct',
-			'CSOAP_ProductDataTypeProductCompleteInfo' => 'mProduct',
-			'CSOAP_ProductDataTypePriceOptionsGroupItem' => 'mPriceOptionGroup',
-			'CSOAP_ProductDataTypePriceOptionsGroupItemOptions' => 'mPriceOptionOption',
+			'Order' => 'mOrder',
+			'Price' => 'mPrice',
+			'CartItem' => 'mCartItem',
+			'SimpleProduct' => 'mBasicProduct',
+			'ProductInfo' => 'mProduct',
+			'PriceOptionsGroupItem' => 'mPriceOptionGroup',
+			'PriceOptionsGroupItemOptions' => 'mPriceOptionOption',
 		);
 	}
 

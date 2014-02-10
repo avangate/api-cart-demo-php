@@ -381,3 +381,12 @@ table.prod_details td.empty {
 .slider {
     width: 400px;
 }
+.slider.ui-slider.ui-slider-horizontal {
+	height: 2px;
+	margin-bottom:8px;
+}
+.slider.ui-slider.ui-slider-horizontal .ui-slider-handle {
+	height:10px;
+	width: 3px;
+	border:1px solid darkred;
+}
