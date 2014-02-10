@@ -37,7 +37,7 @@ try {
 
 	$step = isset($_GET['step']) ? $_GET['step'] : '1';
 	$paymentType = isset($_GET['pmethod']) ? $_GET['pmethod'] : null;
-	
+
 	$mPayment->Type = $paymentType;
 
 	if ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -51,12 +51,12 @@ try {
 			$status = $_GET['status'];
 			$msg = isset($_GET['message']) ? urldecode($_GET['message']) : null;
 		}
-		
+
 		foreach ($c->getItems() as $idProduct => $data) {
 			$cartProducts[$idProduct] = $c->getProductById($idProduct);
 			$cartPrices[$idProduct] = $c->getProductById($idProduct);
 		}
-		
+
 		if (isset($_GET['refNo'])) {
 			$refNo = (int)$_GET['refNo'];
 			if ($refNo > 0) {
